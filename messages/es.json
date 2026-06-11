@@ -1,0 +1,430 @@
+{
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "confirm": "Confirmar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "finish": "Finalizar",
+    "loading": "Cargando...",
+    "error": "Algo salió mal",
+    "empty": "Sin registros",
+    "yes": "Sí",
+    "no": "No",
+    "add": "Agregar",
+    "view": "Ver",
+    "close": "Cerrar",
+    "undo": "Deshacer",
+    "deleted": "Registro eliminado",
+    "saved": "Guardado correctamente",
+    "updated": "Actualizado correctamente"
+  },
+  "nav": {
+    "dashboard": "Inicio",
+    "weight": "Peso",
+    "workouts": "Entrenamientos",
+    "calories": "Calorías",
+    "profile": "Perfil",
+    "measurements": "Medidas",
+    "photos": "Fotos",
+    "goals": "Objetivos"
+  },
+  "auth": {
+    "login": {
+      "title": "Bienvenido de nuevo",
+      "subtitle": "Inicia sesión en tu cuenta",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "submit": "Iniciar sesión",
+      "forgotPassword": "¿Olvidaste tu contraseña?",
+      "noAccount": "¿No tienes cuenta?",
+      "registerLink": "Registrarse"
+    },
+    "register": {
+      "title": "Crear cuenta",
+      "subtitle": "Comienza tu viaje fitness",
+      "firstName": "Nombre",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar contraseña",
+      "submit": "Crear cuenta",
+      "hasAccount": "¿Ya tienes cuenta?",
+      "loginLink": "Iniciar sesión"
+    },
+    "forgotPassword": {
+      "title": "Restablecer contraseña",
+      "subtitle": "Ingresa tu correo para recibir el enlace de restablecimiento",
+      "email": "Correo electrónico",
+      "submit": "Enviar enlace",
+      "backToLogin": "Volver al inicio de sesión"
+    },
+    "errors": {
+      "invalidEmail": "Correo electrónico inválido",
+      "weakPassword": "La contraseña debe tener al menos 8 caracteres",
+      "passwordMismatch": "Las contraseñas no coinciden",
+      "emailTaken": "Este correo electrónico ya está en uso",
+      "invalidCredentials": "Correo o contraseña incorrectos",
+      "generic": "Ocurrió un error. Por favor intenta de nuevo."
+    }
+  },
+  "onboarding": {
+    "stepIndicator": "Paso {current} de {total}",
+    "continue": "Continuar",
+    "back": "Atrás",
+    "finish": "Comenzar",
+    "gender": {
+      "question": "¿Cuál es tu género?",
+      "hint": "Esto personaliza tu plan y mapa muscular",
+      "male": "Masculino",
+      "female": "Femenino"
+    },
+    "age": {
+      "question": "¿Cuántos años tienes?",
+      "hint": "Tu edad se usa para calcular tu TDEE",
+      "placeholder": "Tu edad",
+      "unit": "años"
+    },
+    "height": {
+      "question": "¿Cuál es tu altura?",
+      "hint": "Usamos esto para cálculos precisos",
+      "placeholder": "Tu altura",
+      "unitCm": "cm",
+      "unitFt": "ft",
+      "unitIn": "in"
+    },
+    "weight": {
+      "question": "¿Cuál es tu peso actual?",
+      "hint": "Este es tu peso de partida",
+      "placeholder": "Tu peso",
+      "unitKg": "kg",
+      "unitLb": "lb"
+    },
+    "activityLevel": {
+      "question": "¿Qué tan activo eres?",
+      "hint": "Elige el nivel que mejor describe tu rutina",
+      "sedentary": "Sedentario",
+      "sedentaryDesc": "Trabajo de escritorio, sin ejercicio",
+      "lightlyActive": "Ligeramente activo",
+      "lightlyActiveDesc": "Ejercicio ligero 1-3 días/semana",
+      "moderatelyActive": "Moderadamente activo",
+      "moderatelyActiveDesc": "Ejercicio moderado 3-5 días/semana",
+      "veryActive": "Muy activo",
+      "veryActiveDesc": "Ejercicio intenso 6-7 días/semana",
+      "athlete": "Atleta",
+      "athleteDesc": "Entrenamientos dos veces al día"
+    },
+    "trainingLocation": {
+      "question": "¿Dónde entrenas?",
+      "hint": "Te recomendaremos ejercicios apropiados",
+      "gym": "Gimnasio",
+      "gymDesc": "Tengo acceso a equipamiento completo",
+      "home": "Casa",
+      "homeDesc": "Entreno en casa o al aire libre",
+      "both": "Ambos",
+      "bothDesc": "Uso tanto gimnasio como casa"
+    },
+    "goal": {
+      "question": "¿Cuál es tu objetivo?",
+      "hint": "Personalizaremos tu plan según este objetivo",
+      "loseWeight": "Perder peso",
+      "loseWeightDesc": "Quiero reducir la grasa corporal",
+      "buildMuscle": "Ganar músculo",
+      "buildMuscleDesc": "Quiero aumentar masa muscular",
+      "improveEndurance": "Mejorar resistencia",
+      "improveEnduranceDesc": "Quiero mejorar mi condición cardiovascular",
+      "stayHealthy": "Mantenerme sano",
+      "stayHealthyDesc": "Quiero mantenerme en forma y activo",
+      "athleticPerformance": "Rendimiento atlético",
+      "athleticPerformanceDesc": "Quiero maximizar mi rendimiento atlético"
+    },
+    "firstName": {
+      "question": "¿Cómo te llamas?",
+      "hint": "¿Cómo deberíamos llamarte?",
+      "placeholder": "Tu nombre"
+    },
+    "workoutStyle": {
+      "question": "¿Cuál es tu estilo de entrenamiento preferido?",
+      "hint": "Personalizaremos tu programa de ejercicios",
+      "strength": "Fuerza & Pesas",
+      "strengthDesc": "Levantamientos compuestos con pesos pesados",
+      "cardio": "Cardio & Correr",
+      "cardioDesc": "Mejorar resistencia y quemar calorías",
+      "hiit": "HIIT & Circuito",
+      "hiitDesc": "Alta intensidad, períodos de descanso cortos",
+      "flexibility": "Flexibilidad & Yoga",
+      "flexibilityDesc": "Yoga, estiramientos y movilidad",
+      "mixed": "Entrenamiento Mixto",
+      "mixedDesc": "Una variedad de estilos de entrenamiento"
+    }
+  },
+  "dashboard": {
+    "greeting": {
+      "morning": "Buenos días",
+      "afternoon": "Buenas tardes",
+      "evening": "Buenas noches"
+    },
+    "tdeeCard": {
+      "title": "Objetivo diario",
+      "unit": "kcal/día",
+      "protein": "Proteínas",
+      "carbs": "Carbohidratos",
+      "fat": "Grasas"
+    },
+    "weightCard": {
+      "title": "Peso",
+      "noData": "Sin registros"
+    },
+    "goalCard": {
+      "title": "Objetivo activo",
+      "noGoal": "Sin objetivo activo",
+      "addGoal": "Agregar objetivo"
+    },
+    "workoutCard": {
+      "title": "Último entrenamiento",
+      "noData": "Sin entrenamientos recientes",
+      "start": "Iniciar entrenamiento"
+    },
+    "quickLog": {
+      "title": "Registro rápido",
+      "weight": "+ Peso",
+      "photo": "+ Foto"
+    },
+    "stats": {
+      "bmi": "IMC",
+      "streak": "Días seguidos"
+    },
+    "hero": {
+      "motivational": {
+        "loseWeight": "¡Cada paso te acerca más a tu objetivo!",
+        "buildMuscle": "¡El progreso se construye sesión por sesión!",
+        "improveEndurance": "¡Tus límites se expanden con cada entrenamiento!",
+        "stayHealthy": "¡Tu salud es tu mejor inversión!",
+        "athleticPerformance": "¡Los campeones se forjan en el entrenamiento!"
+      }
+    },
+    "primaryStats": {
+      "title": "Tus estadísticas",
+      "calories": "Calorías / día",
+      "weight": "Peso",
+      "bmi": "IMC",
+      "goal": "Objetivo",
+      "notSet": "—"
+    },
+    "bmiLabel": {
+      "normal": "Normal",
+      "underweight": "Bajo peso",
+      "overweight": "Sobrepeso",
+      "obese": "Obeso"
+    },
+    "goalLabel": {
+      "loseWeight": "Perder peso",
+      "buildMuscle": "Ganar músculo",
+      "improveEndurance": "Resistencia",
+      "stayHealthy": "Estar sano",
+      "athleticPerformance": "Rendimiento"
+    },
+    "progress": {
+      "title": "Progreso",
+      "yourGoal": "Tu objetivo",
+      "bmiStatus": "Estado IMC",
+      "idealWeight": "vs. Ideal",
+      "recommendation": "Recomendación personalizada",
+      "weightAbove": "+{diff} kg sobre el ideal",
+      "weightBelow": "{diff} kg bajo el ideal",
+      "weightIdeal": "En el peso ideal ✓"
+    },
+    "recommendation": {
+      "loseWeight": "Mantén un déficit calórico moderado y combina cardio con entrenamiento de fuerza.",
+      "buildMuscle": "Come suficientes proteínas y entrena con pesas al menos 3-4 veces por semana.",
+      "improveEndurance": "El cardio regular 4-5 veces por semana mejorará significativamente tu resistencia.",
+      "stayHealthy": "El equilibrio entre entrenamientos variados, sueño de calidad y buena nutrición asegura la salud.",
+      "athleticPerformance": "La periodización del entrenamiento y la recuperación activa son clave para el rendimiento máximo."
+    },
+    "actions": {
+      "title": "Acciones rápidas",
+      "updateWeight": "Peso",
+      "viewProgress": "Progreso",
+      "startWorkout": "Entrenamiento",
+      "nutrition": "Nutrición"
+    }
+  },
+  "weight": {
+    "title": "Peso",
+    "addEntry": "Agregar peso",
+    "noEntries": "Sin registros de peso",
+    "chart": {
+      "label": "Peso (kg)"
+    },
+    "periods": {
+      "7d": "7 días",
+      "30d": "30 días",
+      "90d": "90 días",
+      "all": "Todo"
+    }
+  },
+  "measurements": {
+    "title": "Medidas",
+    "addEntry": "Agregar medidas",
+    "noEntries": "Sin medidas registradas",
+    "fields": {
+      "chest": "Pecho",
+      "waist": "Cintura",
+      "hips": "Caderas",
+      "leftArm": "Brazo izquierdo",
+      "rightArm": "Brazo derecho",
+      "leftThigh": "Muslo izquierdo",
+      "rightThigh": "Muslo derecho",
+      "leftCalf": "Pantorrilla izquierda",
+      "rightCalf": "Pantorrilla derecha",
+      "neck": "Cuello",
+      "shoulders": "Hombros",
+      "bodyFat": "Grasa corporal"
+    }
+  },
+  "photos": {
+    "title": "Fotos de progreso",
+    "addPhoto": "Agregar foto",
+    "noPhotos": "Sin fotos agregadas",
+    "angles": {
+      "front": "Frente",
+      "back": "Espalda",
+      "sideLeft": "Lado izquierdo",
+      "sideRight": "Lado derecho",
+      "custom": "Personalizado"
+    },
+    "compare": "Comparar"
+  },
+  "calories": {
+    "title": "Calorías",
+    "tdee": "TDEE",
+    "target": "Objetivo",
+    "settings": "Ajustes de calorías",
+    "macros": {
+      "protein": "Proteínas",
+      "carbs": "Carbohidratos",
+      "fat": "Grasas"
+    },
+    "breakdown": {
+      "title": "Tu cálculo",
+      "bmr": "TMB (Tasa metabólica basal)",
+      "activityMultiplier": "Multiplicador de actividad",
+      "goalAdjustment": "Ajuste por objetivo",
+      "result": "Tu TDEE"
+    }
+  },
+  "goals": {
+    "title": "Objetivos",
+    "addGoal": "Agregar objetivo",
+    "active": "Activos",
+    "completed": "Completados",
+    "noGoals": "Sin objetivos establecidos",
+    "types": {
+      "weightTarget": "Objetivo de peso",
+      "measurementTarget": "Objetivo de medidas",
+      "workoutFrequency": "Frecuencia de entrenamiento",
+      "strengthTarget": "Objetivo de fuerza",
+      "custom": "Personalizado"
+    },
+    "status": {
+      "active": "Activo",
+      "completed": "Completado",
+      "abandoned": "Abandonado"
+    }
+  },
+  "workouts": {
+    "title": "Entrenamientos",
+    "start": "Iniciar entrenamiento",
+    "generator": "Generador",
+    "library": "Biblioteca de ejercicios",
+    "history": "Historial",
+    "myWorkouts": "Mis entrenamientos",
+    "recommended": "Recomendados para ti",
+    "noWorkouts": "Sin entrenamientos creados",
+    "bodyMap": {
+      "front": "Frente",
+      "back": "Espalda",
+      "tapToFilter": "Toca los músculos para filtrar"
+    }
+  },
+  "profile": {
+    "title": "Perfil",
+    "sections": {
+      "identity": "Información personal",
+      "physicalStats": "Datos físicos",
+      "preferences": "Preferencias",
+      "account": "Cuenta",
+      "dangerZone": "Zona de peligro"
+    },
+    "fields": {
+      "firstName": "Nombre",
+      "displayName": "Nombre mostrado",
+      "email": "Correo electrónico",
+      "gender": "Género",
+      "age": "Edad",
+      "height": "Altura",
+      "weight": "Peso",
+      "activityLevel": "Nivel de actividad",
+      "trainingLocation": "Lugar de entrenamiento",
+      "goal": "Objetivo",
+      "locale": "Idioma",
+      "unitSystem": "Sistema de unidades",
+      "workoutStyle": "Estilo de entrenamiento"
+    },
+    "units": {
+      "metric": "Métrico (kg, cm)",
+      "imperial": "Imperial (lb, ft)",
+      "years": "años"
+    },
+    "actions": {
+      "changePassword": "Cambiar contraseña",
+      "signOut": "Cerrar sesión",
+      "deleteAccount": "Eliminar cuenta"
+    },
+    "deleteAccount": {
+      "title": "Eliminar cuenta",
+      "description": "Esto eliminará permanentemente tu cuenta y todos tus datos. Esta acción no se puede deshacer.",
+      "confirm": "Eliminar mi cuenta"
+    },
+    "summary": {
+      "currentWeight": "Peso actual",
+      "bmi": "IMC",
+      "bmiNormal": "Normal",
+      "bmiUnderweight": "Bajo peso",
+      "bmiOverweight": "Sobrepeso",
+      "bmiObese": "Obeso",
+      "tdee": "Calorías / día",
+      "goal": "Objetivo",
+      "activity": "Actividad",
+      "notSet": "—"
+    },
+    "saveChanges": "Guardar cambios",
+    "saved": "¡Guardado!",
+    "gender": {
+      "male": "Masculino",
+      "female": "Femenino"
+    },
+    "activityLevel": {
+      "sedentary": "Sedentario",
+      "lightlyActive": "Poco activo",
+      "moderatelyActive": "Moderado",
+      "veryActive": "Muy activo",
+      "athlete": "Atleta"
+    },
+    "goal": {
+      "loseWeight": "Perder peso",
+      "buildMuscle": "Ganar músculo",
+      "improveEndurance": "Resistencia",
+      "stayHealthy": "Estar sano",
+      "athleticPerformance": "Rendimiento"
+    },
+    "workoutStyle": {
+      "strength": "Fuerza",
+      "cardio": "Cardio",
+      "hiit": "HIIT",
+      "flexibility": "Flexibilidad",
+      "mixed": "Mixto"
+    }
+  }
+}
