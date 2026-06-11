@@ -40,7 +40,8 @@
       "submit": "Iniciar sesión",
       "forgotPassword": "¿Olvidaste tu contraseña?",
       "noAccount": "¿No tienes cuenta?",
-      "registerLink": "Registrarse"
+      "registerLink": "Registrarse",
+      "rememberEmail": "Recordar email"
     },
     "register": {
       "title": "Crear cuenta",

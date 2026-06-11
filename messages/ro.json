@@ -40,7 +40,8 @@
       "submit": "Conectare",
       "forgotPassword": "Ai uitat parola?",
       "noAccount": "Nu ai cont?",
-      "registerLink": "Înregistrare"
+      "registerLink": "Înregistrare",
+      "rememberEmail": "Ține minte emailul"
     },
     "register": {
       "title": "Creează cont",

@@ -1,33 +1,52 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Check } from 'lucide-react';
 import { useRouter } from '@/lib/i18n/navigation';
 import { loginSchema, type LoginFormData } from '@/lib/validations/auth';
 import { signInAction } from '@/lib/actions/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils/cn';
+
+const STORAGE_KEY = 'mundofit_remembered_email';
 
 export function LoginForm({ locale }: { locale: string }) {
   const t = useTranslations('auth.login');
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [rememberEmail, setRememberEmail] = useState(false);
 
   const {
     register,
     handleSubmit,
     setError,
+    setValue,
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
 
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      setValue('email', saved, { shouldValidate: false });
+      setRememberEmail(true);
+    }
+  }, [setValue]);
+
   const onSubmit = async (data: LoginFormData) => {
+    if (rememberEmail) {
+      localStorage.setItem(STORAGE_KEY, data.email);
+    } else {
+      localStorage.removeItem(STORAGE_KEY);
+    }
+
     setIsLoading(true);
     try {
       const result = await signInAction(data.email, data.password);
@@ -97,7 +116,24 @@ export function LoginForm({ locale }: { locale: string }) {
             {...register('password')}
           />
 
-          <div className="flex justify-end -mt-1">
+          <div className="flex items-center justify-between -mt-1">
+            <button
+              type="button"
+              onClick={() => setRememberEmail((v) => !v)}
+              className="flex items-center gap-2"
+            >
+              <div
+                className={cn(
+                  'flex h-4 w-4 items-center justify-center rounded-[4px] border transition-colors',
+                  rememberEmail
+                    ? 'border-[#aaff00] bg-[#aaff00]'
+                    : 'border-[#333333] bg-transparent'
+                )}
+              >
+                {rememberEmail && <Check size={10} color="#0a0a0a" strokeWidth={3} />}
+              </div>
+              <span className="text-sm text-[#888888]">{t('rememberEmail')}</span>
+            </button>
             <Link
               href={`/${locale}/forgot-password`}
               className="text-sm text-[#666666] hover:text-[#aaff00] transition-colors"

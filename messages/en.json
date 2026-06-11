@@ -40,7 +40,8 @@
       "submit": "Sign in",
       "forgotPassword": "Forgot password?",
       "noAccount": "Don't have an account?",
-      "registerLink": "Sign up"
+      "registerLink": "Sign up",
+      "rememberEmail": "Remember email"
     },
     "register": {
       "title": "Create account",
