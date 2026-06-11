@@ -366,6 +366,34 @@
       "front": "Front",
       "back": "Back",
       "tapToFilter": "Tap muscles to filter"
+    },
+    "create": "Create workout",
+    "createFirst": "Create your first workout",
+    "startQuick": "Quick start",
+    "totalSessions": "Sessions",
+    "thisWeek": "This week",
+    "noSessions": "No sessions yet",
+    "firstSessionHint": "Log your first workout to start tracking",
+    "recentSessions": "Recent sessions",
+    "exploreTitle": "Explore",
+    "categories": {
+      "title": "Exercise categories",
+      "chest": "Chest",
+      "back": "Back",
+      "shoulders": "Shoulders",
+      "arms": "Arms",
+      "legs": "Legs",
+      "core": "Core",
+      "cardio": "Cardio",
+      "fullBody": "Full Body"
+    },
+    "session": {
+      "noData": "No workout history yet",
+      "hint": "Start your first workout to see your history here",
+      "historyTitle": "Workout history",
+      "min": "min",
+      "kg": "kg",
+      "sets": "sets"
     }
   },
   "profile": {

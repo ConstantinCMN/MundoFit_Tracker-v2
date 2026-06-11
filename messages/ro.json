@@ -366,6 +366,34 @@
       "front": "Față",
       "back": "Spate",
       "tapToFilter": "Apasă pe mușchi pentru a filtra"
+    },
+    "create": "Crează antrenament",
+    "createFirst": "Crează primul tău antrenament",
+    "startQuick": "Start rapid",
+    "totalSessions": "Sesiuni",
+    "thisWeek": "Săptămâna aceasta",
+    "noSessions": "Nicio sesiune",
+    "firstSessionHint": "Înregistrează primul antrenament pentru a urmări progresul",
+    "recentSessions": "Sesiuni recente",
+    "exploreTitle": "Explorează",
+    "categories": {
+      "title": "Categorii exerciții",
+      "chest": "Piept",
+      "back": "Spate",
+      "shoulders": "Umeri",
+      "arms": "Brațe",
+      "legs": "Picioare",
+      "core": "Core",
+      "cardio": "Cardio",
+      "fullBody": "Corp întreg"
+    },
+    "session": {
+      "noData": "Niciun antrenament înregistrat",
+      "hint": "Începe primul antrenament pentru a vedea istoricul",
+      "historyTitle": "Istoric antrenamente",
+      "min": "min",
+      "kg": "kg",
+      "sets": "seturi"
     }
   },
   "profile": {

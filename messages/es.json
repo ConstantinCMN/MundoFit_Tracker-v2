@@ -366,6 +366,34 @@
       "front": "Frente",
       "back": "Espalda",
       "tapToFilter": "Toca los músculos para filtrar"
+    },
+    "create": "Crear entrenamiento",
+    "createFirst": "Crea tu primer entrenamiento",
+    "startQuick": "Inicio rápido",
+    "totalSessions": "Sesiones",
+    "thisWeek": "Esta semana",
+    "noSessions": "Sin sesiones",
+    "firstSessionHint": "Registra tu primer entrenamiento para comenzar a seguir tu progreso",
+    "recentSessions": "Sesiones recientes",
+    "exploreTitle": "Explorar",
+    "categories": {
+      "title": "Categorías de ejercicios",
+      "chest": "Pecho",
+      "back": "Espalda",
+      "shoulders": "Hombros",
+      "arms": "Brazos",
+      "legs": "Piernas",
+      "core": "Core",
+      "cardio": "Cardio",
+      "fullBody": "Cuerpo completo"
+    },
+    "session": {
+      "noData": "Sin historial de entrenamientos",
+      "hint": "Comienza tu primer entrenamiento para ver tu historial aquí",
+      "historyTitle": "Historial de entrenamientos",
+      "min": "min",
+      "kg": "kg",
+      "sets": "series"
     }
   },
   "profile": {
