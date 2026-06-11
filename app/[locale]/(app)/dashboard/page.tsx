@@ -29,7 +29,19 @@ export default async function DashboardPage({
 
   if (!profile) redirect(`/${locale}/onboarding`);
 
-  // Compute time-sensitive values server-side to avoid hydration mismatches
+  const { data: rawWeightLogs } = await supabase
+    .from('weight_logs')
+    .select('weight_kg, logged_at')
+    .eq('user_id', user.id)
+    .order('logged_at', { ascending: false })
+    .limit(7);
+
+  // Reverse to chronological order (oldest → newest) for the sparkline
+  const weightLogs = [...(rawWeightLogs ?? [])].reverse() as Array<{
+    weight_kg: number;
+    logged_at: string;
+  }>;
+
   const now = new Date();
   const hour = now.getHours();
   const dateStr = now.toLocaleDateString(locale, {
@@ -43,6 +55,7 @@ export default async function DashboardPage({
       profile={profile as Profile}
       hour={hour}
       dateStr={dateStr}
+      weightLogs={weightLogs}
     />
   );
 }

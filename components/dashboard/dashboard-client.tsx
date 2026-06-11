@@ -3,7 +3,14 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { Scale, Activity, Dumbbell, Flame } from 'lucide-react';
+import {
+  Scale,
+  Activity,
+  Dumbbell,
+  Flame,
+  Droplets,
+  BedDouble,
+} from 'lucide-react';
 import { useRouter } from '@/lib/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
 import {
@@ -14,13 +21,36 @@ import {
 } from '@/lib/utils/fitness';
 import type { Profile, Goal, ActivityLevel, Gender } from '@/types';
 
-// ── Animation helper ──────────────────────────────────────────────────────────
+type WeightEntry = { weight_kg: number; logged_at: string };
 
-function fadeUp(delay: number) {
+// ── Animation ─────────────────────────────────────────────────────────────────
+
+function fadeUp(delay = 0) {
   return {
-    initial: { opacity: 0, y: 18 },
+    initial: { opacity: 0, y: 16 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.4, delay, ease: [0.25, 0.46, 0.45, 0.94] as const },
+    transition: { duration: 0.45, delay, ease: [0.25, 0.46, 0.45, 0.94] as const },
+  };
+}
+
+// ── Macro ratios by goal ──────────────────────────────────────────────────────
+
+function getMacros(tdee: number, goal: Goal | null) {
+  const ratios: Record<string, { p: number; c: number; f: number }> = {
+    lose_weight: { p: 0.30, c: 0.40, f: 0.30 },
+    build_muscle: { p: 0.35, c: 0.45, f: 0.20 },
+    improve_endurance: { p: 0.20, c: 0.55, f: 0.25 },
+    stay_healthy: { p: 0.25, c: 0.50, f: 0.25 },
+    athletic_performance: { p: 0.30, c: 0.50, f: 0.20 },
+  };
+  const { p, c, f } = (goal ? ratios[goal] : null) ?? ratios.stay_healthy;
+  return {
+    proteinG: Math.round((tdee * p) / 4),
+    carbsG: Math.round((tdee * c) / 4),
+    fatG: Math.round((tdee * f) / 9),
+    proteinPct: Math.round(p * 100),
+    carbsPct: Math.round(c * 100),
+    fatPct: Math.round(f * 100),
   };
 }
 
@@ -44,10 +74,10 @@ function StatCard({
   return (
     <div
       className={cn(
-        'rounded-2xl border px-4 py-4',
+        'rounded-2xl border px-4 py-4 backdrop-blur-sm',
         accent
-          ? 'border-[rgba(170,255,0,0.3)] bg-[rgba(170,255,0,0.07)]'
-          : 'border-[#1e1e1e] bg-[#111111]'
+          ? 'border-[rgba(170,255,0,0.25)] bg-[rgba(170,255,0,0.05)]'
+          : 'border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)]'
       )}
     >
       <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-[#555555]">
@@ -55,8 +85,8 @@ function StatCard({
       </p>
       <p
         className={cn(
-          'font-bold leading-tight tabular-nums',
-          compact ? 'text-[15px]' : 'text-[22px] leading-none',
+          'font-bold tabular-nums leading-tight',
+          compact ? 'text-[14px]' : 'text-[22px] leading-none',
           accent ? 'text-[#aaff00]' : 'text-[#f5f5f5]'
         )}
       >
@@ -71,31 +101,241 @@ function StatCard({
   );
 }
 
+// ── Macro bar ─────────────────────────────────────────────────────────────────
+
+function MacroBar({
+  label,
+  grams,
+  pct,
+  color,
+  delay,
+}: {
+  label: string;
+  grams: number;
+  pct: number;
+  color: string;
+  delay: number;
+}) {
+  return (
+    <div className="min-w-0 flex-1">
+      <div className="mb-1.5 flex items-baseline justify-between gap-1">
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-[#555555]">
+          {label}
+        </span>
+        <span className="shrink-0 text-[13px] font-bold tabular-nums" style={{ color }}>
+          {grams}g
+        </span>
+      </div>
+      <div className="h-1.5 overflow-hidden rounded-full bg-[rgba(255,255,255,0.07)]">
+        <motion.div
+          className="h-full rounded-full"
+          style={{ backgroundColor: color }}
+          initial={{ width: 0 }}
+          animate={{ width: `${pct}%` }}
+          transition={{ duration: 1, delay, ease: 'easeOut' }}
+        />
+      </div>
+      <p className="mt-1 text-[10px] text-[#444444]">{pct}%</p>
+    </div>
+  );
+}
+
+// ── Weight sparkline (pure SVG) ───────────────────────────────────────────────
+
+function WeightSparkline({
+  data,
+  noDataText,
+  logFirstText,
+  onLogWeight,
+}: {
+  data: WeightEntry[];
+  noDataText: string;
+  logFirstText: string;
+  onLogWeight: () => void;
+}) {
+  if (data.length < 2) {
+    return (
+      <div className="flex flex-col items-center gap-3 py-4">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)]">
+          <Scale size={20} color="#333333" />
+        </div>
+        <div className="text-center">
+          <p className="text-[13px] font-semibold text-[#444444]">{noDataText}</p>
+          <p className="mt-0.5 text-[11px] text-[#333333]">{logFirstText}</p>
+        </div>
+        <button
+          onClick={onLogWeight}
+          className="mt-1 rounded-xl border border-[rgba(170,255,0,0.25)] bg-[rgba(170,255,0,0.06)] px-5 py-2 text-[12px] font-bold text-[#aaff00]"
+        >
+          + Log weight
+        </button>
+      </div>
+    );
+  }
+
+  const W = 300;
+  const H = 72;
+  const PX = 2;
+  const PY = 8;
+  const weights = data.map((d) => d.weight_kg);
+  const minW = Math.min(...weights) - 0.5;
+  const maxW = Math.max(...weights) + 0.5;
+  const range = maxW - minW || 1;
+
+  const xOf = (i: number) => PX + (i / (data.length - 1)) * (W - PX * 2);
+  const yOf = (w: number) => PY + ((maxW - w) / range) * (H - PY * 2);
+  const pts = data.map((d, i) => ({ x: xOf(i), y: yOf(d.weight_kg) }));
+
+  const line = pts.reduce((acc, p, i) => {
+    if (i === 0) return `M ${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+    const prev = pts[i - 1];
+    const cx = ((prev.x + p.x) / 2).toFixed(1);
+    return `${acc} C ${cx},${prev.y.toFixed(1)} ${cx},${p.y.toFixed(1)} ${p.x.toFixed(1)},${p.y.toFixed(1)}`;
+  }, '');
+
+  const last = pts[pts.length - 1];
+  const fill = `${line} L ${last.x.toFixed(1)},${H} L ${pts[0].x.toFixed(1)},${H} Z`;
+
+  const fmt = (d: string) =>
+    new Date(d).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+
+  return (
+    <div>
+      <svg viewBox={`0 0 ${W} ${H}`} className="w-full" height={72} preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="sparkGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#aaff00" stopOpacity="0.22" />
+            <stop offset="100%" stopColor="#aaff00" stopOpacity="0" />
+          </linearGradient>
+        </defs>
+        <path d={fill} fill="url(#sparkGrad)" />
+        <path
+          d={line}
+          fill="none"
+          stroke="#aaff00"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+        <circle cx={last.x} cy={last.y} r={6} fill="rgba(170,255,0,0.15)" />
+        <circle cx={last.x} cy={last.y} r={3} fill="#aaff00" />
+      </svg>
+      <div className="mt-2 flex items-center justify-between">
+        <span className="text-[10px] text-[#444444]">{fmt(data[0].logged_at)}</span>
+        <span className="text-[12px] font-black tabular-nums text-[#aaff00]">
+          {data[data.length - 1].weight_kg} kg
+        </span>
+        <span className="text-[10px] text-[#444444]">
+          {fmt(data[data.length - 1].logged_at)}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+// ── Circular goal ring ────────────────────────────────────────────────────────
+
+function GoalRing({
+  pct = 0,
+  color,
+  size = 52,
+  strokeWidth = 4,
+}: {
+  pct?: number;
+  color: string;
+  size?: number;
+  strokeWidth?: number;
+}) {
+  const r = (size - strokeWidth) / 2;
+  const circ = 2 * Math.PI * r;
+  const clampedPct = Math.min(Math.max(pct, 0), 100);
+  const offset = circ * (1 - clampedPct / 100);
+
+  return (
+    <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
+      <circle
+        cx={size / 2}
+        cy={size / 2}
+        r={r}
+        fill="none"
+        stroke="rgba(255,255,255,0.07)"
+        strokeWidth={strokeWidth}
+      />
+      <motion.circle
+        cx={size / 2}
+        cy={size / 2}
+        r={r}
+        fill="none"
+        stroke={color}
+        strokeWidth={strokeWidth}
+        strokeLinecap="round"
+        strokeDasharray={circ}
+        initial={{ strokeDashoffset: circ }}
+        animate={{ strokeDashoffset: offset }}
+        transition={{ duration: 1.2, delay: 0.3, ease: 'easeOut' }}
+      />
+    </svg>
+  );
+}
+
+// ── Daily goal card ───────────────────────────────────────────────────────────
+
+function DailyGoalCard({
+  icon: Icon,
+  label,
+  target,
+  color,
+  delay,
+}: {
+  icon: React.ComponentType<{ size: number; color: string }>;
+  label: string;
+  target: string;
+  color: string;
+  delay: number;
+}) {
+  return (
+    <motion.div
+      {...fadeUp(delay)}
+      className="flex flex-col items-center gap-2 rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-2 py-4 backdrop-blur-sm"
+    >
+      <div className="relative">
+        <GoalRing pct={0} color={color} size={52} />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Icon size={16} color={color} />
+        </div>
+      </div>
+      <div className="text-center">
+        <p className="text-[10px] font-bold text-[#bbbbbb]">{label}</p>
+        <p className="text-[9px] leading-tight text-[#444444]">{target}</p>
+      </div>
+    </motion.div>
+  );
+}
+
 // ── Main component ────────────────────────────────────────────────────────────
 
 export function DashboardClient({
   profile,
   hour,
   dateStr,
+  weightLogs,
 }: {
   profile: Profile;
   hour: number;
   dateStr: string;
+  weightLogs: WeightEntry[];
 }) {
   const t = useTranslations('dashboard');
   const router = useRouter();
 
-  // Greeting
   const greetingKey: 'morning' | 'afternoon' | 'evening' =
     hour < 12 ? 'morning' : hour < 18 ? 'afternoon' : 'evening';
 
-  const greetingLabels: Record<'morning' | 'afternoon' | 'evening', string> = {
+  const greetings = {
     morning: t('greeting.morning'),
     afternoon: t('greeting.afternoon'),
     evening: t('greeting.evening'),
   };
 
-  // Profile values
   const weight = profile.weight_kg ?? 0;
   const height = profile.height_cm ?? 0;
   const age = profile.age ?? 0;
@@ -103,7 +343,6 @@ export function DashboardClient({
   const activityLevel = (profile.activity_level ?? 'sedentary') as ActivityLevel;
   const goal = profile.goal as Goal | null;
 
-  // Fitness calculations
   const bmi = useMemo(
     () => (weight > 0 && height > 0 ? calculateBMI(weight, height) : null),
     [weight, height]
@@ -119,15 +358,15 @@ export function DashboardClient({
 
   const bmiCategory: BMICategory | null = bmi ? getBMICategory(bmi) : null;
 
-  const idealWeight =
-    height > 0 ? parseFloat((22 * Math.pow(height / 100, 2)).toFixed(1)) : null;
+  const macros = useMemo(() => (tdee ? getMacros(tdee, goal) : null), [tdee, goal]);
 
-  const weightDiff =
-    idealWeight !== null && weight > 0
-      ? parseFloat((weight - idealWeight).toFixed(1))
-      : null;
+  const bmiColors: Record<BMICategory, string> = {
+    underweight: '#60a5fa',
+    normal: '#aaff00',
+    overweight: '#fbbf24',
+    obese: '#f87171',
+  };
 
-  // Label lookup tables (static keys for next-intl type safety)
   const bmiCategoryLabels: Record<BMICategory, string> = {
     underweight: t('bmiLabel.underweight'),
     normal: t('bmiLabel.normal'),
@@ -143,31 +382,6 @@ export function DashboardClient({
     athletic_performance: t('goalLabel.athleticPerformance'),
   };
 
-  const motivationalMessages: Record<Goal, string> = {
-    lose_weight: t('hero.motivational.loseWeight'),
-    build_muscle: t('hero.motivational.buildMuscle'),
-    improve_endurance: t('hero.motivational.improveEndurance'),
-    stay_healthy: t('hero.motivational.stayHealthy'),
-    athletic_performance: t('hero.motivational.athleticPerformance'),
-  };
-
-  const recommendations: Record<Goal, string> = {
-    lose_weight: t('recommendation.loseWeight'),
-    build_muscle: t('recommendation.buildMuscle'),
-    improve_endurance: t('recommendation.improveEndurance'),
-    stay_healthy: t('recommendation.stayHealthy'),
-    athletic_performance: t('recommendation.athleticPerformance'),
-  };
-
-  // BMI colors
-  const bmiColors: Record<BMICategory, string> = {
-    underweight: '#60a5fa',
-    normal: '#aaff00',
-    overweight: '#fbbf24',
-    obese: '#f87171',
-  };
-
-  // Goal icons
   const goalIcons: Record<Goal, string> = {
     lose_weight: '🔥',
     build_muscle: '💪',
@@ -176,7 +390,22 @@ export function DashboardClient({
     athletic_performance: '🏆',
   };
 
-  // Quick actions
+  const motivationalMessages: Record<Goal, string> = {
+    lose_weight: t('hero.motivational.loseWeight'),
+    build_muscle: t('hero.motivational.buildMuscle'),
+    improve_endurance: t('hero.motivational.improveEndurance'),
+    stay_healthy: t('hero.motivational.stayHealthy'),
+    athletic_performance: t('hero.motivational.athleticPerformance'),
+  };
+
+  const activityLabels: Record<ActivityLevel, string> = {
+    sedentary: 'Sedentary',
+    lightly_active: 'Light',
+    moderately_active: 'Moderate',
+    very_active: 'Very Active',
+    athlete: 'Athlete',
+  };
+
   const quickActions = [
     { key: 'updateWeight', Icon: Scale, color: '#aaff00', path: '/weight' },
     { key: 'viewProgress', Icon: Activity, color: '#60a5fa', path: '/measurements' },
@@ -186,69 +415,47 @@ export function DashboardClient({
 
   const notSet = t('primaryStats.notSet');
 
-  // Weight diff display
-  const diffAbs = weightDiff !== null ? Math.abs(weightDiff) : null;
-  const weightDiffColor =
-    diffAbs === null
-      ? '#333333'
-      : diffAbs < 1
-      ? '#aaff00'
-      : diffAbs < 5
-      ? '#fbbf24'
-      : '#f87171';
-
-  const weightDiffLabel =
-    weightDiff === null
-      ? null
-      : Math.abs(weightDiff) < 0.1
-      ? t('progress.weightIdeal')
-      : weightDiff > 0
-      ? t('progress.weightAbove', { diff: String(Math.abs(weightDiff)) })
-      : t('progress.weightBelow', { diff: String(Math.abs(weightDiff)) });
-
   return (
-    <div className="px-5 pb-10 pt-4">
-      {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <motion.div {...fadeUp(0)} className="mb-8">
+    <div className="pb-24">
+      {/* ── 1. Welcome Hero ──────────────────────────────────────────────────── */}
+      <motion.section {...fadeUp(0)} className="mb-7 px-5 pt-5">
         <div className="mb-4 flex items-center gap-4">
-          {/* Avatar */}
-          <div className="flex h-[56px] w-[56px] shrink-0 items-center justify-center rounded-full border-2 border-[rgba(170,255,0,0.35)] bg-[rgba(170,255,0,0.1)] shadow-[0_0_20px_rgba(170,255,0,0.1)]">
-            <span className="text-[22px] font-bold text-[#aaff00]">
-              {(profile.first_name ?? '?').charAt(0).toUpperCase()}
-            </span>
+          {/* Avatar with glow */}
+          <div className="relative shrink-0">
+            <div className="absolute inset-0 rounded-full bg-[#aaff00] opacity-20 blur-lg" />
+            <div className="relative flex h-14 w-14 items-center justify-center rounded-full border-2 border-[rgba(170,255,0,0.4)] bg-[rgba(170,255,0,0.08)]">
+              <span className="text-[22px] font-black text-[#aaff00]">
+                {(profile.first_name ?? '?').charAt(0).toUpperCase()}
+              </span>
+            </div>
           </div>
 
           <div className="min-w-0">
-            {/* Date — server-computed, no hydration risk */}
-            <p className="mb-0.5 text-[12px] font-medium text-[#555555]">{dateStr}</p>
-            <h1 className="text-[20px] font-bold leading-snug text-[#f5f5f5]">
-              {greetingLabels[greetingKey]}, {profile.first_name ?? ''} 👋
+            <p className="text-[11px] font-medium text-[#444444]">{dateStr}</p>
+            <h1 className="text-[20px] font-black leading-snug text-[#f5f5f5]">
+              {greetings[greetingKey]}, {profile.first_name ?? ''} 👋
             </h1>
           </div>
         </div>
 
-        {/* Motivational banner */}
         {goal && (
-          <div className="rounded-2xl border border-[rgba(170,255,0,0.2)] bg-[rgba(170,255,0,0.05)] px-4 py-3">
-            <p className="text-[13px] font-medium leading-relaxed text-[#aaff00]/90">
-              {motivationalMessages[goal]}
-            </p>
+          <div className="rounded-2xl border border-[rgba(170,255,0,0.15)] bg-[rgba(170,255,0,0.04)] px-4 py-3">
+            <div className="flex items-start gap-2.5">
+              <span className="mt-0.5 text-[17px] leading-none">{goalIcons[goal]}</span>
+              <p className="text-[13px] font-medium leading-relaxed text-[#aaff00]/80">
+                {motivationalMessages[goal]}
+              </p>
+            </div>
           </div>
         )}
-      </motion.div>
+      </motion.section>
 
-      {/* ── Primary Stats ─────────────────────────────────────────────────── */}
-      <motion.div {...fadeUp(0.07)} className="mb-8">
-        <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#444444]">
+      {/* ── 2. Quick Stats 2×2 ───────────────────────────────────────────────── */}
+      <motion.section {...fadeUp(0.06)} className="mb-7 px-5">
+        <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#3a3a3a]">
           {t('primaryStats.title')}
         </p>
         <div className="grid grid-cols-2 gap-3">
-          <StatCard
-            label={t('primaryStats.calories')}
-            value={tdee ? String(tdee) : notSet}
-            unit={tdee ? 'kcal' : undefined}
-            accent
-          />
           <StatCard
             label={t('primaryStats.weight')}
             value={weight > 0 ? String(weight) : notSet}
@@ -265,100 +472,126 @@ export function DashboardClient({
             value={goal ? goalLabels[goal] : notSet}
             compact
           />
+          <StatCard
+            label="Activity"
+            value={activityLabels[activityLevel]}
+            compact
+          />
         </div>
-      </motion.div>
+      </motion.section>
 
-      {/* ── Progress ──────────────────────────────────────────────────────── */}
-      <motion.div {...fadeUp(0.14)} className="mb-8">
-        <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#444444]">
-          {t('progress.title')}
-        </p>
-        <div className="flex flex-col gap-3">
-          {/* Goal card */}
-          {goal && (
-            <div className="flex items-center gap-4 rounded-2xl border border-[#1e1e1e] bg-[#111111] px-5 py-4">
-              <span className="text-[32px] leading-none">{goalIcons[goal]}</span>
+      {/* ── 3. Daily Calorie Card ─────────────────────────────────────────────── */}
+      {tdee && macros && (
+        <motion.section {...fadeUp(0.12)} className="mb-7 px-5">
+          <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#3a3a3a]">
+            {t('calorie.title')}
+          </p>
+          <div className="rounded-2xl border border-[rgba(170,255,0,0.2)] bg-[rgba(170,255,0,0.04)] px-5 py-5 backdrop-blur-sm">
+            <div className="mb-5 flex items-end justify-between">
               <div>
-                <p className="mb-0.5 text-[10px] font-semibold uppercase tracking-widest text-[#555555]">
-                  {t('progress.yourGoal')}
+                <p className="text-[46px] font-black leading-none tabular-nums text-[#aaff00]">
+                  {tdee}
                 </p>
-                <p className="text-[16px] font-bold text-[#f5f5f5]">{goalLabels[goal]}</p>
+                <p className="mt-1 text-[12px] font-medium text-[#555555]">kcal / day</p>
+              </div>
+              <div className="rounded-xl border border-[rgba(170,255,0,0.2)] bg-[rgba(170,255,0,0.08)] px-3 py-1.5">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-[#aaff00]/70">
+                  Daily Target
+                </p>
               </div>
             </div>
-          )}
-
-          {/* BMI status + Weight vs ideal */}
-          <div className="grid grid-cols-2 gap-3">
-            {/* BMI */}
-            <div className="rounded-2xl border border-[#1e1e1e] bg-[#111111] px-4 py-4">
-              <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-[#555555]">
-                {t('progress.bmiStatus')}
-              </p>
-              {bmi && bmiCategory ? (
-                <>
-                  <p
-                    className="text-[22px] font-bold leading-none tabular-nums"
-                    style={{ color: bmiColors[bmiCategory] }}
-                  >
-                    {String(bmi)}
-                  </p>
-                  <p
-                    className="mt-1.5 text-[11px] font-semibold"
-                    style={{ color: bmiColors[bmiCategory] }}
-                  >
-                    {bmiCategoryLabels[bmiCategory]}
-                  </p>
-                </>
-              ) : (
-                <p className="text-[22px] font-bold leading-none text-[#333333]">—</p>
-              )}
-            </div>
-
-            {/* Weight vs ideal */}
-            <div className="rounded-2xl border border-[#1e1e1e] bg-[#111111] px-4 py-4">
-              <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-[#555555]">
-                {t('progress.idealWeight')}
-              </p>
-              {weightDiff !== null ? (
-                <>
-                  <p
-                    className="text-[22px] font-bold leading-none tabular-nums"
-                    style={{ color: weightDiffColor }}
-                  >
-                    {Math.abs(weightDiff) < 0.1
-                      ? '✓'
-                      : weightDiff > 0
-                      ? `+${String(weightDiff)}`
-                      : String(weightDiff)}{' '}
-                    {Math.abs(weightDiff) >= 0.1 && (
-                      <span className="text-[14px] font-medium">kg</span>
-                    )}
-                  </p>
-                  <p className="mt-1.5 text-[11px] text-[#555555]">{weightDiffLabel}</p>
-                </>
-              ) : (
-                <p className="text-[22px] font-bold leading-none text-[#333333]">—</p>
-              )}
+            <div className="flex gap-5">
+              <MacroBar
+                label={t('calorie.protein')}
+                grams={macros.proteinG}
+                pct={macros.proteinPct}
+                color="#818cf8"
+                delay={0.3}
+              />
+              <MacroBar
+                label={t('calorie.carbs')}
+                grams={macros.carbsG}
+                pct={macros.carbsPct}
+                color="#fb923c"
+                delay={0.4}
+              />
+              <MacroBar
+                label={t('calorie.fat')}
+                grams={macros.fatG}
+                pct={macros.fatPct}
+                color="#fbbf24"
+                delay={0.5}
+              />
             </div>
           </div>
+        </motion.section>
+      )}
 
-          {/* Recommendation */}
-          {goal && (
-            <div className="rounded-2xl border border-[#1e1e1e] bg-[#111111] px-5 py-4">
-              <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-[#555555]">
-                {t('progress.recommendation')}
-              </p>
-              <p className="text-[13px] leading-relaxed text-[#888888]">
-                {recommendations[goal]}
-              </p>
-            </div>
+      {/* ── 4. Weight Progress Chart ──────────────────────────────────────────── */}
+      <motion.section {...fadeUp(0.18)} className="mb-7 px-5">
+        <div className="mb-3 flex items-center justify-between">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-[#3a3a3a]">
+            {t('chart.title')}
+          </p>
+          {weightLogs.length > 0 && (
+            <button
+              onClick={() => router.push('/weight')}
+              className="text-[11px] font-semibold text-[#aaff00]/60"
+            >
+              View all →
+            </button>
           )}
         </div>
-      </motion.div>
+        <div className="rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-4 py-4 backdrop-blur-sm">
+          <WeightSparkline
+            data={weightLogs}
+            noDataText={t('chart.noData')}
+            logFirstText={t('chart.logFirst')}
+            onLogWeight={() => router.push('/weight')}
+          />
+        </div>
+      </motion.section>
 
-      {/* ── Quick Actions ──────────────────────────────────────────────────── */}
-      <motion.div {...fadeUp(0.21)}>
-        <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#444444]">
+      {/* ── 5. Daily Targets ──────────────────────────────────────────────────── */}
+      <motion.section {...fadeUp(0.24)} className="mb-7 px-5">
+        <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#3a3a3a]">
+          {t('dailyGoals.title')}
+        </p>
+        <div className="grid grid-cols-4 gap-2.5">
+          <DailyGoalCard
+            icon={Droplets}
+            label={t('dailyGoals.water')}
+            target={t('dailyGoals.waterTarget')}
+            color="#60a5fa"
+            delay={0.25}
+          />
+          <DailyGoalCard
+            icon={Flame}
+            label="Kcal"
+            target={tdee ? `${tdee}` : '—'}
+            color="#aaff00"
+            delay={0.30}
+          />
+          <DailyGoalCard
+            icon={Dumbbell}
+            label={t('dailyGoals.workout')}
+            target={t('dailyGoals.workoutTarget')}
+            color="#c084fc"
+            delay={0.35}
+          />
+          <DailyGoalCard
+            icon={BedDouble}
+            label={t('dailyGoals.sleep')}
+            target={t('dailyGoals.sleepTarget')}
+            color="#f472b6"
+            delay={0.40}
+          />
+        </div>
+      </motion.section>
+
+      {/* ── 6. Quick Actions ──────────────────────────────────────────────────── */}
+      <motion.section {...fadeUp(0.30)} className="px-5">
+        <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#3a3a3a]">
           {t('actions.title')}
         </p>
         <div className="grid grid-cols-2 gap-3">
@@ -367,7 +600,7 @@ export function DashboardClient({
               key={key}
               whileTap={{ scale: 0.96 }}
               onClick={() => router.push(path)}
-              className="flex items-center gap-3 rounded-2xl border border-[#1e1e1e] bg-[#111111] px-4 py-4 text-left transition-colors hover:border-[#2a2a2a] hover:bg-[#161616]"
+              className="flex items-center gap-3 rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-4 py-4 text-left backdrop-blur-sm transition-colors hover:border-[rgba(255,255,255,0.1)] hover:bg-[rgba(255,255,255,0.05)]"
             >
               <div
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
@@ -381,7 +614,7 @@ export function DashboardClient({
             </motion.button>
           ))}
         </div>
-      </motion.div>
+      </motion.section>
     </div>
   );
 }

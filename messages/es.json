@@ -248,6 +248,26 @@
       "viewProgress": "Progreso",
       "startWorkout": "Entrenamiento",
       "nutrition": "Nutrición"
+    },
+    "calorie": {
+      "title": "Calorías diarias",
+      "protein": "Proteínas",
+      "carbs": "Carbohidratos",
+      "fat": "Grasas"
+    },
+    "chart": {
+      "title": "Tendencia de peso",
+      "noData": "Sin datos de peso aún",
+      "logFirst": "Registra tu primer peso para ver la tendencia"
+    },
+    "dailyGoals": {
+      "title": "Objetivos diarios",
+      "water": "Agua",
+      "waterTarget": "8 vasos",
+      "workout": "Entrenamiento",
+      "workoutTarget": "30 min",
+      "sleep": "Sueño",
+      "sleepTarget": "8 hrs"
     }
   },
   "weight": {

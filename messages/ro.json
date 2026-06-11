@@ -248,6 +248,26 @@
       "viewProgress": "Progres",
       "startWorkout": "Antrenament",
       "nutrition": "Nutriție"
+    },
+    "calorie": {
+      "title": "Calorii zilnice",
+      "protein": "Proteine",
+      "carbs": "Carbohidrați",
+      "fat": "Grăsimi"
+    },
+    "chart": {
+      "title": "Trend greutate",
+      "noData": "Nicio dată despre greutate",
+      "logFirst": "Înregistrează prima greutate pentru a vedea trendul"
+    },
+    "dailyGoals": {
+      "title": "Obiective zilnice",
+      "water": "Apă",
+      "waterTarget": "8 pahare",
+      "workout": "Antrenament",
+      "workoutTarget": "30 min",
+      "sleep": "Somn",
+      "sleepTarget": "8 ore"
     }
   },
   "weight": {

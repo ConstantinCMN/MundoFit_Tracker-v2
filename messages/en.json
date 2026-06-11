@@ -248,6 +248,26 @@
       "viewProgress": "Progress",
       "startWorkout": "Workout",
       "nutrition": "Nutrition"
+    },
+    "calorie": {
+      "title": "Daily Calories",
+      "protein": "Protein",
+      "carbs": "Carbs",
+      "fat": "Fat"
+    },
+    "chart": {
+      "title": "Weight Trend",
+      "noData": "No weight data yet",
+      "logFirst": "Log your first weight to see the trend"
+    },
+    "dailyGoals": {
+      "title": "Daily Targets",
+      "water": "Water",
+      "waterTarget": "8 glasses",
+      "workout": "Workout",
+      "workoutTarget": "30 min",
+      "sleep": "Sleep",
+      "sleepTarget": "8 hrs"
     }
   },
   "weight": {
