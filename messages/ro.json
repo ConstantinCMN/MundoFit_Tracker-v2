@@ -395,6 +395,29 @@
       "min": "min",
       "kg": "kg",
       "sets": "seturi"
+    },
+    "muscles": {
+      "chest": "Piept",
+      "shoulders": "Umeri",
+      "biceps": "Biceps",
+      "triceps": "Triceps",
+      "forearms": "Antebrațe",
+      "abs": "Abdomen",
+      "quads": "Cvadricepși",
+      "calves": "Gambe",
+      "traps": "Trapez",
+      "lats": "Dorsali",
+      "lower_back": "Lombari",
+      "glutes": "Fesieri",
+      "hamstrings": "Ischiogambieri"
+    },
+    "muscleMap": {
+      "selectMuscles": "Selectează grupele musculare",
+      "tapHint": "Apasă pentru a selecta mușchi",
+      "generate": "Generează antrenament",
+      "clearAll": "Șterge tot",
+      "noneSelected": "Niciun mușchi selectat",
+      "comingSoon": "Generarea antrenamentului în curând"
     }
   },
   "profile": {

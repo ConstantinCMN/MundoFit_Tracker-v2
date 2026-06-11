@@ -395,6 +395,29 @@
       "min": "min",
       "kg": "kg",
       "sets": "series"
+    },
+    "muscles": {
+      "chest": "Pecho",
+      "shoulders": "Hombros",
+      "biceps": "Bíceps",
+      "triceps": "Tríceps",
+      "forearms": "Antebrazos",
+      "abs": "Abdominales",
+      "quads": "Cuádriceps",
+      "calves": "Pantorrillas",
+      "traps": "Trapecios",
+      "lats": "Dorsales",
+      "lower_back": "Lumbar",
+      "glutes": "Glúteos",
+      "hamstrings": "Isquiotibiales"
+    },
+    "muscleMap": {
+      "selectMuscles": "Selecciona grupos musculares",
+      "tapHint": "Toca para seleccionar músculos",
+      "generate": "Generar entrenamiento",
+      "clearAll": "Borrar todo",
+      "noneSelected": "Ningún músculo seleccionado",
+      "comingSoon": "Generación de entrenamiento próximamente"
     }
   },
   "profile": {

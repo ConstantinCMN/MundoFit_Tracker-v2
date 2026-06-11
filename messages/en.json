@@ -395,6 +395,29 @@
       "min": "min",
       "kg": "kg",
       "sets": "sets"
+    },
+    "muscles": {
+      "chest": "Chest",
+      "shoulders": "Shoulders",
+      "biceps": "Biceps",
+      "triceps": "Triceps",
+      "forearms": "Forearms",
+      "abs": "Abs",
+      "quads": "Quads",
+      "calves": "Calves",
+      "traps": "Traps",
+      "lats": "Lats",
+      "lower_back": "Lower Back",
+      "glutes": "Glutes",
+      "hamstrings": "Hamstrings"
+    },
+    "muscleMap": {
+      "selectMuscles": "Select muscle groups",
+      "tapHint": "Tap to select muscles",
+      "generate": "Generate Workout",
+      "clearAll": "Clear all",
+      "noneSelected": "No muscles selected",
+      "comingSoon": "Workout generation coming soon"
     }
   },
   "profile": {
