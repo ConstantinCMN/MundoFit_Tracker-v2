@@ -10,5 +10,5 @@ export default async function WorkoutGeneratorPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <GeneratorClient />;
+  return <GeneratorClient locale={locale} />;
 }

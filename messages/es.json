@@ -418,6 +418,48 @@
       "clearAll": "Borrar todo",
       "noneSelected": "Ningún músculo seleccionado",
       "comingSoon": "Generación de entrenamiento próximamente"
+    },
+    "plan": {
+      "generating": "Generando...",
+      "workoutReady": "Entrenamiento listo",
+      "exercises": "{count} ejercicios",
+      "estimatedDuration": "~{min} min",
+      "sets": "series",
+      "reps": "reps",
+      "saveWorkout": "Guardar entrenamiento",
+      "saving": "Guardando...",
+      "regenerate": "Regenerar",
+      "errorMsg": "No se pudieron encontrar ejercicios. Inténtalo de nuevo.",
+      "viewHistory": "Ver historial"
+    },
+    "exerciseLibrary": {
+      "title": "Ejercicios",
+      "searchPlaceholder": "Buscar ejercicio...",
+      "filterAll": "Todos",
+      "filterMuscle": "Grupo muscular",
+      "filterDifficulty": "Dificultad",
+      "filterLocation": "Ubicación",
+      "noResults": "No se encontraron ejercicios",
+      "noResultsHint": "Prueba otros términos de búsqueda o filtros",
+      "exerciseCount": "{count} ejercicios",
+      "difficulty": {
+        "beginner": "Principiante",
+        "intermediate": "Intermedio",
+        "advanced": "Avanzado"
+      },
+      "location": {
+        "gym": "Gimnasio",
+        "home": "Casa",
+        "both": "En cualquier lugar"
+      },
+      "equipmentLabel": "Equipamiento",
+      "primaryMuscles": "Músculos primarios",
+      "secondaryMuscles": "Músculos secundarios",
+      "customBadge": "Personalizado",
+      "addCustom": "Nuevo ejercicio",
+      "detail": {
+        "title": "Detalles del ejercicio"
+      }
     }
   },
   "profile": {

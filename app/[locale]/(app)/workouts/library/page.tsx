@@ -1,8 +1,9 @@
 import { setRequestLocale } from 'next-intl/server';
+import { getExercises } from '@/lib/actions/exercises';
+import { ExerciseLibraryClient } from '@/components/workouts/exercise-library-client';
 
 export const dynamic = 'force-dynamic';
 
-// Sprint 9 — Exercise Library
 export default async function ExerciseLibraryPage({
   params,
 }: {
@@ -10,11 +11,8 @@ export default async function ExerciseLibraryPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return (
-    <div className="p-4">
-      <div className="rounded-xl border border-[#2a2a2a] bg-[#111111] p-4">
-        <p className="text-sm text-[#888888]">Sprint 9 — Exercise Library coming soon</p>
-      </div>
-    </div>
-  );
+
+  const exercises = await getExercises();
+
+  return <ExerciseLibraryClient exercises={exercises} locale={locale} />;
 }

@@ -418,6 +418,48 @@
       "clearAll": "Șterge tot",
       "noneSelected": "Niciun mușchi selectat",
       "comingSoon": "Generarea antrenamentului în curând"
+    },
+    "plan": {
+      "generating": "Se generează...",
+      "workoutReady": "Antrenament generat",
+      "exercises": "{count} exerciții",
+      "estimatedDuration": "~{min} min",
+      "sets": "seturi",
+      "reps": "rep",
+      "saveWorkout": "Salvează antrenamentul",
+      "saving": "Se salvează...",
+      "regenerate": "Regenerează",
+      "errorMsg": "Nu s-au putut găsi exerciții. Încearcă din nou.",
+      "viewHistory": "Vezi istoricul"
+    },
+    "exerciseLibrary": {
+      "title": "Exerciții",
+      "searchPlaceholder": "Caută exercițiu...",
+      "filterAll": "Toate",
+      "filterMuscle": "Grupă musculară",
+      "filterDifficulty": "Dificultate",
+      "filterLocation": "Locație",
+      "noResults": "Niciun exercițiu găsit",
+      "noResultsHint": "Încearcă alți termeni de căutare sau filtre diferite",
+      "exerciseCount": "{count} exerciții",
+      "difficulty": {
+        "beginner": "Începător",
+        "intermediate": "Intermediar",
+        "advanced": "Avansat"
+      },
+      "location": {
+        "gym": "Sală",
+        "home": "Acasă",
+        "both": "Oriunde"
+      },
+      "equipmentLabel": "Echipament",
+      "primaryMuscles": "Mușchi principali",
+      "secondaryMuscles": "Mușchi secundari",
+      "customBadge": "Personalizat",
+      "addCustom": "Exercițiu nou",
+      "detail": {
+        "title": "Detalii exercițiu"
+      }
     }
   },
   "profile": {
