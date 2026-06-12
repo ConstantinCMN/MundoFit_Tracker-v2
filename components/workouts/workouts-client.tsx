@@ -28,6 +28,20 @@ type CatKey =
   | 'cardio'
   | 'fullBody';
 
+// Maps each category to the primary muscle filter used in the library.
+// Multi-muscle categories use the most representative single muscle.
+// null = no filter (show all exercises).
+const CATEGORY_MUSCLE: Record<CatKey, string | null> = {
+  chest:     'chest',
+  back:      'lats',
+  shoulders: 'shoulders',
+  arms:      'biceps',
+  legs:      'quads',
+  core:      'abs',
+  cardio:    null,
+  fullBody:  null,
+};
+
 type WorkoutsClientProps = {
   recentSessions: WorkoutSession[];
   totalSessions: number;
@@ -100,14 +114,17 @@ function CategoryCard({
   label,
   icon,
   color,
+  onClick,
 }: {
   label: string;
   icon: string;
   color: string;
+  onClick: () => void;
 }) {
   return (
     <motion.button
       whileTap={{ scale: 0.97 }}
+      onClick={onClick}
       className="flex items-center gap-3 rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-4 py-4 text-left backdrop-blur-sm"
     >
       <div
@@ -124,14 +141,15 @@ function CategoryCard({
 
 // ── Workout template card ─────────────────────────────────────────────────────
 
-function WorkoutTemplateCard({ workout }: { workout: Workout }) {
+function WorkoutTemplateCard({ workout, onClick }: { workout: Workout; onClick: () => void }) {
   const locationEmoji =
     workout.location === 'gym' ? '🏋️' : workout.location === 'home' ? '🏠' : '⚡';
 
   return (
-    <motion.div
+    <motion.button
       whileTap={{ scale: 0.98 }}
-      className="flex items-center gap-4 rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-4 py-4 backdrop-blur-sm"
+      onClick={onClick}
+      className="flex w-full items-center gap-4 rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-4 py-4 text-left backdrop-blur-sm"
     >
       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[rgba(170,255,0,0.2)] bg-[rgba(170,255,0,0.07)] text-[18px]">
         {locationEmoji}
@@ -147,7 +165,7 @@ function WorkoutTemplateCard({ workout }: { workout: Workout }) {
         )}
       </div>
       <ChevronRight size={16} color="#555555" />
-    </motion.div>
+    </motion.button>
   );
 }
 
@@ -281,6 +299,7 @@ export function WorkoutsClient({
           </h2>
           <motion.button
             whileTap={{ scale: 0.97 }}
+            onClick={() => router.push('/workouts/generator')}
             className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#aaff00] py-3.5 text-[15px] font-black text-[#0a0a0a]"
           >
             <Dumbbell size={18} />
@@ -314,6 +333,10 @@ export function WorkoutsClient({
                 label={t(`categories.${key}`)}
                 icon={icon}
                 color={color}
+                onClick={() => {
+                  const m = CATEGORY_MUSCLE[key];
+                  router.push(m ? `/workouts/library?muscle=${m}` : '/workouts/library');
+                }}
               />
             </motion.div>
           ))}
@@ -327,7 +350,10 @@ export function WorkoutsClient({
             {t('myWorkouts')}
           </p>
           {workouts.length > 0 && (
-            <button className="flex items-center gap-1 text-[11px] font-semibold text-[#aaff00]/70">
+            <button
+              onClick={() => router.push('/workouts/generator')}
+              className="flex items-center gap-1 text-[11px] font-semibold text-[#aaff00]/70"
+            >
               <Plus size={11} />
               {t('create')}
             </button>
@@ -338,12 +364,16 @@ export function WorkoutsClient({
             label={t('noWorkouts')}
             hint={t('createFirst')}
             cta={t('create')}
-            onCta={() => {}}
+            onCta={() => router.push('/workouts/generator')}
           />
         ) : (
           <div className="space-y-3">
             {workouts.slice(0, 5).map((w) => (
-              <WorkoutTemplateCard key={w.id} workout={w} />
+              <WorkoutTemplateCard
+                key={w.id}
+                workout={w}
+                onClick={() => router.push('/workouts/generator')}
+              />
             ))}
           </div>
         )}

@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils/cn';
 type Props = {
   exercises: Exercise[];
   locale: string;
+  initialMuscle?: string | null;
 };
 
 function fadeUp(delay = 0) {
@@ -35,12 +36,12 @@ const DIFFICULTY_DOT: Record<string, string> = {
   advanced:     'bg-red-400',
 };
 
-export function ExerciseLibraryClient({ exercises, locale }: Props) {
+export function ExerciseLibraryClient({ exercises, locale, initialMuscle = null }: Props) {
   const t  = useTranslations('workouts.exerciseLibrary');
   const tm = useTranslations('workouts.muscles');
 
   const [search,     setSearch]     = useState('');
-  const [muscle,     setMuscle]     = useState<string | null>(null);
+  const [muscle,     setMuscle]     = useState<string | null>(initialMuscle);
   const [difficulty, setDifficulty] = useState<string | null>(null);
   const [location,   setLocation]   = useState<string | null>(null);
   const [selected,   setSelected]   = useState<Exercise | null>(null);
