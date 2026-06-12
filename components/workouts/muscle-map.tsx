@@ -146,8 +146,8 @@ export function MuscleMap({ view, selected, onToggle }: MuscleMapProps) {
   return (
     <div
       ref={wrapRef}
-      className="w-full select-none flex items-center justify-center"
-      style={{ height: '390px' }}
+      className="w-full select-none"
+      style={{ aspectRatio: '1 / 2' }}
     />
   );
 }

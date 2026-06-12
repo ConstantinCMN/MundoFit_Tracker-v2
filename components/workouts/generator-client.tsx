@@ -315,8 +315,8 @@ export function GeneratorClient({ locale }: { locale: string }) {
       </motion.div>
 
       {/* Body map — anatomy untouched */}
-      <motion.div {...fadeUp(0.1)} className="mt-6 flex justify-center px-5">
-        <div className="w-full max-w-[220px]">
+      <motion.div {...fadeUp(0.1)} className="mt-3 flex justify-center px-5">
+        <div className="w-full max-w-[345px]">
           <AnimatePresence mode="wait">
             <motion.div
               key={view}
