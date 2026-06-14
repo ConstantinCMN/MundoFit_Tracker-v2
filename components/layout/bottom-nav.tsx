@@ -35,6 +35,7 @@ export function BottomNav() {
             <Link
               key={key}
               href={fullHref}
+              prefetch={false}
               className={cn(
                 'flex min-w-[60px] flex-col items-center gap-0.5 rounded-xl px-3 py-2',
                 'transition-colors duration-150',

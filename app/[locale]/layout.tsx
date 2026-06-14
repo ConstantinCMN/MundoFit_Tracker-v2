@@ -1,8 +1,10 @@
 import type { ReactNode } from 'react';
+import { notFound } from 'next/navigation';
 import { Inter } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale } from 'next-intl/server';
 import { routing } from '@/lib/i18n/routing';
+import type { Locale } from '@/lib/i18n/routing';
 import '../globals.css';
 
 const inter = Inter({
@@ -23,6 +25,8 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+
+  if (!routing.locales.includes(locale as Locale)) notFound();
 
   setRequestLocale(locale);
   const messages = await getMessages();
