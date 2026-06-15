@@ -46,6 +46,15 @@ const DIFFICULTY_PRIORITY: Record<string, number> = {
   advanced: 2,
 };
 
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 export async function getExercisesForMuscles(
   muscleIds: string[]
 ): Promise<{ data: GeneratedWorkoutPlan | null; error: string | null }> {
@@ -53,20 +62,14 @@ export async function getExercisesForMuscles(
 
   const supabase = await createClient();
 
-  const { data: all, error } = await supabase
+  // Uses idx_exercises_muscle_groups GIN index via the && (overlap) operator
+  const { data: relevant, error } = await supabase
     .from('exercises')
     .select('*')
-    .order('name_en');
+    .overlaps('muscle_groups', muscleIds);
 
   if (error) return { data: null, error: error.message };
-  if (!all?.length) return { data: null, error: 'No exercises found' };
-
-  // Filter to exercises that target any of the selected muscles
-  const relevant = all.filter(ex =>
-    muscleIds.some(m => ex.muscle_groups.includes(m))
-  );
-
-  if (!relevant.length) return { data: null, error: 'No exercises found for selected muscles' };
+  if (!relevant?.length) return { data: null, error: 'No exercises found for selected muscles' };
 
   // Per-muscle limit: 3 if 1-2 muscles, 2 otherwise; hard cap 8 total
   const perMuscle = muscleIds.length <= 2 ? 3 : 2;
@@ -74,13 +77,13 @@ export async function getExercisesForMuscles(
   const selected: Exercise[] = [];
 
   for (const muscle of muscleIds) {
-    const candidates = relevant
-      .filter(ex => ex.muscle_groups.includes(muscle) && !usedIds.has(ex.id))
-      .sort(
-        (a, b) =>
-          (DIFFICULTY_PRIORITY[a.difficulty ?? 'beginner'] ?? 1) -
-          (DIFFICULTY_PRIORITY[b.difficulty ?? 'beginner'] ?? 1)
-      );
+    const candidates = shuffle(
+      relevant.filter(ex => ex.muscle_groups.includes(muscle) && !usedIds.has(ex.id))
+    ).sort(
+      (a, b) =>
+        (DIFFICULTY_PRIORITY[a.difficulty ?? 'beginner'] ?? 1) -
+        (DIFFICULTY_PRIORITY[b.difficulty ?? 'beginner'] ?? 1)
+    );
 
     let taken = 0;
     for (const ex of candidates) {
