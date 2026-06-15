@@ -11,6 +11,7 @@ import {
   Plus,
   Activity,
   TrendingUp,
+  Scan,
 } from 'lucide-react';
 import { useRouter } from '@/lib/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
@@ -427,10 +428,10 @@ export function WorkoutsClient({
             onClick={() => router.push('/workouts/library')}
           />
           <QuickLinkCard
-            icon={Activity}
-            label={t('recommended')}
+            icon={Scan}
+            label={t('anatomyMap.navLabel')}
             color="#f472b6"
-            onClick={() => {}}
+            onClick={() => router.push('/workouts/anatomy')}
           />
         </div>
       </motion.section>

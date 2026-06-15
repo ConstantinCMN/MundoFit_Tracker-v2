@@ -419,6 +419,11 @@
       "noneSelected": "Niciun mușchi selectat",
       "comingSoon": "Generarea antrenamentului în curând"
     },
+    "anatomyMap": {
+      "title": "Hartă Musculară",
+      "subtitle": "Selectează mușchii pe care vrei să îi antrenezi",
+      "navLabel": "Hartă Musculară"
+    },
     "plan": {
       "generating": "Se generează...",
       "workoutReady": "Antrenament generat",

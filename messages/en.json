@@ -419,6 +419,11 @@
       "noneSelected": "No muscles selected",
       "comingSoon": "Workout generation coming soon"
     },
+    "anatomyMap": {
+      "title": "Muscle Map",
+      "subtitle": "Select the muscles you want to train",
+      "navLabel": "Muscle Map"
+    },
     "plan": {
       "generating": "Generating...",
       "workoutReady": "Workout ready",

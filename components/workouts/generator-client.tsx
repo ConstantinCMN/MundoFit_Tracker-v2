@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl';
 import { X, Zap, RotateCcw, ChevronLeft, Clock, Dumbbell } from 'lucide-react';
 import { useRouter } from '@/lib/i18n/navigation';
 import { MuscleMap, type MuscleId, type BodyView } from './muscle-map';
+import { useMuscleSelection } from './muscle-selection-context';
 import {
   getExercisesForMuscles,
   saveGeneratedWorkout,
@@ -132,21 +133,12 @@ export function GeneratorClient({ locale }: { locale: string }) {
   const tm = useTranslations('workouts.muscles');
   const router = useRouter();
 
-  const [view,     setView]     = useState<BodyView>('front');
-  const [selected, setSelected] = useState<Set<MuscleId>>(new Set());
-  const [phase,    setPhase]    = useState<Phase>('select');
-  const [plan,     setPlan]     = useState<GeneratedWorkoutPlan | null>(null);
-  const [error,    setError]    = useState<string | null>(null);
+  const [view,  setView]  = useState<BodyView>('front');
+  const [phase, setPhase] = useState<Phase>('select');
+  const [plan,  setPlan]  = useState<GeneratedWorkoutPlan | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  function toggleMuscle(id: MuscleId) {
-    setSelected(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id); else next.add(id);
-      return next;
-    });
-  }
-
-  function clearAll() { setSelected(new Set()); }
+  const { selected, toggleMuscle, clearAll } = useMuscleSelection();
 
   const muscleLabel = (id: string) => {
     try { return tm(id as Parameters<typeof tm>[0]); } catch { return id; }
