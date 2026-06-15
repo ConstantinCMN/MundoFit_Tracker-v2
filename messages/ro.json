@@ -424,6 +424,11 @@
       "subtitle": "Selectează mușchii pe care vrei să îi antrenezi",
       "navLabel": "Hartă Musculară"
     },
+    "delete": {
+      "confirm": "Ștergi antrenamentul?",
+      "success": "Antrenament șters",
+      "error": "Nu s-a putut șterge antrenamentul"
+    },
     "plan": {
       "generating": "Se generează...",
       "workoutReady": "Antrenament generat",

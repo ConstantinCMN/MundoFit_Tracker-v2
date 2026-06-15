@@ -424,6 +424,11 @@
       "subtitle": "Selecciona los músculos que quieres entrenar",
       "navLabel": "Mapa Muscular"
     },
+    "delete": {
+      "confirm": "¿Eliminar entrenamiento?",
+      "success": "Entrenamiento eliminado",
+      "error": "No se pudo eliminar el entrenamiento"
+    },
     "plan": {
       "generating": "Generando...",
       "workoutReady": "Entrenamiento listo",

@@ -424,6 +424,11 @@
       "subtitle": "Select the muscles you want to train",
       "navLabel": "Muscle Map"
     },
+    "delete": {
+      "confirm": "Delete workout?",
+      "success": "Workout deleted",
+      "error": "Failed to delete workout"
+    },
     "plan": {
       "generating": "Generating...",
       "workoutReady": "Workout ready",

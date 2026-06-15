@@ -183,3 +183,39 @@ export async function saveGeneratedWorkout(
 
   return { error: null };
 }
+
+export async function deleteWorkoutSession(
+  sessionId: string
+): Promise<{ error: string | null }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: 'Not authenticated' };
+
+  const { error } = await supabase
+    .from('workout_sessions')
+    .delete()
+    .eq('id', sessionId)
+    .eq('user_id', user.id);
+
+  return { error: error?.message ?? null };
+}
+
+export async function deleteWorkout(
+  workoutId: string
+): Promise<{ error: string | null }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: 'Not authenticated' };
+
+  const { error } = await supabase
+    .from('workouts')
+    .delete()
+    .eq('id', workoutId)
+    .eq('user_id', user.id);
+
+  return { error: error?.message ?? null };
+}
