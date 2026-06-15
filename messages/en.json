@@ -269,6 +269,10 @@
       "workoutTarget": "30 min",
       "sleep": "Sleep",
       "sleepTarget": "8 hrs"
+    },
+    "recentSessions": {
+      "title": "Recent Sessions",
+      "noSessions": "No recent workouts"
     }
   },
   "weight": {

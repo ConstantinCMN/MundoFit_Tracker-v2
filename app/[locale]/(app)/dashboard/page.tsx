@@ -2,7 +2,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { DashboardClient } from '@/components/dashboard/dashboard-client';
-import type { Profile } from '@/types';
+import type { Profile, WorkoutSession } from '@/types';
 
 export const dynamic = 'force-dynamic';
 
@@ -29,14 +29,39 @@ export default async function DashboardPage({
 
   if (!profile) redirect(`/${locale}/onboarding`);
 
-  const { data: rawWeightLogs } = await supabase
-    .from('weight_logs')
-    .select('weight_kg, logged_at')
-    .eq('user_id', user.id)
-    .order('logged_at', { ascending: false })
-    .limit(7);
+  const weekStart = new Date();
+  weekStart.setHours(0, 0, 0, 0);
+  weekStart.setDate(weekStart.getDate() - weekStart.getDay());
 
-  // Reverse to chronological order (oldest → newest) for the sparkline
+  const [
+    { data: rawWeightLogs },
+    { data: recentSessionsData },
+    { count: totalSessionCount },
+    { count: weekSessionCount },
+  ] = await Promise.all([
+    supabase
+      .from('weight_logs')
+      .select('weight_kg, logged_at')
+      .eq('user_id', user.id)
+      .order('logged_at', { ascending: false })
+      .limit(7),
+    supabase
+      .from('workout_sessions')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('started_at', { ascending: false })
+      .limit(5),
+    supabase
+      .from('workout_sessions')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', user.id),
+    supabase
+      .from('workout_sessions')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', user.id)
+      .gte('started_at', weekStart.toISOString()),
+  ]);
+
   const weightLogs = [...(rawWeightLogs ?? [])].reverse() as Array<{
     weight_kg: number;
     logged_at: string;
@@ -56,6 +81,9 @@ export default async function DashboardPage({
       hour={hour}
       dateStr={dateStr}
       weightLogs={weightLogs}
+      recentSessions={(recentSessionsData ?? []) as WorkoutSession[]}
+      totalSessions={totalSessionCount ?? 0}
+      weekSessions={weekSessionCount ?? 0}
     />
   );
 }

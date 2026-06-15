@@ -269,6 +269,10 @@
       "workoutTarget": "30 min",
       "sleep": "Somn",
       "sleepTarget": "8 ore"
+    },
+    "recentSessions": {
+      "title": "Sesiuni recente",
+      "noSessions": "Niciun antrenament recent"
     }
   },
   "weight": {

@@ -1,7 +1,7 @@
 'use client';
 
-import { useMemo } from 'react';
-import { motion } from 'framer-motion';
+import { useMemo, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import {
   Scale,
@@ -10,6 +10,9 @@ import {
   Flame,
   Droplets,
   BedDouble,
+  MoreVertical,
+  Clock,
+  TrendingUp,
 } from 'lucide-react';
 import { useRouter } from '@/lib/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
@@ -19,7 +22,11 @@ import {
   getBMICategory,
   type BMICategory,
 } from '@/lib/utils/fitness';
-import type { Profile, Goal, ActivityLevel, Gender } from '@/types';
+import { deleteWorkoutSession } from '@/lib/actions/workouts';
+import { Toast } from '@/components/ui/toast';
+import type { Profile, Goal, ActivityLevel, Gender, WorkoutSession } from '@/types';
+
+type ToastState = { message: string; variant: 'success' | 'error'; id: number } | null;
 
 type WeightEntry = { weight_kg: number; logged_at: string };
 
@@ -311,6 +318,136 @@ function DailyGoalCard({
   );
 }
 
+// ── Session stat chip ─────────────────────────────────────────────────────────
+
+function SessionStatChip({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex flex-col items-center rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-3 py-3 backdrop-blur-sm">
+      <span className="text-[20px] font-black tabular-nums leading-tight text-[#f5f5f5]">
+        {value}
+      </span>
+      <span className="mt-0.5 text-center text-[10px] font-medium text-[#555555]">{label}</span>
+    </div>
+  );
+}
+
+// ── Dashboard session card ─────────────────────────────────────────────────────
+
+function DashboardSessionCard({
+  session,
+  isActive,
+  isDeleting,
+  onToggleMenu,
+  onCancel,
+  onDelete,
+}: {
+  session: WorkoutSession;
+  isActive: boolean;
+  isDeleting: boolean;
+  onToggleMenu: () => void;
+  onCancel: () => void;
+  onDelete: () => void;
+}) {
+  const tw = useTranslations('workouts');
+  const tc = useTranslations('common');
+
+  const durationMin = session.duration_sec ? Math.round(session.duration_sec / 60) : null;
+  const date = new Date(session.started_at);
+  const dateStr = date.toLocaleDateString(undefined, {
+    weekday: 'short',
+    month: 'short',
+    day: 'numeric',
+  });
+  const timeStr = date.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+
+  return (
+    <div className="overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] backdrop-blur-sm">
+      <div className="p-4">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-[14px] font-bold text-[#f5f5f5]">{session.name}</p>
+            <p className="mt-0.5 text-[11px] text-[#555555]">
+              {dateStr} · {timeStr}
+            </p>
+          </div>
+          <div className="flex shrink-0 items-center gap-2">
+            <div className="rounded-lg border border-[rgba(170,255,0,0.2)] bg-[rgba(170,255,0,0.08)] px-2.5 py-1">
+              <p className="text-[10px] font-bold text-[#aaff00]">Done</p>
+            </div>
+            <button
+              type="button"
+              onClick={onToggleMenu}
+              disabled={isDeleting}
+              aria-label="More options"
+              className="flex h-7 w-7 items-center justify-center rounded-lg text-[#555555] transition-colors hover:bg-[rgba(255,255,255,0.06)] hover:text-[#888888] disabled:opacity-40"
+            >
+              <MoreVertical size={15} />
+            </button>
+          </div>
+        </div>
+
+        {(durationMin != null || (session.total_volume_kg ?? 0) > 0) && (
+          <div className="mt-3 flex items-center gap-4">
+            {durationMin != null && (
+              <div className="flex items-center gap-1.5">
+                <Clock size={12} color="#555555" />
+                <span className="text-[12px] text-[#666666]">{durationMin} min</span>
+              </div>
+            )}
+            {(session.total_volume_kg ?? 0) > 0 && (
+              <div className="flex items-center gap-1.5">
+                <TrendingUp size={12} color="#555555" />
+                <span className="text-[12px] text-[#666666]">
+                  {Math.round(session.total_volume_kg!)} kg
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      <AnimatePresence>
+        {isActive && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            className="overflow-hidden border-t border-[rgba(255,255,255,0.06)]"
+          >
+            <div className="flex items-center justify-between gap-3 px-4 py-3">
+              <span className="text-[13px] font-semibold text-[#aaaaaa]">
+                {tw('delete.confirm')}
+              </span>
+              <div className="flex shrink-0 items-center gap-2">
+                <button
+                  type="button"
+                  onClick={onCancel}
+                  disabled={isDeleting}
+                  className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-3.5 py-2 text-[12px] font-semibold text-[#666666] disabled:opacity-40"
+                >
+                  {tc('cancel')}
+                </button>
+                <button
+                  type="button"
+                  onClick={onDelete}
+                  disabled={isDeleting}
+                  className="flex items-center gap-1.5 rounded-xl border border-red-500/20 bg-red-500/15 px-3.5 py-2 text-[12px] font-bold text-red-400 disabled:opacity-40"
+                >
+                  {isDeleting && (
+                    <div className="h-3 w-3 animate-spin rounded-full border-2 border-red-400 border-t-transparent" />
+                  )}
+                  {tc('delete')}
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
 // ── Main component ────────────────────────────────────────────────────────────
 
 export function DashboardClient({
@@ -318,14 +455,68 @@ export function DashboardClient({
   hour,
   dateStr,
   weightLogs,
+  recentSessions: initialSessions,
+  totalSessions: initialTotal,
+  weekSessions: initialWeek,
 }: {
   profile: Profile;
   hour: number;
   dateStr: string;
   weightLogs: WeightEntry[];
+  recentSessions: WorkoutSession[];
+  totalSessions: number;
+  weekSessions: number;
 }) {
   const t = useTranslations('dashboard');
+  const tw = useTranslations('workouts');
   const router = useRouter();
+
+  const [localSessions, setLocalSessions] = useState(initialSessions);
+  const [localTotal, setLocalTotal] = useState(initialTotal);
+  const [localWeek, setLocalWeek] = useState(initialWeek);
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [toast, setToast] = useState<ToastState>(null);
+
+  const weekStart = useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() - d.getDay());
+    return d;
+  }, []);
+
+  const avgDurationMin = useMemo(() => {
+    if (!localSessions.length) return 0;
+    const total = localSessions.reduce((s, sess) => s + (sess.duration_sec ?? 0), 0);
+    return Math.round(total / localSessions.length / 60);
+  }, [localSessions]);
+
+  async function handleDeleteSession(session: WorkoutSession) {
+    setDeletingId(session.id);
+
+    const prevSessions = localSessions;
+    const prevTotal = localTotal;
+    const prevWeek = localWeek;
+    const wasThisWeek = new Date(session.started_at) >= weekStart;
+
+    setLocalSessions(localSessions.filter(s => s.id !== session.id));
+    setLocalTotal(prevTotal - 1);
+    if (wasThisWeek) setLocalWeek(prevWeek - 1);
+
+    const { error } = await deleteWorkoutSession(session.id);
+
+    if (error) {
+      setLocalSessions(prevSessions);
+      setLocalTotal(prevTotal);
+      setLocalWeek(prevWeek);
+      setToast({ message: tw('delete.error'), variant: 'error', id: Date.now() });
+    } else {
+      setToast({ message: tw('delete.success'), variant: 'success', id: Date.now() });
+    }
+
+    setDeletingId(null);
+    setActiveId(null);
+  }
 
   const greetingKey: 'morning' | 'afternoon' | 'evening' =
     hour < 12 ? 'morning' : hour < 18 ? 'afternoon' : 'evening';
@@ -589,8 +780,75 @@ export function DashboardClient({
         </div>
       </motion.section>
 
-      {/* ── 6. Quick Actions ──────────────────────────────────────────────────── */}
-      <motion.section {...fadeUp(0.30)} className="px-5">
+      {/* ── 6. Recent Sessions ───────────────────────────────────────────────── */}
+      <motion.section {...fadeUp(0.30)} className="mb-7 px-5">
+        <div className="mb-3 flex items-center justify-between">
+          <p className="text-[10px] font-semibold uppercase tracking-widest text-[#3a3a3a]">
+            {t('recentSessions.title')}
+          </p>
+          {localTotal > 0 && (
+            <button
+              onClick={() => router.push('/workouts/history')}
+              className="text-[11px] font-semibold text-[#aaff00]/60"
+            >
+              View all →
+            </button>
+          )}
+        </div>
+
+        <div className="mb-4 grid grid-cols-3 gap-2.5">
+          <SessionStatChip label={tw('totalSessions')} value={String(localTotal)} />
+          <SessionStatChip label={tw('thisWeek')} value={String(localWeek)} />
+          <SessionStatChip
+            label="Avg"
+            value={avgDurationMin > 0 ? `${avgDurationMin}m` : '—'}
+          />
+        </div>
+
+        {localSessions.length === 0 ? (
+          <div className="flex flex-col items-center gap-3 rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-5 py-8 backdrop-blur-sm">
+            <p className="text-[13px] font-semibold text-[#444444]">
+              {t('recentSessions.noSessions')}
+            </p>
+            <motion.button
+              whileTap={{ scale: 0.96 }}
+              onClick={() => router.push('/workouts')}
+              className="rounded-xl border border-[rgba(170,255,0,0.25)] bg-[rgba(170,255,0,0.06)] px-5 py-2.5 text-[12px] font-bold text-[#aaff00]"
+            >
+              Start a workout
+            </motion.button>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <AnimatePresence mode="popLayout">
+              {localSessions.map(session => (
+                <motion.div
+                  key={session.id}
+                  layout
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, x: -20, scale: 0.98 }}
+                  transition={{ duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] }}
+                >
+                  <DashboardSessionCard
+                    session={session}
+                    isActive={activeId === session.id}
+                    isDeleting={deletingId === session.id}
+                    onToggleMenu={() =>
+                      setActiveId(prev => (prev === session.id ? null : session.id))
+                    }
+                    onCancel={() => setActiveId(null)}
+                    onDelete={() => handleDeleteSession(session)}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+        )}
+      </motion.section>
+
+      {/* ── 7. Quick Actions ──────────────────────────────────────────────────── */}
+      <motion.section {...fadeUp(0.36)} className="px-5">
         <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#3a3a3a]">
           {t('actions.title')}
         </p>
@@ -615,6 +873,17 @@ export function DashboardClient({
           ))}
         </div>
       </motion.section>
+
+      <AnimatePresence>
+        {toast && (
+          <Toast
+            key={toast.id}
+            message={toast.message}
+            variant={toast.variant}
+            onDismiss={() => setToast(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }
