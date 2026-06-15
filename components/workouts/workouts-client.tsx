@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import {
@@ -17,7 +17,7 @@ import {
 import { useRouter } from '@/lib/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
 import type { Workout, WorkoutSession } from '@/types';
-import { deleteWorkout } from '@/lib/actions/workouts';
+import { deleteWorkout, deleteWorkoutSession } from '@/lib/actions/workouts';
 import { Toast } from '@/components/ui/toast';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -275,7 +275,24 @@ function EmptyWorkoutsState({
 
 // ── Recent session mini-card ──────────────────────────────────────────────────
 
-function RecentSessionCard({ session }: { session: WorkoutSession }) {
+function RecentSessionCard({
+  session,
+  isActive,
+  isDeleting,
+  onToggleMenu,
+  onCancel,
+  onDelete,
+}: {
+  session: WorkoutSession;
+  isActive: boolean;
+  isDeleting: boolean;
+  onToggleMenu: () => void;
+  onCancel: () => void;
+  onDelete: () => void;
+}) {
+  const t = useTranslations('workouts');
+  const tc = useTranslations('common');
+
   const durationMin = session.duration_sec
     ? Math.round(session.duration_sec / 60)
     : null;
@@ -286,17 +303,66 @@ function RecentSessionCard({ session }: { session: WorkoutSession }) {
   });
 
   return (
-    <div className="flex items-center justify-between rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-4 py-3 backdrop-blur-sm">
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-[13px] font-bold text-[#f5f5f5]">{session.name}</p>
-        <p className="mt-0.5 text-[11px] text-[#555555]">{dateStr}</p>
+    <div className="overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] backdrop-blur-sm">
+      <div className="flex items-center justify-between gap-3 px-4 py-3">
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-[13px] font-bold text-[#f5f5f5]">{session.name}</p>
+          <p className="mt-0.5 text-[11px] text-[#555555]">{dateStr}</p>
+        </div>
+        <div className="flex shrink-0 items-center gap-2">
+          {durationMin != null && (
+            <span className="text-[12px] font-semibold text-[#666666]">{durationMin}m</span>
+          )}
+          <button
+            type="button"
+            onClick={onToggleMenu}
+            disabled={isDeleting}
+            aria-label="More options"
+            className="flex h-7 w-7 items-center justify-center rounded-lg text-[#555555] transition-colors hover:bg-[rgba(255,255,255,0.06)] hover:text-[#888888] disabled:opacity-40"
+          >
+            <MoreVertical size={15} />
+          </button>
+        </div>
       </div>
-      <div className="flex items-center gap-2.5">
-        {durationMin != null && (
-          <span className="text-[12px] font-semibold text-[#666666]">{durationMin}m</span>
+
+      <AnimatePresence>
+        {isActive && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            className="overflow-hidden border-t border-[rgba(255,255,255,0.06)]"
+          >
+            <div className="flex items-center justify-between gap-3 px-4 py-3">
+              <span className="text-[13px] font-semibold text-[#aaaaaa]">
+                {t('delete.confirm')}
+              </span>
+              <div className="flex shrink-0 items-center gap-2">
+                <button
+                  type="button"
+                  onClick={onCancel}
+                  disabled={isDeleting}
+                  className="rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] px-3.5 py-2 text-[12px] font-semibold text-[#666666] disabled:opacity-40"
+                >
+                  {tc('cancel')}
+                </button>
+                <button
+                  type="button"
+                  onClick={onDelete}
+                  disabled={isDeleting}
+                  className="flex items-center gap-1.5 rounded-xl border border-red-500/20 bg-red-500/15 px-3.5 py-2 text-[12px] font-bold text-red-400 disabled:opacity-40"
+                >
+                  {isDeleting && (
+                    <div className="h-3 w-3 animate-spin rounded-full border-2 border-red-400 border-t-transparent" />
+                  )}
+                  {tc('delete')}
+                </button>
+              </div>
+            </div>
+          </motion.div>
         )}
-        <div className="h-2 w-2 rounded-full bg-[#aaff00]" />
-      </div>
+      </AnimatePresence>
     </div>
   );
 }
@@ -357,6 +423,46 @@ export function WorkoutsClient({
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [toast, setToast] = useState<ToastState>(null);
 
+  const [localSessions, setLocalSessions] = useState(recentSessions);
+  const [localTotal, setLocalTotal] = useState(totalSessions);
+  const [localWeek, setLocalWeek] = useState(weekSessions);
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+  const [deletingSessionId, setDeletingSessionId] = useState<string | null>(null);
+
+  const weekStart = useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    d.setDate(d.getDate() - d.getDay());
+    return d;
+  }, []);
+
+  async function handleDeleteSession(session: WorkoutSession) {
+    setDeletingSessionId(session.id);
+
+    const prevSessions = localSessions;
+    const prevTotal = localTotal;
+    const prevWeek = localWeek;
+    const wasThisWeek = new Date(session.started_at) >= weekStart;
+
+    setLocalSessions(localSessions.filter(s => s.id !== session.id));
+    setLocalTotal(prevTotal - 1);
+    if (wasThisWeek) setLocalWeek(prevWeek - 1);
+
+    const { error } = await deleteWorkoutSession(session.id);
+
+    if (error) {
+      setLocalSessions(prevSessions);
+      setLocalTotal(prevTotal);
+      setLocalWeek(prevWeek);
+      setToast({ message: t('delete.error'), variant: 'error', id: Date.now() });
+    } else {
+      setToast({ message: t('delete.success'), variant: 'success', id: Date.now() });
+    }
+
+    setDeletingSessionId(null);
+    setActiveSessionId(null);
+  }
+
   async function handleDeleteWorkout(id: string) {
     setDeletingId(id);
 
@@ -405,10 +511,10 @@ export function WorkoutsClient({
         <div className="grid grid-cols-3 gap-3">
           <StatChip
             label={t('totalSessions')}
-            value={String(totalSessions)}
-            accent={totalSessions > 0}
+            value={String(localTotal)}
+            accent={localTotal > 0}
           />
-          <StatChip label={t('thisWeek')} value={String(weekSessions)} />
+          <StatChip label={t('thisWeek')} value={String(localWeek)} />
           <StatChip label={t('myWorkouts')} value={String(localWorkouts.length)} />
         </div>
       </motion.section>
@@ -489,7 +595,7 @@ export function WorkoutsClient({
       </motion.section>
 
       {/* ── 5. Recent Sessions ───────────────────────────────────────────────── */}
-      {recentSessions.length > 0 && (
+      {localSessions.length > 0 && (
         <motion.section {...fadeUp(0.30)} className="mb-7 px-5">
           <div className="mb-3 flex items-center justify-between">
             <p className="text-[10px] font-semibold uppercase tracking-widest text-[#3a3a3a]">
@@ -503,9 +609,29 @@ export function WorkoutsClient({
             </button>
           </div>
           <div className="space-y-2.5">
-            {recentSessions.map(s => (
-              <RecentSessionCard key={s.id} session={s} />
-            ))}
+            <AnimatePresence mode="popLayout">
+              {localSessions.map(s => (
+                <motion.div
+                  key={s.id}
+                  layout
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, x: -20, scale: 0.98 }}
+                  transition={{ duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] }}
+                >
+                  <RecentSessionCard
+                    session={s}
+                    isActive={activeSessionId === s.id}
+                    isDeleting={deletingSessionId === s.id}
+                    onToggleMenu={() =>
+                      setActiveSessionId(prev => (prev === s.id ? null : s.id))
+                    }
+                    onCancel={() => setActiveSessionId(null)}
+                    onDelete={() => handleDeleteSession(s)}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
           </div>
         </motion.section>
       )}
