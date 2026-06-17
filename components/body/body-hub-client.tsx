@@ -38,23 +38,45 @@ function ViewTab({
   );
 }
 
+const MUSCLE_LABELS: Record<MuscleId, string> = {
+  chest:      'Piept (Pectorali)',
+  shoulders:  'Umeri (Deltoizi)',
+  biceps:     'Biceps (Biceps brahial)',
+  triceps:    'Triceps (Triceps brahial)',
+  forearms:   'Antebraț (Flexori/Extensori)',
+  abs:        'Abdomen (Rectus Abdominis)',
+  quads:      'Cvadricepsi',
+  calves:     'Gambe (Gastrocnemian)',
+  traps:      'Trapez (Trapezius)',
+  lats:       'Spate (Dorsali)',
+  lower_back: 'Lombari (Erector Spinae)',
+  glutes:     'Fesieri (Gluteus Maximus)',
+  hamstrings: 'Ischiogambieri',
+};
+
 export function BodyHubClient() {
   const t  = useTranslations('workouts');
   const tb = useTranslations('body');
   const router = useRouter();
   const [view, setView] = useState<BodyView>('front');
   const [selected, setSelected] = useState<Set<MuscleId>>(new Set());
+  const [lastSelected, setLastSelected] = useState<MuscleId | null>(null);
 
   const handleMuscleToggle = useCallback((id: MuscleId) => {
     setSelected(prev => {
       const next = new Set(prev);
-      if (next.has(id)) next.delete(id); else next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+        setLastSelected(id);
+      }
       return next;
     });
   }, []);
 
   function handleGenerate() {
-    router.push(`/workouts/generator?muscles=${Array.from(selected).join(',')}`);
+    router.push(`/workouts/generator?muscles=${Array.from(selected).join(',')}&view=${view}`);
   }
 
   const hasSelection = selected.size > 0;
@@ -147,11 +169,25 @@ export function BodyHubClient() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 8 }}
             transition={{ duration: 0.22 }}
-            className="mt-4 space-y-2 px-5"
+            className="mt-4 space-y-3 px-5"
           >
-            <p className="text-center text-[11px] text-[#555555]">
-              {tb('musclesSelected', { count: selected.size })}
-            </p>
+            {/* Educational muscle info */}
+            <div className="rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-4 py-3 space-y-3">
+              {lastSelected && (
+                <div>
+                  <p className="text-[11px] text-[#555555]">Ultimul muschi selectat</p>
+                  <p className="mt-0.5 text-[14px] font-bold text-[#f5f5f5]">
+                    {MUSCLE_LABELS[lastSelected]}
+                  </p>
+                </div>
+              )}
+              <div>
+                <p className="text-[11px] text-[#555555]">Muschi selectati</p>
+                <p className="mt-0.5 text-[12px] leading-relaxed text-[#888888]">
+                  {Array.from(selected).map(id => MUSCLE_LABELS[id]).join(' • ')}
+                </p>
+              </div>
+            </div>
             <button
               type="button"
               onClick={handleGenerate}
