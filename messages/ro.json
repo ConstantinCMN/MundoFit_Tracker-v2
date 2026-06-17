@@ -446,6 +446,22 @@
       "errorMsg": "Nu s-au putut găsi exerciții. Încearcă din nou.",
       "viewHistory": "Vezi istoricul"
     },
+    "timer": {
+      "startWorkout": "Începe antrenamentul",
+      "exerciseOf": "Exercițiu {current} din {total}",
+      "setOf": "Set {current} din {total}",
+      "doneSet": "Gata",
+      "rest": "Repaus",
+      "skip": "Sari repausul",
+      "pause": "Pauză",
+      "resume": "Continuă",
+      "upNext": "Urmează",
+      "complete": "Antrenament finalizat!",
+      "saving": "Se salvează...",
+      "saved": "Antrenament salvat!",
+      "saveError": "Eroare la salvare",
+      "retry": "Reîncearcă"
+    },
     "exerciseLibrary": {
       "title": "Exerciții",
       "searchPlaceholder": "Caută exercițiu...",

@@ -446,6 +446,22 @@
       "errorMsg": "No se pudieron encontrar ejercicios. Inténtalo de nuevo.",
       "viewHistory": "Ver historial"
     },
+    "timer": {
+      "startWorkout": "Iniciar entrenamiento",
+      "exerciseOf": "Ejercicio {current} de {total}",
+      "setOf": "Serie {current} de {total}",
+      "doneSet": "Listo",
+      "rest": "Descanso",
+      "skip": "Saltar descanso",
+      "pause": "Pausar",
+      "resume": "Reanudar",
+      "upNext": "A continuación",
+      "complete": "¡Entrenamiento completado!",
+      "saving": "Guardando...",
+      "saved": "¡Entrenamiento guardado!",
+      "saveError": "Error al guardar",
+      "retry": "Reintentar"
+    },
     "exerciseLibrary": {
       "title": "Ejercicios",
       "searchPlaceholder": "Buscar ejercicio...",

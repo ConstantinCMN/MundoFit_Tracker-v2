@@ -446,6 +446,22 @@
       "errorMsg": "Could not find exercises. Please try again.",
       "viewHistory": "View History"
     },
+    "timer": {
+      "startWorkout": "Start Workout",
+      "exerciseOf": "Exercise {current} of {total}",
+      "setOf": "Set {current} of {total}",
+      "doneSet": "Done",
+      "rest": "Rest",
+      "skip": "Skip rest",
+      "pause": "Pause",
+      "resume": "Resume",
+      "upNext": "Up next",
+      "complete": "Workout complete!",
+      "saving": "Saving...",
+      "saved": "Workout saved!",
+      "saveError": "Failed to save workout",
+      "retry": "Retry"
+    },
     "exerciseLibrary": {
       "title": "Exercises",
       "searchPlaceholder": "Search exercise...",

@@ -127,7 +127,9 @@ export async function getExercisesForMuscles(
 
 export async function saveGeneratedWorkout(
   plan: GeneratedWorkoutPlan,
-  locale: string
+  locale: string,
+  startedAt: Date,
+  durationSec: number
 ): Promise<{ error: string | null }> {
   const supabase = await createClient();
 
@@ -169,16 +171,15 @@ export async function saveGeneratedWorkout(
 
   if (weErr) return { error: weErr.message };
 
-  // 3. Session — logged immediately as a planned/completed workout
-  const now = new Date();
-  const durationSec = plan.estimated_duration_min * 60;
+  // 3. Session — created after execution with actual elapsed time
+  const endedAt = new Date(startedAt.getTime() + durationSec * 1000);
 
   const { error: sessionErr } = await supabase.from('workout_sessions').insert({
     user_id: user.id,
     workout_id: workout.id,
     name,
-    started_at: now.toISOString(),
-    ended_at: new Date(now.getTime() + durationSec * 1000).toISOString(),
+    started_at: startedAt.toISOString(),
+    ended_at: endedAt.toISOString(),
     duration_sec: durationSec,
   });
 
