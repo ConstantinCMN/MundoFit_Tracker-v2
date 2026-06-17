@@ -91,7 +91,7 @@ export function MuscleDetailClient({ muscle }: Props) {
 
       {/* Body map — this muscle highlighted, read-only */}
       <motion.div {...fadeUp(0.08)} className="mt-4 flex justify-center px-5">
-        <div className="w-full max-w-[240px]">
+        <div className="w-full max-w-[345px]">
           <MuscleMap view={view} selected={selectedSet} onToggle={() => {}} />
         </div>
       </motion.div>

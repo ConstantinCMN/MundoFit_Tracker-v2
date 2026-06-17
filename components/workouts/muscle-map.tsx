@@ -74,11 +74,11 @@ const VALID_IDS = new Set<MuscleId>([
 // ── Visual tokens ─────────────────────────────────────────────────────────────
 
 const SEL_FILL    = '#aaff00';
-const UNSEL_FILL  = 'rgba(255,255,255,0.11)';
-const SEL_STROKE  = 'rgba(170,255,0,0.55)';
-const UNSEL_STROKE= 'rgba(255,255,255,0.20)';
-const SEL_FILTER  = 'drop-shadow(0 0 7px rgba(170,255,0,0.65))';
-const TRANSITION  = 'fill 0.18s ease, stroke 0.18s ease, filter 0.18s ease';
+const UNSEL_FILL  = 'rgba(255,255,255,0.14)';
+const SEL_STROKE  = 'rgba(170,255,0,0.75)';
+const UNSEL_STROKE= 'rgba(255,255,255,0.24)';
+const SEL_FILTER  = 'drop-shadow(0 0 12px rgba(170,255,0,0.88))';
+const TRANSITION  = 'fill 0.22s ease, stroke 0.22s ease, filter 0.22s ease';
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
