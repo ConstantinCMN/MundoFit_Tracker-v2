@@ -532,8 +532,8 @@
   },
   "body": {
     "title": "Corp",
-    "subtitle": "Atinge un mușchi pentru a explora",
-    "tapHint": "Atinge pentru a explora",
+    "subtitle": "Selectează mușchii pe care vrei să îi antrenezi",
+    "tapHint": "Atinge un mușchi pentru a începe",
     "generateWorkout": "Generează antrenament",
     "browseExercises": "Exerciții",
     "viewProgress": "Progres",
@@ -558,7 +558,8 @@
       "lower_back": "Erectori spinali care stabilizează coloana lombară sub sarcină.",
       "glutes": "Cel mai puternic grup muscular al corpului. Susține extensia șoldului și forța totală.",
       "hamstrings": "Mușchii posteriori ai coapsei care controlează extensia șoldului și flexia genunchiului."
-    }
+    },
+    "musclesSelected": "{count} selectați"
   },
   "profile": {
     "title": "Profil",

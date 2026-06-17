@@ -532,8 +532,8 @@
   },
   "body": {
     "title": "Cuerpo",
-    "subtitle": "Toca un músculo para explorar",
-    "tapHint": "Toca para explorar",
+    "subtitle": "Selecciona los músculos que quieres entrenar",
+    "tapHint": "Toca un músculo para comenzar",
     "generateWorkout": "Generar entrenamiento",
     "browseExercises": "Ver ejercicios",
     "viewProgress": "Ver progreso",
@@ -558,7 +558,8 @@
       "lower_back": "Erectores espinales que estabilizan la columna lumbar bajo carga.",
       "glutes": "El grupo muscular más potente del cuerpo. Impulsa la extensión de cadera y la potencia.",
       "hamstrings": "Músculos posteriores del muslo que controlan la extensión de cadera y flexión de rodilla."
-    }
+    },
+    "musclesSelected": "{count} seleccionados"
   },
   "profile": {
     "title": "Perfil",

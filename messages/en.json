@@ -532,8 +532,8 @@
   },
   "body": {
     "title": "Body",
-    "subtitle": "Tap a muscle to explore",
-    "tapHint": "Tap to explore",
+    "subtitle": "Select muscles to target",
+    "tapHint": "Tap a muscle to begin",
     "generateWorkout": "Generate Workout",
     "browseExercises": "Browse Exercises",
     "viewProgress": "View Progress",
@@ -558,7 +558,8 @@
       "lower_back": "Spinal erectors stabilizing the lumbar spine under load.",
       "glutes": "The body's most powerful group. Drives hip extension and total power output.",
       "hamstrings": "Posterior thigh muscles controlling hip extension and knee flexion."
-    }
+    },
+    "musclesSelected": "{count} selected"
   },
   "profile": {
     "title": "Profile",

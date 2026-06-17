@@ -1,14 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
+import { Zap } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 import { MuscleMap, type MuscleId, type BodyView } from '@/components/workouts/muscle-map';
 import { useRouter } from '@/lib/i18n/navigation';
-
-// Stable empty set — avoids re-triggering MuscleMap's style effect on every render
-const EMPTY_SELECTION = new Set<MuscleId>();
 
 function ViewTab({
   active,
@@ -45,10 +43,21 @@ export function BodyHubClient() {
   const tb = useTranslations('body');
   const router = useRouter();
   const [view, setView] = useState<BodyView>('front');
+  const [selected, setSelected] = useState<Set<MuscleId>>(new Set());
 
-  function handleMuscleSelect(id: MuscleId) {
-    router.push(`/body/${id}`);
+  const handleMuscleToggle = useCallback((id: MuscleId) => {
+    setSelected(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  }, []);
+
+  function handleGenerate() {
+    router.push(`/workouts/generator?muscles=${Array.from(selected).join(',')}`);
   }
+
+  const hasSelection = selected.size > 0;
 
   return (
     <motion.div
@@ -92,7 +101,7 @@ export function BodyHubClient() {
         </div>
       </motion.div>
 
-      {/* Body map — tapping navigates to /body/[muscle] */}
+      {/* Body map — tapping toggles muscle selection */}
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
@@ -110,23 +119,50 @@ export function BodyHubClient() {
             >
               <MuscleMap
                 view={view}
-                selected={EMPTY_SELECTION}
-                onToggle={handleMuscleSelect}
+                selected={selected}
+                onToggle={handleMuscleToggle}
               />
             </motion.div>
           </AnimatePresence>
         </div>
       </motion.div>
 
-      {/* Tap hint */}
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.38, delay: 0.14 }}
-        className="mt-3 text-center text-[11px] text-[#3a3a3a]"
-      >
-        {tb('tapHint')}
-      </motion.p>
+      {/* Tap hint (empty) / Generate CTA (with selection) */}
+      <AnimatePresence mode="wait">
+        {!hasSelection ? (
+          <motion.p
+            key="hint"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.18 }}
+            className="mt-3 text-center text-[11px] text-[#3a3a3a]"
+          >
+            {tb('tapHint')}
+          </motion.p>
+        ) : (
+          <motion.div
+            key="cta"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.22 }}
+            className="mt-4 space-y-2 px-5"
+          >
+            <p className="text-center text-[11px] text-[#555555]">
+              {tb('musclesSelected', { count: selected.size })}
+            </p>
+            <button
+              type="button"
+              onClick={handleGenerate}
+              className="flex w-full items-center justify-center gap-2.5 rounded-2xl bg-[#aaff00] py-4 text-[16px] font-black text-[#0a0a0a] shadow-[0_0_24px_rgba(170,255,0,0.2)]"
+            >
+              <Zap size={17} />
+              {tb('generateWorkout')} ({selected.size})
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
