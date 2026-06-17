@@ -1,18 +1,18 @@
 import { setRequestLocale } from 'next-intl/server';
-import { redirect } from 'next/navigation';
+import { redirect, notFound } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
-import { getMeasurements } from '@/lib/actions/measurements';
+import { getMeasurementById } from '@/lib/actions/measurements';
 import { getProfileAction } from '@/lib/actions/profile';
-import { MeasurementsClient } from '@/components/measurements/measurements-client';
+import { LogFormClient } from '@/components/measurements/log-form-client';
 
 export const dynamic = 'force-dynamic';
 
-export default async function MeasurementsPage({
+export default async function EditMeasurementPage({
   params,
 }: {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: string; id: string }>;
 }) {
-  const { locale } = await params;
+  const { locale, id } = await params;
   setRequestLocale(locale);
 
   const supabase = await createClient();
@@ -21,10 +21,12 @@ export default async function MeasurementsPage({
   } = await supabase.auth.getUser();
   if (!user) redirect(`/${locale}/login`);
 
-  const [{ data: entries }, profileResult] = await Promise.all([
-    getMeasurements(),
+  const [profileResult, { data: entry }] = await Promise.all([
     getProfileAction(),
+    getMeasurementById(id),
   ]);
+
+  if (!entry) notFound();
 
   const unitSystem =
     profileResult.success && profileResult.data.unit_system
@@ -32,10 +34,11 @@ export default async function MeasurementsPage({
       : 'metric';
 
   return (
-    <MeasurementsClient
-      entries={entries ?? []}
-      unitSystem={unitSystem}
+    <LogFormClient
       locale={locale}
+      unitSystem={unitSystem}
+      initialValues={entry}
+      entryId={id}
     />
   );
 }

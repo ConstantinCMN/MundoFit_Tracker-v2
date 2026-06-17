@@ -1,13 +1,12 @@
 import { setRequestLocale } from 'next-intl/server';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
-import { getMeasurements } from '@/lib/actions/measurements';
 import { getProfileAction } from '@/lib/actions/profile';
-import { MeasurementsClient } from '@/components/measurements/measurements-client';
+import { LogFormClient } from '@/components/measurements/log-form-client';
 
 export const dynamic = 'force-dynamic';
 
-export default async function MeasurementsPage({
+export default async function NewMeasurementPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
@@ -21,21 +20,11 @@ export default async function MeasurementsPage({
   } = await supabase.auth.getUser();
   if (!user) redirect(`/${locale}/login`);
 
-  const [{ data: entries }, profileResult] = await Promise.all([
-    getMeasurements(),
-    getProfileAction(),
-  ]);
-
+  const profileResult = await getProfileAction();
   const unitSystem =
     profileResult.success && profileResult.data.unit_system
       ? profileResult.data.unit_system
       : 'metric';
 
-  return (
-    <MeasurementsClient
-      entries={entries ?? []}
-      unitSystem={unitSystem}
-      locale={locale}
-    />
-  );
+  return <LogFormClient locale={locale} unitSystem={unitSystem} />;
 }

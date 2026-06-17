@@ -307,7 +307,44 @@
       "neck": "Cuello",
       "shoulders": "Hombros",
       "bodyFat": "Grasa corporal"
-    }
+    },
+    "subtitle": "Rastrea tu composición corporal a lo largo del tiempo",
+    "latest": "Últimas",
+    "history": "Historial",
+    "firstEntry": "Registra tus primeras medidas",
+    "logNew": "Registrar medidas",
+    "trend": "Tendencia",
+    "period": {
+      "7d": "7d",
+      "30d": "30d",
+      "90d": "90d",
+      "all": "Todo"
+    },
+    "needMoreData": "Registra una segunda medición para ver tu tendencia",
+    "noDataPeriod": "Sin datos para este período",
+    "sections": {
+      "upperBody": "Parte superior",
+      "core": "Núcleo",
+      "arms": "Brazos",
+      "legs": "Piernas",
+      "optional": "Opcional"
+    },
+    "date": "Fecha",
+    "bodyFatHint": "Estimación de báscula, calibrador o DEXA",
+    "notePlaceholder": "Añadir una nota...",
+    "saveNew": "Guardar medidas",
+    "saveEdit": "Actualizar medidas",
+    "saving": "Guardando...",
+    "saved": "Guardado",
+    "updated": "Actualizado",
+    "deleted": "Entrada eliminada",
+    "deleteConfirm": "¿Eliminar esta entrada?",
+    "cancel": "Cancelar",
+    "editEntry": "Editar",
+    "deleteEntry": "Eliminar",
+    "saveError": "No se pudo guardar",
+    "deleteError": "No se pudo eliminar",
+    "noneSelected": "Registra al menos una medida"
   },
   "photos": {
     "title": "Fotos de progreso",

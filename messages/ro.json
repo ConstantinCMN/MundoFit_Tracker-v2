@@ -307,7 +307,44 @@
       "neck": "Gât",
       "shoulders": "Umeri",
       "bodyFat": "Grăsime corporală"
-    }
+    },
+    "subtitle": "Urmărește compoziția corporală în timp",
+    "latest": "Ultimele",
+    "history": "Istoric",
+    "firstEntry": "Loghează primele măsurători",
+    "logNew": "Loghează măsurători",
+    "trend": "Tendință",
+    "period": {
+      "7d": "7z",
+      "30d": "30z",
+      "90d": "90z",
+      "all": "Tot"
+    },
+    "needMoreData": "Loghează a doua măsurătoare pentru a vedea tendința",
+    "noDataPeriod": "Nicio dată pentru această perioadă",
+    "sections": {
+      "upperBody": "Partea superioară",
+      "core": "Corp",
+      "arms": "Brațe",
+      "legs": "Picioare",
+      "optional": "Opțional"
+    },
+    "date": "Dată",
+    "bodyFatHint": "Estimare din cântar, compas sau DEXA",
+    "notePlaceholder": "Adaugă o notă...",
+    "saveNew": "Salvează măsurătorile",
+    "saveEdit": "Actualizează măsurătorile",
+    "saving": "Se salvează...",
+    "saved": "Salvat",
+    "updated": "Actualizat",
+    "deleted": "Intrare ștearsă",
+    "deleteConfirm": "Ștergi această intrare?",
+    "cancel": "Anulează",
+    "editEntry": "Editează",
+    "deleteEntry": "Șterge",
+    "saveError": "Nu s-a putut salva",
+    "deleteError": "Nu s-a putut șterge",
+    "noneSelected": "Loghează cel puțin o măsurătoare"
   },
   "photos": {
     "title": "Poze progres",

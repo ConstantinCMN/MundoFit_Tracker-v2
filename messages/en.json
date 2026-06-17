@@ -307,7 +307,44 @@
       "neck": "Neck",
       "shoulders": "Shoulders",
       "bodyFat": "Body fat"
-    }
+    },
+    "subtitle": "Track your body composition over time",
+    "latest": "Latest",
+    "history": "History",
+    "firstEntry": "Log your first measurements",
+    "logNew": "Log measurements",
+    "trend": "Trend",
+    "period": {
+      "7d": "7d",
+      "30d": "30d",
+      "90d": "90d",
+      "all": "All"
+    },
+    "needMoreData": "Log a second measurement to see your trend",
+    "noDataPeriod": "No data for this period",
+    "sections": {
+      "upperBody": "Upper Body",
+      "core": "Core",
+      "arms": "Arms",
+      "legs": "Legs",
+      "optional": "Optional"
+    },
+    "date": "Date",
+    "bodyFatHint": "Estimate from scale, calipers or DEXA",
+    "notePlaceholder": "Add a note...",
+    "saveNew": "Save measurements",
+    "saveEdit": "Update measurements",
+    "saving": "Saving...",
+    "saved": "Saved",
+    "updated": "Updated",
+    "deleted": "Entry deleted",
+    "deleteConfirm": "Delete this entry?",
+    "cancel": "Cancel",
+    "editEntry": "Edit",
+    "deleteEntry": "Delete",
+    "saveError": "Could not save",
+    "deleteError": "Could not delete",
+    "noneSelected": "Log at least one measurement"
   },
   "photos": {
     "title": "Progress photos",
