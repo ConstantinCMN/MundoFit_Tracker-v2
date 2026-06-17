@@ -27,6 +27,7 @@
     "workouts": "Workouts",
     "calories": "Calories",
     "profile": "Profile",
+    "body": "Body",
     "measurements": "Measurements",
     "photos": "Photos",
     "goals": "Goals"
@@ -490,6 +491,36 @@
       "detail": {
         "title": "Exercise details"
       }
+    }
+  },
+  "body": {
+    "title": "Body",
+    "subtitle": "Tap a muscle to explore",
+    "tapHint": "Tap to explore",
+    "generateWorkout": "Generate Workout",
+    "browseExercises": "Browse Exercises",
+    "viewProgress": "View Progress",
+    "comingSoon": "Coming Soon",
+    "region": {
+      "push": "Push",
+      "pull": "Pull",
+      "core": "Core",
+      "legs": "Legs"
+    },
+    "muscleDesc": {
+      "chest": "Primary pushing muscle. Powers all press movements and upper body strength.",
+      "shoulders": "Three-headed muscle giving width and roundness to your upper body.",
+      "biceps": "Front arm flexors. Key for all pulling and curling movements.",
+      "triceps": "Makes up two-thirds of your arm. Primary elbow extension muscle.",
+      "forearms": "Controls grip strength and wrist movement. Active in every pulling exercise.",
+      "abs": "Core stabilizers that protect your spine and power every compound lift.",
+      "quads": "The four-headed front thigh muscle. Powers knee extension and leg drive.",
+      "calves": "Controls ankle movement. Critical for running, jumping and stability.",
+      "traps": "Diamond-shaped muscle spanning neck to mid-back. Controls scapular movement.",
+      "lats": "The broadest back muscle. Defines the V-taper and drives all pulling movements.",
+      "lower_back": "Spinal erectors stabilizing the lumbar spine under load.",
+      "glutes": "The body's most powerful group. Drives hip extension and total power output.",
+      "hamstrings": "Posterior thigh muscles controlling hip extension and knee flexion."
     }
   },
   "profile": {

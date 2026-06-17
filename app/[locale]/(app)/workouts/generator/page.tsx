@@ -5,10 +5,16 @@ export const dynamic = 'force-dynamic';
 
 export default async function WorkoutGeneratorPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ muscles?: string }>;
 }) {
   const { locale } = await params;
+  const { muscles } = await searchParams;
   setRequestLocale(locale);
-  return <GeneratorClient locale={locale} />;
+
+  const initialMuscles = muscles ? muscles.split(',').filter(Boolean) : undefined;
+
+  return <GeneratorClient locale={locale} initialMuscles={initialMuscles} />;
 }

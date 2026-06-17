@@ -14,6 +14,7 @@ const ROUTE_TITLE_KEYS: Record<string, string> = {
   '/measurements': 'measurements',
   '/photos': 'photos',
   '/goals': 'goals',
+  '/body': 'body',
 };
 
 export function Header() {

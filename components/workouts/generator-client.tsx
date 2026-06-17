@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import {
-  X, Zap, RotateCcw, ChevronLeft, Clock, Dumbbell,
+  Zap, RotateCcw, ChevronLeft, Clock, Dumbbell,
   Pause, Play, SkipForward, CheckCircle,
 } from 'lucide-react';
 import { useRouter } from '@/lib/i18n/navigation';
@@ -80,26 +80,6 @@ function ViewTab({ active, label, onClick }: { active: boolean; label: string; o
   );
 }
 
-function MuscleChip({ label, onRemove }: { label: string; onRemove: () => void }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.85 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.85 }}
-      transition={{ duration: 0.15 }}
-      className="flex items-center gap-1.5 rounded-full border border-[rgba(170,255,0,0.3)] bg-[rgba(170,255,0,0.08)] py-1.5 pl-3 pr-2"
-    >
-      <span className="text-[12px] font-semibold text-[#aaff00]">{label}</span>
-      <button
-        type="button"
-        onClick={onRemove}
-        className="flex h-4 w-4 items-center justify-center rounded-full bg-[rgba(170,255,0,0.15)]"
-      >
-        <X size={9} color="#aaff00" strokeWidth={2.5} />
-      </button>
-    </motion.div>
-  );
-}
 
 function ExercisePlanCard({
   we,
@@ -143,7 +123,13 @@ function ExercisePlanCard({
 
 // ── Main component ────────────────────────────────────────────────────────────
 
-export function GeneratorClient({ locale }: { locale: string }) {
+export function GeneratorClient({
+  locale,
+  initialMuscles,
+}: {
+  locale: string;
+  initialMuscles?: string[];
+}) {
   const t  = useTranslations('workouts');
   const tm = useTranslations('workouts.muscles');
   const router = useRouter();
@@ -170,6 +156,17 @@ export function GeneratorClient({ locale }: { locale: string }) {
   const totalPausedMsRef = useRef<number>(0);
 
   const { selected, toggleMuscle, clearAll } = useMuscleSelection();
+
+  // Pre-select muscles passed via URL (?muscles=chest,shoulders) from the Body Hub
+  useEffect(() => {
+    if (!initialMuscles?.length) return;
+    clearAll();
+    initialMuscles
+      .filter((id): id is MuscleId => ALL_MUSCLE_IDS.includes(id as MuscleId))
+      .forEach(toggleMuscle);
+  // clearAll and toggleMuscle are stable useCallback refs; intentionally omitted
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const muscleLabel = (id: string) => {
     try { return tm(id as Parameters<typeof tm>[0]); } catch { return id; }
@@ -660,45 +657,6 @@ export function GeneratorClient({ locale }: { locale: string }) {
       <motion.p {...fadeUp(0.14)} className="mt-3 text-center text-[11px] text-[#3a3a3a]">
         {t('muscleMap.tapHint')}
       </motion.p>
-
-      {/* Selected chips */}
-      <motion.div {...fadeUp(0.18)} className="mt-5 px-5">
-        <div className="mb-2 flex items-center justify-between">
-          <p className="text-[10px] font-semibold uppercase tracking-widest text-[#3a3a3a]">
-            {t('muscleMap.selectMuscles')}
-          </p>
-          {selectedList.length > 0 && (
-            <button
-              type="button"
-              onClick={clearAll}
-              className="flex items-center gap-1 text-[11px] font-semibold text-[#555555] hover:text-[#aaff00]"
-            >
-              <RotateCcw size={10} />
-              {t('muscleMap.clearAll')}
-            </button>
-          )}
-        </div>
-
-        <div className="min-h-[40px] rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.02)] px-3 py-2">
-          {selectedList.length === 0 ? (
-            <p className="py-1 text-center text-[12px] text-[#333333]">
-              {t('muscleMap.noneSelected')}
-            </p>
-          ) : (
-            <div className="flex flex-wrap gap-2">
-              <AnimatePresence>
-                {selectedList.map(id => (
-                  <MuscleChip
-                    key={id}
-                    label={muscleLabel(id)}
-                    onRemove={() => toggleMuscle(id)}
-                  />
-                ))}
-              </AnimatePresence>
-            </div>
-          )}
-        </div>
-      </motion.div>
 
       {/* Error */}
       {error && (

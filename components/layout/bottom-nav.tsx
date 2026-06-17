@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
-import { Home, Scale, Dumbbell, Flame, User } from 'lucide-react';
+import { Home, Scale, PersonStanding, Flame, User } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { cn } from '@/lib/utils/cn';
@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils/cn';
 const NAV_ITEMS = [
   { key: 'dashboard', href: '/dashboard', Icon: Home },
   { key: 'weight', href: '/weight', Icon: Scale },
-  { key: 'workouts', href: '/workouts', Icon: Dumbbell },
+  { key: 'body', href: '/body', Icon: PersonStanding },
   { key: 'calories', href: '/calories', Icon: Flame },
   { key: 'profile', href: '/profile', Icon: User },
 ] as const;

@@ -3,19 +3,22 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { Zap } from 'lucide-react';
-import { useRouter } from '@/lib/i18n/navigation';
-import { MuscleMap, type MuscleId, type BodyView } from './muscle-map';
-import { useMuscleSelection } from './muscle-selection-context';
 import { cn } from '@/lib/utils/cn';
+import { MuscleMap, type MuscleId, type BodyView } from '@/components/workouts/muscle-map';
+import { useRouter } from '@/lib/i18n/navigation';
 
-const ALL_MUSCLE_IDS: MuscleId[] = [
-  'chest', 'shoulders', 'biceps', 'triceps', 'forearms',
-  'abs', 'quads', 'calves',
-  'traps', 'lats', 'lower_back', 'glutes', 'hamstrings',
-];
+// Stable empty set — avoids re-triggering MuscleMap's style effect on every render
+const EMPTY_SELECTION = new Set<MuscleId>();
 
-function ViewTab({ active, label, onClick }: { active: boolean; label: string; onClick: () => void }) {
+function ViewTab({
+  active,
+  label,
+  onClick,
+}: {
+  active: boolean;
+  label: string;
+  onClick: () => void;
+}) {
   return (
     <button
       type="button"
@@ -27,7 +30,7 @@ function ViewTab({ active, label, onClick }: { active: boolean; label: string; o
     >
       {active && (
         <motion.div
-          layoutId="anatomy-view-pill"
+          layoutId="body-hub-view-pill"
           className="absolute inset-0 rounded-xl bg-[#aaff00]"
           transition={{ type: 'spring', stiffness: 400, damping: 36 }}
         />
@@ -37,19 +40,15 @@ function ViewTab({ active, label, onClick }: { active: boolean; label: string; o
   );
 }
 
-export function AnatomyClient() {
+export function BodyHubClient() {
   const t  = useTranslations('workouts');
-  const tm = useTranslations('workouts.muscles');
+  const tb = useTranslations('body');
   const router = useRouter();
-
-  const { selected, toggleMuscle } = useMuscleSelection();
   const [view, setView] = useState<BodyView>('front');
 
-  const muscleLabel = (id: string) => {
-    try { return tm(id as Parameters<typeof tm>[0]); } catch { return id; }
-  };
-
-  const selectedList = ALL_MUSCLE_IDS.filter(id => selected.has(id));
+  function handleMuscleSelect(id: MuscleId) {
+    router.push(`/body/${id}`);
+  }
 
   return (
     <motion.div
@@ -68,8 +67,8 @@ export function AnatomyClient() {
         <p className="mb-1 text-[10px] font-semibold uppercase tracking-widest text-[#aaff00]/60">
           MundoFit
         </p>
-        <h2 className="text-[22px] font-black text-[#f5f5f5]">{t('anatomyMap.title')}</h2>
-        <p className="mt-1 text-[13px] text-[#555555]">{t('anatomyMap.subtitle')}</p>
+        <h2 className="text-[22px] font-black text-[#f5f5f5]">{tb('title')}</h2>
+        <p className="mt-1 text-[13px] text-[#555555]">{tb('subtitle')}</p>
       </motion.div>
 
       {/* Front / Back toggle */}
@@ -80,12 +79,20 @@ export function AnatomyClient() {
         className="mt-5 px-5"
       >
         <div className="flex gap-1 rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] p-1">
-          <ViewTab active={view === 'front'} label={t('bodyMap.front')} onClick={() => setView('front')} />
-          <ViewTab active={view === 'back'}  label={t('bodyMap.back')}  onClick={() => setView('back')}  />
+          <ViewTab
+            active={view === 'front'}
+            label={t('bodyMap.front')}
+            onClick={() => setView('front')}
+          />
+          <ViewTab
+            active={view === 'back'}
+            label={t('bodyMap.back')}
+            onClick={() => setView('back')}
+          />
         </div>
       </motion.div>
 
-      {/* Body map */}
+      {/* Body map — tapping navigates to /body/[muscle] */}
       <motion.div
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
@@ -101,7 +108,11 @@ export function AnatomyClient() {
               exit={{ opacity: 0, x: view === 'front' ? 20 : -20 }}
               transition={{ duration: 0.22, ease: 'easeInOut' }}
             >
-              <MuscleMap view={view} selected={selected} onToggle={toggleMuscle} />
+              <MuscleMap
+                view={view}
+                selected={EMPTY_SELECTION}
+                onToggle={handleMuscleSelect}
+              />
             </motion.div>
           </AnimatePresence>
         </div>
@@ -114,40 +125,8 @@ export function AnatomyClient() {
         transition={{ duration: 0.38, delay: 0.14 }}
         className="mt-3 text-center text-[11px] text-[#3a3a3a]"
       >
-        {t('muscleMap.tapHint')}
+        {tb('tapHint')}
       </motion.p>
-
-      {/* Generate CTA */}
-      <motion.div
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.38, delay: 0.22, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="mt-6 px-5"
-      >
-        <motion.button
-          type="button"
-          whileTap={{ scale: 0.97 }}
-          onClick={() => router.push('/workouts/generator')}
-          disabled={selectedList.length === 0}
-          className={cn(
-            'flex w-full items-center justify-center gap-2.5 rounded-2xl py-4 text-[16px] font-black transition-all',
-            selectedList.length > 0
-              ? 'bg-[#aaff00] text-[#0a0a0a] shadow-[0_0_24px_rgba(170,255,0,0.25)]'
-              : 'border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] text-[#333333]'
-          )}
-        >
-          <Zap
-            size={18}
-            className={selectedList.length > 0 ? 'text-[#0a0a0a]' : 'text-[#333333]'}
-          />
-          {t('muscleMap.generate')}
-          {selectedList.length > 0 && (
-            <span className="ml-1 rounded-full bg-[rgba(0,0,0,0.15)] px-2 py-0.5 text-[11px] font-black">
-              {selectedList.length}
-            </span>
-          )}
-        </motion.button>
-      </motion.div>
     </motion.div>
   );
 }

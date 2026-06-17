@@ -27,6 +27,7 @@
     "workouts": "Entrenamientos",
     "calories": "Calorías",
     "profile": "Perfil",
+    "body": "Cuerpo",
     "measurements": "Medidas",
     "photos": "Fotos",
     "goals": "Objetivos"
@@ -490,6 +491,36 @@
       "detail": {
         "title": "Detalles del ejercicio"
       }
+    }
+  },
+  "body": {
+    "title": "Cuerpo",
+    "subtitle": "Toca un músculo para explorar",
+    "tapHint": "Toca para explorar",
+    "generateWorkout": "Generar entrenamiento",
+    "browseExercises": "Ver ejercicios",
+    "viewProgress": "Ver progreso",
+    "comingSoon": "Próximamente",
+    "region": {
+      "push": "Empuje",
+      "pull": "Tracción",
+      "core": "Core",
+      "legs": "Piernas"
+    },
+    "muscleDesc": {
+      "chest": "Músculo principal de empuje. Activo en todos los movimientos de press.",
+      "shoulders": "Músculo de tres cabezas que da anchura y redondez al torso.",
+      "biceps": "Flexores frontales del brazo. Clave en todos los movimientos de jalón y curl.",
+      "triceps": "Representa dos tercios del brazo. Músculo principal de extensión del codo.",
+      "forearms": "Controla la fuerza de agarre y el movimiento de muñeca. Activo en cada jalón.",
+      "abs": "Estabilizadores del core que protegen la columna bajo cada carga.",
+      "quads": "Músculo anterior del muslo con cuatro cabezas. Potencia la extensión de rodilla.",
+      "calves": "Controla el movimiento del tobillo. Clave para correr, saltar y estabilizarse.",
+      "traps": "Músculo en forma de diamante del cuello a la mitad de la espalda. Controla el omóplato.",
+      "lats": "El músculo más ancho de la espalda. Define la forma en V y activa todos los jalones.",
+      "lower_back": "Erectores espinales que estabilizan la columna lumbar bajo carga.",
+      "glutes": "El grupo muscular más potente del cuerpo. Impulsa la extensión de cadera y la potencia.",
+      "hamstrings": "Músculos posteriores del muslo que controlan la extensión de cadera y flexión de rodilla."
     }
   },
   "profile": {

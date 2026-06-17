@@ -27,6 +27,7 @@
     "workouts": "Antrenamente",
     "calories": "Calorii",
     "profile": "Profil",
+    "body": "Corp",
     "measurements": "Măsurători",
     "photos": "Poze",
     "goals": "Obiective"
@@ -490,6 +491,36 @@
       "detail": {
         "title": "Detalii exercițiu"
       }
+    }
+  },
+  "body": {
+    "title": "Corp",
+    "subtitle": "Atinge un mușchi pentru a explora",
+    "tapHint": "Atinge pentru a explora",
+    "generateWorkout": "Generează antrenament",
+    "browseExercises": "Exerciții",
+    "viewProgress": "Progres",
+    "comingSoon": "În curând",
+    "region": {
+      "push": "Împingere",
+      "pull": "Tragere",
+      "core": "Core",
+      "legs": "Picioare"
+    },
+    "muscleDesc": {
+      "chest": "Mușchiul principal de împingere. Activat în toate mișcările de presă.",
+      "shoulders": "Mușchi cu trei capete care dă lățime și rotunjime corpului superior.",
+      "biceps": "Flexorii frontali ai brațului. Esențiali pentru toate mișcările de tragere și curl.",
+      "triceps": "Reprezintă două treimi din mușchii brațului. Mușchiul principal de extensie a cotului.",
+      "forearms": "Controlează forța de prindere și mișcarea încheieturii. Activ în fiecare exercițiu de tragere.",
+      "abs": "Stabilizatori ai core-ului care protejează coloana vertebrală sub fiecare sarcină.",
+      "quads": "Mușchiul anterior al coapsei cu patru capete. Responsabil de extensia genunchiului.",
+      "calves": "Controlează mișcarea gleznei. Esențial pentru alergare, sărituri și stabilitate.",
+      "traps": "Mușchi în formă de diamant de la gât la mijlocul spatelui. Controlează mișcarea omoplatului.",
+      "lats": "Cel mai lat mușchi al spatelui. Definește silueta în V și susține toate mișcările de tragere.",
+      "lower_back": "Erectori spinali care stabilizează coloana lombară sub sarcină.",
+      "glutes": "Cel mai puternic grup muscular al corpului. Susține extensia șoldului și forța totală.",
+      "hamstrings": "Mușchii posteriori ai coapsei care controlează extensia șoldului și flexia genunchiului."
     }
   },
   "profile": {
