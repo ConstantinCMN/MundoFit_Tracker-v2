@@ -9,8 +9,13 @@ import { cn } from '@/lib/utils/cn';
 import type { WorkoutSession } from '@/types';
 import { deleteWorkoutSession } from '@/lib/actions/workouts';
 import { Toast } from '@/components/ui/toast';
+import { SplitBadge } from '@/components/workouts/split-badge';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
+
+export type SessionWithSplit = WorkoutSession & {
+  workouts: { split_type: string | null } | null;
+};
 
 type HistoryStats = {
   total: number;
@@ -90,7 +95,7 @@ function SessionCard({
   onCancel,
   onDelete,
 }: {
-  session: WorkoutSession;
+  session: SessionWithSplit;
   isActive: boolean;
   isDeleting: boolean;
   onToggleMenu: () => void;
@@ -120,9 +125,12 @@ function SessionCard({
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
             <p className="truncate text-[14px] font-bold text-[#f5f5f5]">{session.name}</p>
-            <p className="mt-0.5 text-[11px] text-[#555555]">
-              {dateStr} · {timeStr}
-            </p>
+            <div className="mt-0.5 flex items-center gap-1.5">
+              <SplitBadge split={session.workouts?.split_type} />
+              <p className="text-[11px] text-[#555555]">
+                {dateStr} · {timeStr}
+              </p>
+            </div>
           </div>
           <div className="flex shrink-0 items-center gap-2">
             <div className="rounded-lg border border-[rgba(170,255,0,0.2)] bg-[rgba(170,255,0,0.08)] px-2.5 py-1">
@@ -235,7 +243,7 @@ export function WorkoutHistoryClient({
   sessions: initialSessions,
   stats: initialStats,
 }: {
-  sessions: WorkoutSession[];
+  sessions: SessionWithSplit[];
   stats: HistoryStats;
 }) {
   const t = useTranslations('workouts');

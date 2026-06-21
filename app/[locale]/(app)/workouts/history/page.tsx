@@ -1,8 +1,7 @@
 import { setRequestLocale } from 'next-intl/server';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
-import { WorkoutHistoryClient } from '@/components/workouts/workout-history-client';
-import type { WorkoutSession } from '@/types';
+import { WorkoutHistoryClient, type SessionWithSplit } from '@/components/workouts/workout-history-client';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,12 +21,12 @@ export default async function WorkoutHistoryPage({
 
   const { data: sessions } = await supabase
     .from('workout_sessions')
-    .select('*')
+    .select('*, workouts(split_type)')
     .eq('user_id', user.id)
     .order('started_at', { ascending: false })
     .limit(20);
 
-  const allSessions = (sessions ?? []) as WorkoutSession[];
+  const allSessions = (sessions ?? []) as SessionWithSplit[];
 
   const totalVolumeKg = allSessions.reduce(
     (sum, s) => sum + (s.total_volume_kg ?? 0),

@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils/cn';
 import type { Workout } from '@/types';
 import { deleteWorkout } from '@/lib/actions/workouts';
 import { Toast } from '@/components/ui/toast';
+import { SplitBadge } from '@/components/workouts/split-badge';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -65,11 +66,14 @@ function WorkoutTemplateCard({
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate text-[13px] font-bold text-[#f5f5f5]">{workout.name}</p>
-          {workout.estimated_duration_min != null && (
-            <p className="mt-0.5 text-[11px] text-[#555555]">
-              {workout.estimated_duration_min} min
-            </p>
-          )}
+          <div className="mt-0.5 flex items-center gap-1.5">
+            <SplitBadge split={workout.split_type} />
+            {workout.estimated_duration_min != null && (
+              <p className="text-[11px] text-[#555555]">
+                {workout.estimated_duration_min} min
+              </p>
+            )}
+          </div>
         </div>
         <button
           type="button"
