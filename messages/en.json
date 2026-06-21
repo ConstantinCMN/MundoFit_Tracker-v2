@@ -561,6 +561,20 @@
     },
     "musclesSelected": "{count} selected"
   },
+  "workoutStart": {
+    "title": "Workout Type",
+    "subtitle": "Choose what you want to train today",
+    "continue": "Continue",
+    "types": {
+      "push": { "label": "Push", "desc": "Chest, shoulders, triceps" },
+      "pull": { "label": "Pull", "desc": "Back, biceps, forearms" },
+      "legs": { "label": "Legs", "desc": "Quads, hamstrings, glutes, calves" },
+      "upper": { "label": "Upper Body", "desc": "Chest, back, shoulders, arms" },
+      "lower": { "label": "Lower Body", "desc": "Quads, hamstrings, glutes, calves, lower back" },
+      "full": { "label": "Full Body", "desc": "A balanced mix of major muscle groups" },
+      "custom": { "label": "Custom", "desc": "Pick your own muscles from scratch" }
+    }
+  },
   "profile": {
     "title": "Profile",
     "sections": {

@@ -561,6 +561,20 @@
     },
     "musclesSelected": "{count} selectați"
   },
+  "workoutStart": {
+    "title": "Tip antrenament",
+    "subtitle": "Alege ce vrei să antrenezi astăzi",
+    "continue": "Continuă",
+    "types": {
+      "push": { "label": "Împingere", "desc": "Piept, umeri, triceps" },
+      "pull": { "label": "Tragere", "desc": "Spate, biceps, antebrațe" },
+      "legs": { "label": "Picioare", "desc": "Cvadricepși, ischiogambieri, fesieri, gambe" },
+      "upper": { "label": "Corp superior", "desc": "Piept, spate, umeri, brațe" },
+      "lower": { "label": "Corp inferior", "desc": "Cvadricepși, ischiogambieri, fesieri, gambe, lombari" },
+      "full": { "label": "Corp întreg", "desc": "Un mix echilibrat al grupelor musculare majore" },
+      "custom": { "label": "Personalizat", "desc": "Alege-ți propriii mușchi de la zero" }
+    }
+  },
   "profile": {
     "title": "Profil",
     "sections": {

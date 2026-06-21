@@ -561,6 +561,20 @@
     },
     "musclesSelected": "{count} seleccionados"
   },
+  "workoutStart": {
+    "title": "Tipo de entrenamiento",
+    "subtitle": "Elige qué quieres entrenar hoy",
+    "continue": "Continuar",
+    "types": {
+      "push": { "label": "Empuje", "desc": "Pecho, hombros, tríceps" },
+      "pull": { "label": "Tracción", "desc": "Espalda, bíceps, antebrazos" },
+      "legs": { "label": "Piernas", "desc": "Cuádriceps, isquiotibiales, glúteos, gemelos" },
+      "upper": { "label": "Cuerpo superior", "desc": "Pecho, espalda, hombros, brazos" },
+      "lower": { "label": "Cuerpo inferior", "desc": "Cuádriceps, isquiotibiales, glúteos, gemelos, lumbar" },
+      "full": { "label": "Cuerpo completo", "desc": "Una mezcla equilibrada de los principales grupos musculares" },
+      "custom": { "label": "Personalizado", "desc": "Elige tus propios músculos desde cero" }
+    }
+  },
   "profile": {
     "title": "Perfil",
     "sections": {

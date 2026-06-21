@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { Zap } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 import { MuscleMap, type MuscleId, type BodyView } from '@/components/workouts/muscle-map';
 import { useRouter } from '@/lib/i18n/navigation';
+import { SPLIT_MUSCLE_MAP, isSplitType } from '@/lib/workouts/split-types';
 
 function ViewTab({
   active,
@@ -58,8 +60,12 @@ export function BodyHubClient() {
   const t  = useTranslations('workouts');
   const tb = useTranslations('body');
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const split = searchParams.get('split');
   const [view, setView] = useState<BodyView>('front');
-  const [selected, setSelected] = useState<Set<MuscleId>>(new Set());
+  const [selected, setSelected] = useState<Set<MuscleId>>(
+    () => new Set(isSplitType(split) ? SPLIT_MUSCLE_MAP[split] : [])
+  );
   const [lastSelected, setLastSelected] = useState<MuscleId | null>(null);
 
   const handleMuscleToggle = useCallback((id: MuscleId) => {
