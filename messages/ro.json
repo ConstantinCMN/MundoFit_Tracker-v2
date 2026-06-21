@@ -461,6 +461,16 @@
       "noneSelected": "Niciun mușchi selectat",
       "comingSoon": "Generarea antrenamentului în curând"
     },
+    "goal": {
+      "sectionLabel": "Obiectiv",
+      "hypertrophy": "Hipertrofie",
+      "strength": "Forță",
+      "fatLoss": "Pierdere grăsime",
+      "endurance": "Rezistență"
+    },
+    "level": {
+      "sectionLabel": "Nivel"
+    },
     "anatomyMap": {
       "title": "Hartă Musculară",
       "subtitle": "Selectează mușchii pe care vrei să îi antrenezi",

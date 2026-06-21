@@ -461,6 +461,16 @@
       "noneSelected": "No muscles selected",
       "comingSoon": "Workout generation coming soon"
     },
+    "goal": {
+      "sectionLabel": "Goal",
+      "hypertrophy": "Hypertrophy",
+      "strength": "Strength",
+      "fatLoss": "Fat Loss",
+      "endurance": "Endurance"
+    },
+    "level": {
+      "sectionLabel": "Level"
+    },
     "anatomyMap": {
       "title": "Muscle Map",
       "subtitle": "Select the muscles you want to train",

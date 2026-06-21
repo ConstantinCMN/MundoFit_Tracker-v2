@@ -2,6 +2,14 @@
 
 import { createClient } from '@/lib/supabase/server';
 import type { Exercise } from '@/lib/actions/exercises';
+import {
+  GOAL_SCHEME,
+  DIFFICULTY_PRIORITY_BY_LEVEL,
+  DEFAULT_GOAL,
+  DEFAULT_LEVEL,
+  type Goal,
+  type ExperienceLevel,
+} from '@/lib/workouts/training-goals';
 
 export type WorkoutExercisePlan = {
   exercise: Exercise;
@@ -40,12 +48,6 @@ const MUSCLE_ES: Record<string, string> = {
   hamstrings: 'Isquiotibiales',
 };
 
-const DIFFICULTY_PRIORITY: Record<string, number> = {
-  intermediate: 0,
-  beginner: 1,
-  advanced: 2,
-};
-
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
   for (let i = a.length - 1; i > 0; i--) {
@@ -56,7 +58,9 @@ function shuffle<T>(arr: T[]): T[] {
 }
 
 export async function getExercisesForMuscles(
-  muscleIds: string[]
+  muscleIds: string[],
+  goal: Goal = DEFAULT_GOAL,
+  level: ExperienceLevel = DEFAULT_LEVEL
 ): Promise<{ data: GeneratedWorkoutPlan | null; error: string | null }> {
   if (muscleIds.length === 0) return { data: null, error: 'No muscles selected' };
 
@@ -71,6 +75,8 @@ export async function getExercisesForMuscles(
   if (error) return { data: null, error: error.message };
   if (!relevant?.length) return { data: null, error: 'No exercises found for selected muscles' };
 
+  const difficultyPriority = DIFFICULTY_PRIORITY_BY_LEVEL[level];
+
   // Per-muscle limit: 3 if 1-2 muscles, 2 otherwise; hard cap 8 total
   const perMuscle = muscleIds.length <= 2 ? 3 : 2;
   const usedIds = new Set<string>();
@@ -81,8 +87,8 @@ export async function getExercisesForMuscles(
       relevant.filter(ex => ex.muscle_groups.includes(muscle) && !usedIds.has(ex.id))
     ).sort(
       (a, b) =>
-        (DIFFICULTY_PRIORITY[a.difficulty ?? 'beginner'] ?? 1) -
-        (DIFFICULTY_PRIORITY[b.difficulty ?? 'beginner'] ?? 1)
+        (difficultyPriority[a.difficulty ?? 'beginner'] ?? 1) -
+        (difficultyPriority[b.difficulty ?? 'beginner'] ?? 1)
     );
 
     let taken = 0;
@@ -94,12 +100,14 @@ export async function getExercisesForMuscles(
     }
   }
 
+  const scheme = GOAL_SCHEME[goal];
+
   const exercises: WorkoutExercisePlan[] = selected.map((ex, i) => ({
     exercise: ex,
-    sets: ex.exercise_type === 'cardio' ? 1 : 3,
-    reps: ex.exercise_type === 'cardio' ? null : 10,
+    sets: ex.exercise_type === 'cardio' ? 1 : scheme.sets,
+    reps: ex.exercise_type === 'cardio' ? null : scheme.reps,
     duration_sec: ex.exercise_type === 'cardio' ? 30 : null,
-    rest_sec: ex.exercise_type === 'cardio' ? 30 : 60,
+    rest_sec: ex.exercise_type === 'cardio' ? 30 : scheme.rest_sec,
     position: i,
   }));
 

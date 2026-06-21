@@ -461,6 +461,16 @@
       "noneSelected": "Ningún músculo seleccionado",
       "comingSoon": "Generación de entrenamiento próximamente"
     },
+    "goal": {
+      "sectionLabel": "Objetivo",
+      "hypertrophy": "Hipertrofia",
+      "strength": "Fuerza",
+      "fatLoss": "Pérdida de grasa",
+      "endurance": "Resistencia"
+    },
+    "level": {
+      "sectionLabel": "Nivel"
+    },
     "anatomyMap": {
       "title": "Mapa Muscular",
       "subtitle": "Selecciona los músculos que quieres entrenar",

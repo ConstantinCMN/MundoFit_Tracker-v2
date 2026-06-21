@@ -18,6 +18,10 @@ import {
 } from '@/lib/actions/workouts';
 import { cn } from '@/lib/utils/cn';
 import { Toast } from '@/components/ui/toast';
+import {
+  GOALS, EXPERIENCE_LEVELS, DEFAULT_GOAL, DEFAULT_LEVEL,
+  type Goal, type ExperienceLevel,
+} from '@/lib/workouts/training-goals';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -80,6 +84,40 @@ function ViewTab({ active, label, onClick }: { active: boolean; label: string; o
   );
 }
 
+function SegmentedControl<T extends string>({
+  options,
+  active,
+  onChange,
+}: {
+  options: { value: T; label: string }[];
+  active: T;
+  onChange: (value: T) => void;
+}) {
+  return (
+    <div className="flex gap-1 rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] p-1">
+      {options.map(opt => (
+        <button
+          key={opt.value}
+          type="button"
+          onClick={() => onChange(opt.value)}
+          className={cn(
+            'relative flex-1 rounded-xl py-2.5 text-[12px] font-bold transition-colors',
+            active === opt.value ? 'text-[#0a0a0a]' : 'text-[#555555]'
+          )}
+        >
+          {active === opt.value && (
+            <motion.div
+              layoutId={`segmented-pill-${options.map(o => o.value).join('-')}`}
+              className="absolute inset-0 rounded-xl bg-[#aaff00]"
+              transition={{ type: 'spring', stiffness: 400, damping: 36 }}
+            />
+          )}
+          <span className="relative">{opt.label}</span>
+        </button>
+      ))}
+    </div>
+  );
+}
 
 function ExercisePlanCard({
   we,
@@ -126,16 +164,20 @@ function ExercisePlanCard({
 export function GeneratorClient({
   locale,
   initialMuscles,
+  initialView,
 }: {
   locale: string;
   initialMuscles?: string[];
+  initialView?: BodyView;
 }) {
   const t  = useTranslations('workouts');
   const tm = useTranslations('workouts.muscles');
   const router = useRouter();
 
   // ── Generator state ───────────────────────────────────────────────────────
-  const [view,  setView]  = useState<BodyView>('front');
+  const [view,  setView]  = useState<BodyView>(initialView ?? 'front');
+  const [goal,  setGoal]  = useState<Goal>(DEFAULT_GOAL);
+  const [level, setLevel] = useState<ExperienceLevel>(DEFAULT_LEVEL);
   const [phase, setPhase] = useState<Phase>('select');
   const [plan,  setPlan]  = useState<GeneratedWorkoutPlan | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -154,6 +196,7 @@ export function GeneratorClient({
   const startedAtRef     = useRef<Date | null>(null);
   const pauseStartRef    = useRef<number | null>(null);
   const totalPausedMsRef = useRef<number>(0);
+  const didAutoGenerateRef = useRef(false);
 
   const { selected, toggleMuscle, clearAll } = useMuscleSelection();
 
@@ -173,6 +216,16 @@ export function GeneratorClient({
   };
 
   const selectedList = ALL_MUSCLE_IDS.filter(id => selected.has(id));
+
+  // Auto-generate once when arriving from Body Hub with pre-selected muscles
+  useEffect(() => {
+    if (!initialMuscles?.length) return;
+    if (didAutoGenerateRef.current) return;
+    if (selectedList.length === 0) return;
+    didAutoGenerateRef.current = true;
+    handleGenerate();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedList.length]);
 
   // ── Effects ───────────────────────────────────────────────────────────────
 
@@ -237,7 +290,7 @@ export function GeneratorClient({
   async function handleGenerate() {
     setPhase('loading');
     setError(null);
-    const { data, error: err } = await getExercisesForMuscles(selectedList);
+    const { data, error: err } = await getExercisesForMuscles(selectedList, goal, level);
     if (err || !data) {
       setError(err ?? t('plan.errorMsg'));
       setPhase('select');
@@ -658,13 +711,37 @@ export function GeneratorClient({
         {t('muscleMap.tapHint')}
       </motion.p>
 
+      {/* Goal */}
+      <motion.div {...fadeUp(0.18)} className="mt-5 px-5">
+        <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-[#aaff00]/60">
+          {t('goal.sectionLabel')}
+        </p>
+        <SegmentedControl
+          options={GOALS.map(g => ({ value: g, label: t(`goal.${g}`) }))}
+          active={goal}
+          onChange={setGoal}
+        />
+      </motion.div>
+
+      {/* Experience level */}
+      <motion.div {...fadeUp(0.18)} className="mt-4 px-5">
+        <p className="mb-2 text-[10px] font-semibold uppercase tracking-widest text-[#aaff00]/60">
+          {t('level.sectionLabel')}
+        </p>
+        <SegmentedControl
+          options={EXPERIENCE_LEVELS.map(l => ({ value: l, label: t(`exerciseLibrary.difficulty.${l}`) }))}
+          active={level}
+          onChange={setLevel}
+        />
+      </motion.div>
+
       {/* Error */}
       {error && (
         <p className="mt-3 px-5 text-center text-[12px] text-red-400">{error}</p>
       )}
 
       {/* Generate CTA */}
-      <motion.div {...fadeUp(0.22)} className="mt-6 px-5">
+      <motion.div {...fadeUp(0.26)} className="mt-5 px-5">
         <motion.button
           type="button"
           whileTap={{ scale: 0.97 }}
