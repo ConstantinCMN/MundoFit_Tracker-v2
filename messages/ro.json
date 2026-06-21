@@ -402,6 +402,7 @@
     "generator": "Generator",
     "library": "Exerciții",
     "history": "Istoric",
+    "workoutType": "Tip antrenament",
     "myWorkouts": "Antrenamentele mele",
     "recommended": "Recomandate pentru tine",
     "noWorkouts": "Niciun antrenament creat",

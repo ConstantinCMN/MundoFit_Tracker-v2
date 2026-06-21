@@ -295,7 +295,7 @@ export function WorkoutHistoryClient({
       {/* Session list */}
       <motion.section {...fadeUp(0.06)} className="px-5">
         {localSessions.length === 0 ? (
-          <EmptyHistory onStart={() => router.push('/workouts')} />
+          <EmptyHistory onStart={() => router.push('/body')} />
         ) : (
           <div className="space-y-3">
             <AnimatePresence mode="popLayout">

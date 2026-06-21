@@ -402,6 +402,7 @@
     "generator": "Generator",
     "library": "Exercise library",
     "history": "History",
+    "workoutType": "Workout Type",
     "myWorkouts": "My workouts",
     "recommended": "Recommended for you",
     "noWorkouts": "No workouts created yet",

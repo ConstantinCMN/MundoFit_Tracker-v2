@@ -4,11 +4,12 @@ import { useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { Zap } from 'lucide-react';
+import { Zap, Layers, BookOpen, ListChecks, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 import { MuscleMap, type MuscleId, type BodyView } from '@/components/workouts/muscle-map';
 import { useRouter } from '@/lib/i18n/navigation';
 import { SPLIT_MUSCLE_MAP, isSplitType } from '@/lib/workouts/split-types';
+import { QuickLinkCard } from '@/components/workouts/quick-link-card';
 
 function ViewTab({
   active,
@@ -82,7 +83,8 @@ export function BodyHubClient() {
   }, []);
 
   function handleGenerate() {
-    router.push(`/workouts/generator?muscles=${Array.from(selected).join(',')}&view=${view}`);
+    const splitParam = isSplitType(split) ? `&split=${split}` : '';
+    router.push(`/workouts/generator?muscles=${Array.from(selected).join(',')}&view=${view}${splitParam}`);
   }
 
   const hasSelection = selected.size > 0;
@@ -205,6 +207,41 @@ export function BodyHubClient() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Quick Links */}
+      <motion.div
+        initial={{ opacity: 0, y: 14 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.38, delay: 0.18, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="mt-6 px-5"
+      >
+        <div className="grid grid-cols-2 gap-3">
+          <QuickLinkCard
+            icon={Layers}
+            label={t('workoutType')}
+            color="#aaff00"
+            onClick={() => router.push('/workouts/start')}
+          />
+          <QuickLinkCard
+            icon={BookOpen}
+            label={t('library')}
+            color="#fb923c"
+            onClick={() => router.push('/workouts/library')}
+          />
+          <QuickLinkCard
+            icon={ListChecks}
+            label={t('myWorkouts')}
+            color="#c084fc"
+            onClick={() => router.push('/workouts')}
+          />
+          <QuickLinkCard
+            icon={Clock}
+            label={t('history')}
+            color="#60a5fa"
+            onClick={() => router.push('/workouts/history')}
+          />
+        </div>
+      </motion.div>
     </motion.div>
   );
 }

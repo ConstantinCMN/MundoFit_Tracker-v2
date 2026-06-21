@@ -600,7 +600,7 @@ export function DashboardClient({
   const quickActions = [
     { key: 'updateWeight', Icon: Scale, color: '#aaff00', path: '/weight' },
     { key: 'viewProgress', Icon: Activity, color: '#60a5fa', path: '/measurements' },
-    { key: 'startWorkout', Icon: Dumbbell, color: '#c084fc', path: '/workouts' },
+    { key: 'startWorkout', Icon: Dumbbell, color: '#c084fc', path: '/body' },
     { key: 'nutrition', Icon: Flame, color: '#fb923c', path: '/calories' },
   ] as const;
 
@@ -812,7 +812,7 @@ export function DashboardClient({
             </p>
             <motion.button
               whileTap={{ scale: 0.96 }}
-              onClick={() => router.push('/workouts')}
+              onClick={() => router.push('/body')}
               className="rounded-xl border border-[rgba(170,255,0,0.25)] bg-[rgba(170,255,0,0.06)] px-5 py-2.5 text-[12px] font-bold text-[#aaff00]"
             >
               Start a workout

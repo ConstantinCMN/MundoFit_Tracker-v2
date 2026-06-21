@@ -402,6 +402,7 @@
     "generator": "Generador",
     "library": "Biblioteca de ejercicios",
     "history": "Historial",
+    "workoutType": "Tipo de entrenamiento",
     "myWorkouts": "Mis entrenamientos",
     "recommended": "Recomendados para ti",
     "noWorkouts": "Sin entrenamientos creados",
