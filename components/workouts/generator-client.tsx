@@ -22,6 +22,7 @@ import {
   GOALS, EXPERIENCE_LEVELS, DEFAULT_GOAL, DEFAULT_LEVEL,
   type Goal, type ExperienceLevel,
 } from '@/lib/workouts/training-goals';
+import type { SplitType } from '@/lib/workouts/split-types';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -165,10 +166,12 @@ export function GeneratorClient({
   locale,
   initialMuscles,
   initialView,
+  initialSplit,
 }: {
   locale: string;
   initialMuscles?: string[];
   initialView?: BodyView;
+  initialSplit?: SplitType;
 }) {
   const t  = useTranslations('workouts');
   const tm = useTranslations('workouts.muscles');
@@ -272,7 +275,7 @@ export function GeneratorClient({
       )
     );
 
-    saveGeneratedWorkout(plan, locale, startedAtRef.current, durationSec).then(({ error: err }) => {
+    saveGeneratedWorkout(plan, locale, startedAtRef.current, durationSec, initialSplit ?? null).then(({ error: err }) => {
       if (err) {
         setSaveStatus('error');
         setSaveError(err);

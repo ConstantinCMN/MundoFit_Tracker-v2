@@ -290,6 +290,7 @@ export type Database = {
           workout_type: WorkoutType;
           location: TrainingLocation | null;
           target_muscles: string[] | null;
+          split_type: string | null;
           estimated_duration_min: number | null;
           is_template: boolean;
           created_at: string;
@@ -303,6 +304,7 @@ export type Database = {
           workout_type?: WorkoutType;
           location?: TrainingLocation | null;
           target_muscles?: string[] | null;
+          split_type?: string | null;
           estimated_duration_min?: number | null;
           is_template?: boolean;
         };

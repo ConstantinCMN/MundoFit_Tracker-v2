@@ -10,6 +10,7 @@ import {
   type Goal,
   type ExperienceLevel,
 } from '@/lib/workouts/training-goals';
+import type { SplitType } from '@/lib/workouts/split-types';
 
 export type WorkoutExercisePlan = {
   exercise: Exercise;
@@ -137,7 +138,8 @@ export async function saveGeneratedWorkout(
   plan: GeneratedWorkoutPlan,
   locale: string,
   startedAt: Date,
-  durationSec: number
+  durationSec: number,
+  split: SplitType | null = null
 ): Promise<{ error: string | null }> {
   const supabase = await createClient();
 
@@ -157,6 +159,7 @@ export async function saveGeneratedWorkout(
       name,
       workout_type: 'generated',
       target_muscles: plan.target_muscles,
+      split_type: split,
       estimated_duration_min: plan.estimated_duration_min,
     })
     .select('id')
