@@ -2,7 +2,9 @@ import { setRequestLocale } from 'next-intl/server';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { DashboardClient } from '@/components/dashboard/dashboard-client';
-import type { Profile, WorkoutSession } from '@/types';
+import { getActiveSchedule } from '@/lib/actions/schedules';
+import { getTodayDayIndex } from '@/lib/workouts/schedule-utils';
+import type { Profile } from '@/types';
 
 export const dynamic = 'force-dynamic';
 
@@ -29,38 +31,21 @@ export default async function DashboardPage({
 
   if (!profile) redirect(`/${locale}/onboarding`);
 
-  const weekStart = new Date();
-  weekStart.setHours(0, 0, 0, 0);
-  weekStart.setDate(weekStart.getDate() - weekStart.getDay());
-
-  const [
-    { data: rawWeightLogs },
-    { data: recentSessionsData },
-    { count: totalSessionCount },
-    { count: weekSessionCount },
-  ] = await Promise.all([
+  const [{ data: rawWeightLogs }, { data: activeSchedule }] = await Promise.all([
     supabase
       .from('weight_logs')
       .select('weight_kg, logged_at')
       .eq('user_id', user.id)
       .order('logged_at', { ascending: false })
       .limit(7),
-    supabase
-      .from('workout_sessions')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('started_at', { ascending: false })
-      .limit(5),
-    supabase
-      .from('workout_sessions')
-      .select('*', { count: 'exact', head: true })
-      .eq('user_id', user.id),
-    supabase
-      .from('workout_sessions')
-      .select('*', { count: 'exact', head: true })
-      .eq('user_id', user.id)
-      .gte('started_at', weekStart.toISOString()),
+    getActiveSchedule(),
   ]);
+
+  const todayDayIndex = activeSchedule ? getTodayDayIndex(activeSchedule.schedule.start_date) : null;
+  const todayDay =
+    todayDayIndex != null
+      ? activeSchedule?.days.find(d => d.day_index === todayDayIndex) ?? null
+      : null;
 
   const weightLogs = [...(rawWeightLogs ?? [])].reverse() as Array<{
     weight_kg: number;
@@ -81,9 +66,7 @@ export default async function DashboardPage({
       hour={hour}
       dateStr={dateStr}
       weightLogs={weightLogs}
-      recentSessions={(recentSessionsData ?? []) as WorkoutSession[]}
-      totalSessions={totalSessionCount ?? 0}
-      weekSessions={weekSessionCount ?? 0}
+      todayDay={todayDay}
     />
   );
 }

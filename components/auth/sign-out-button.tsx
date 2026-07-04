@@ -6,7 +6,7 @@ import { useRouter } from '@/lib/i18n/navigation';
 import { signOutAction } from '@/lib/actions/auth';
 import { Button } from '@/components/ui/button';
 
-export function SignOutButton({ locale }: { locale: string }) {
+export function SignOutButton({}: { locale: string }) {
   const t = useTranslations('profile.actions');
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);

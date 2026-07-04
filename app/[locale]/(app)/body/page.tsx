@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { setRequestLocale } from 'next-intl/server';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
@@ -19,5 +20,9 @@ export default async function BodyHubPage({
   } = await supabase.auth.getUser();
   if (!user) redirect(`/${locale}/login`);
 
-  return <BodyHubClient />;
+  return (
+    <Suspense>
+      <BodyHubClient />
+    </Suspense>
+  );
 }

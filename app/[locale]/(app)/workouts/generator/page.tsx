@@ -12,10 +12,16 @@ export default async function WorkoutGeneratorPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ muscles?: string; view?: string; split?: string }>;
+  searchParams: Promise<{
+    muscles?: string;
+    view?: string;
+    split?: string;
+    scheduleDay?: string;
+    workoutId?: string;
+  }>;
 }) {
   const { locale } = await params;
-  const { muscles, view, split } = await searchParams;
+  const { muscles, view, split, scheduleDay, workoutId } = await searchParams;
   setRequestLocale(locale);
 
   const initialMuscles = muscles ? muscles.split(',').filter(Boolean) : undefined;
@@ -29,6 +35,8 @@ export default async function WorkoutGeneratorPage({
       initialMuscles={initialMuscles}
       initialView={initialView}
       initialSplit={initialSplit}
+      initialScheduleDayId={scheduleDay}
+      initialWorkoutId={workoutId}
     />
   );
 }

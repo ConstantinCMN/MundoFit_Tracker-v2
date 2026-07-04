@@ -36,8 +36,12 @@ export type MealType = 'breakfast' | 'lunch' | 'dinner' | 'snack';
 export type Difficulty = 'beginner' | 'intermediate' | 'advanced';
 export type ExerciseType = 'strength' | 'cardio' | 'flexibility' | 'balance';
 export type WorkoutType = 'custom' | 'generated' | 'recommended';
-export type GenderTarget = 'male' | 'female' | 'both';
+export type ScheduleDayType =
+  | 'push' | 'pull' | 'legs' | 'upper' | 'lower' | 'full' | 'custom' | 'rest';
+export type GenderTarget          = 'male' | 'female' | 'both';
 export type PreferredWorkoutStyle = 'strength' | 'cardio' | 'hiit' | 'flexibility' | 'mixed';
+export type ExerciseCategory      = 'compound' | 'isolation' | 'cardio' | 'mobility' | 'core' | 'plyometric' | 'olympic';
+export type MovementPattern       = 'push' | 'pull' | 'hinge' | 'squat' | 'carry' | 'rotation' | 'isolation' | 'locomotion';
 
 // ─── Database type ────────────────────────────────────────────────────────────
 
@@ -241,19 +245,38 @@ export type Database = {
       exercises: {
         Row: {
           id: string;
+          slug: string | null;
           name_ro: string;
           name_en: string;
           name_es: string;
           description_ro: string | null;
           description_en: string | null;
           description_es: string | null;
+          aliases: string[];
+          category: ExerciseCategory | null;
           muscle_groups: string[];
           secondary_muscles: string[] | null;
           equipment: string[];
           difficulty: Difficulty | null;
           exercise_type: ExerciseType | null;
+          movement_pattern: MovementPattern | null;
+          is_unilateral: boolean;
           location: TrainingLocation | null;
           gender_target: GenderTarget;
+          instructions_en: unknown;
+          instructions_ro: unknown;
+          instructions_es: unknown;
+          mistakes_en: unknown;
+          mistakes_ro: unknown;
+          mistakes_es: unknown;
+          tips_en: unknown;
+          tips_ro: unknown;
+          tips_es: unknown;
+          keywords: string[];
+          muscle_map_id: string | null;
+          hero_image_url: string | null;
+          demo_image_url: string | null;
+          video_url: string | null;
           is_custom: boolean;
           created_by: string | null;
           created_at: string;
@@ -261,19 +284,38 @@ export type Database = {
         };
         Insert: {
           id?: string;
+          slug?: string | null;
           name_ro: string;
           name_en: string;
           name_es: string;
           description_ro?: string | null;
           description_en?: string | null;
           description_es?: string | null;
+          aliases?: string[];
+          category?: ExerciseCategory | null;
           muscle_groups: string[];
           secondary_muscles?: string[] | null;
           equipment: string[];
           difficulty?: Difficulty | null;
           exercise_type?: ExerciseType | null;
+          movement_pattern?: MovementPattern | null;
+          is_unilateral?: boolean;
           location?: TrainingLocation | null;
           gender_target?: GenderTarget;
+          instructions_en?: unknown;
+          instructions_ro?: unknown;
+          instructions_es?: unknown;
+          mistakes_en?: unknown;
+          mistakes_ro?: unknown;
+          mistakes_es?: unknown;
+          tips_en?: unknown;
+          tips_ro?: unknown;
+          tips_es?: unknown;
+          keywords?: string[];
+          muscle_map_id?: string | null;
+          hero_image_url?: string | null;
+          demo_image_url?: string | null;
+          video_url?: string | null;
           is_custom?: boolean;
           created_by?: string | null;
         };
@@ -377,6 +419,7 @@ export type Database = {
           session_id: string;
           exercise_id: string;
           set_number: number;
+          position: number;
           reps: number | null;
           weight_kg: number | null;
           duration_sec: number | null;
@@ -390,6 +433,7 @@ export type Database = {
           session_id: string;
           exercise_id: string;
           set_number: number;
+          position?: number;
           reps?: number | null;
           weight_kg?: number | null;
           duration_sec?: number | null;
@@ -398,6 +442,63 @@ export type Database = {
           completed?: boolean;
         };
         Update: Partial<Database['public']['Tables']['session_sets']['Insert']>;
+        Relationships: [];
+      };
+
+      workout_schedules: {
+        Row: {
+          id: string;
+          user_id: string;
+          name: string;
+          start_date: string;
+          is_active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          name: string;
+          start_date: string;
+          is_active?: boolean;
+        };
+        Update: Partial<Database['public']['Tables']['workout_schedules']['Insert']>;
+        Relationships: [];
+      };
+
+      workout_schedule_days: {
+        Row: {
+          id: string;
+          schedule_id: string;
+          day_index: number;
+          day_type: ScheduleDayType;
+          workout_id: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          schedule_id: string;
+          day_index: number;
+          day_type: ScheduleDayType;
+          workout_id?: string | null;
+        };
+        Update: Partial<Database['public']['Tables']['workout_schedule_days']['Insert']>;
+        Relationships: [];
+      };
+
+      user_exercise_favorites: {
+        Row: {
+          id: string;
+          user_id: string;
+          exercise_id: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          exercise_id: string;
+        };
+        Update: Partial<Database['public']['Tables']['user_exercise_favorites']['Insert']>;
         Relationships: [];
       };
     };

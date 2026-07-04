@@ -31,9 +31,11 @@ export function Header() {
 
   const title = titleKey ? t(titleKey as Parameters<typeof t>[0]) : '';
 
-  // Show back button on nested routes (more than 1 segment after locale)
+  // Show back button on nested routes (more than 1 segment after locale).
+  // My Workouts is a top-level tab but still needs a way back to Body Hub.
   const segments = pathWithoutLocale.split('/').filter(Boolean);
   const isNested = segments.length > 1;
+  const showBack = isNested || pathWithoutLocale === '/workouts';
 
   return (
     <motion.header
@@ -43,7 +45,7 @@ export function Header() {
       <div className="app-container flex h-full items-center justify-between px-4">
         {/* Left slot — back button */}
         <div className="w-8">
-          {isNested && (
+          {showBack && (
             <button
               onClick={() => router.back()}
               className="flex h-8 w-8 items-center justify-center rounded-full transition-colors hover:bg-[#1a1a1a] active:bg-[#222222]"

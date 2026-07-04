@@ -188,6 +188,20 @@
       "noData": "Sin entrenamientos recientes",
       "start": "Iniciar entrenamiento"
     },
+    "todayWorkout": {
+      "title": "Entrenamiento de hoy",
+      "setupCta": "Crea tu programa",
+      "setupHint": "Planifica un programa de 2 semanas",
+      "restDay": "Día de descanso",
+      "noWorkout": "Aún sin entrenamiento",
+      "generateCta": "Generar",
+      "completed": "Completado",
+      "startButton": "Empezar entrenamiento",
+      "viewProgram": "Ver programa",
+      "difficultyEasy": "Fácil",
+      "difficultyMedium": "Medio",
+      "difficultyHard": "Difícil"
+    },
     "quickLog": {
       "title": "Registro rápido",
       "weight": "+ Peso",
@@ -249,7 +263,21 @@
       "updateWeight": "Peso",
       "viewProgress": "Progreso",
       "startWorkout": "Entrenamiento",
-      "nutrition": "Nutrición"
+      "nutrition": "Nutrición",
+      "bodyHub": "Body Hub",
+      "bodyHubDesc": "Elige un músculo y empieza",
+      "generator": "Generador",
+      "generatorDesc": "Crea un entrenamiento personalizado",
+      "measurements": "Medidas",
+      "measurementsDesc": "Registra tus medidas corporales",
+      "workoutHistory": "Historial",
+      "workoutHistoryDesc": "Revisa tus sesiones pasadas"
+    },
+    "recentWorkout": {
+      "title": "Entrenamientos recientes",
+      "empty": "Aún sin entrenamientos",
+      "emptyHint": "Completa un entrenamiento para empezar a seguir tu progreso",
+      "startCta": "Empezar primer entrenamiento"
     },
     "calorie": {
       "title": "Calorías diarias",
@@ -261,19 +289,6 @@
       "title": "Tendencia de peso",
       "noData": "Sin datos de peso aún",
       "logFirst": "Registra tu primer peso para ver la tendencia"
-    },
-    "dailyGoals": {
-      "title": "Objetivos diarios",
-      "water": "Agua",
-      "waterTarget": "8 vasos",
-      "workout": "Entrenamiento",
-      "workoutTarget": "30 min",
-      "sleep": "Sueño",
-      "sleepTarget": "8 hrs"
-    },
-    "recentSessions": {
-      "title": "Sesiones recientes",
-      "noSessions": "Sin entrenamientos recientes"
     }
   },
   "weight": {
@@ -414,8 +429,6 @@
     "create": "Crear entrenamiento",
     "createFirst": "Crea tu primer entrenamiento",
     "startQuick": "Inicio rápido",
-    "totalSessions": "Sesiones",
-    "thisWeek": "Esta semana",
     "noSessions": "Sin sesiones",
     "firstSessionHint": "Registra tu primer entrenamiento para comenzar a seguir tu progreso",
     "recentSessions": "Sesiones recientes",
@@ -431,13 +444,25 @@
       "cardio": "Cardio",
       "fullBody": "Cuerpo completo"
     },
-    "session": {
-      "noData": "Sin historial de entrenamientos",
-      "hint": "Comienza tu primer entrenamiento para ver tu historial aquí",
-      "historyTitle": "Historial de entrenamientos",
-      "min": "min",
-      "kg": "kg",
-      "sets": "series"
+    "historyPage": {
+      "title": "Historial de entrenamientos",
+      "overview": {
+        "total": "Entrenamientos",
+        "thisWeek": "Esta semana",
+        "thisMonth": "Este mes",
+        "totalTime": "Tiempo de entrenamiento"
+      },
+      "filters": {
+        "all": "Todos",
+        "week": "Esta Semana",
+        "month": "Este Mes"
+      },
+      "deletedWorkout": "Entrenamiento eliminado",
+      "noFilterResults": "Ningún entrenamiento coincide con este filtro",
+      "details": {
+        "exercises": "Ejercicios",
+        "unavailable": "La lista de ejercicios no está disponible para este entrenamiento"
+      }
     },
     "muscles": {
       "chest": "Pecho",
@@ -477,6 +502,20 @@
       "subtitle": "Selecciona los músculos que quieres entrenar",
       "navLabel": "Mapa Muscular"
     },
+    "program": {
+      "navLabel": "Programa",
+      "title": "Programa de 2 semanas",
+      "subtitle": "Planifica tus días de entrenamiento con antelación",
+      "createIntro": "Elige un tipo para cada día",
+      "createCta": "Crear programa",
+      "dayLabel": "Día {n}",
+      "today": "Hoy",
+      "noWorkout": "Aún sin entrenamiento",
+      "generateCta": "Generar",
+      "resetCta": "Empezar un programa nuevo",
+      "createError": "No se pudo crear el programa. Inténtalo de nuevo.",
+      "updateError": "No se pudo actualizar este día. Inténtalo de nuevo."
+    },
     "delete": {
       "confirm": "¿Eliminar entrenamiento?",
       "success": "Entrenamiento eliminado",
@@ -499,6 +538,7 @@
       "startWorkout": "Iniciar entrenamiento",
       "exerciseOf": "Ejercicio {current} de {total}",
       "setOf": "Serie {current} de {total}",
+      "weightLabel": "Peso (kg)",
       "doneSet": "Listo",
       "rest": "Descanso",
       "skip": "Saltar descanso",
@@ -570,20 +610,47 @@
       "glutes": "El grupo muscular más potente del cuerpo. Impulsa la extensión de cadera y la potencia.",
       "hamstrings": "Músculos posteriores del muslo que controlan la extensión de cadera y flexión de rodilla."
     },
-    "musclesSelected": "{count} seleccionados"
+    "musclesSelected": "{count} seleccionados",
+    "lastSelectedLabel": "Último músculo seleccionado",
+    "musclesSelectedLabel": "Músculos seleccionados"
   },
   "workoutStart": {
     "title": "Tipo de entrenamiento",
     "subtitle": "Elige qué quieres entrenar hoy",
     "continue": "Continuar",
     "types": {
-      "push": { "label": "Empuje", "desc": "Pecho, hombros, tríceps" },
-      "pull": { "label": "Tracción", "desc": "Espalda, bíceps, antebrazos" },
-      "legs": { "label": "Piernas", "desc": "Cuádriceps, isquiotibiales, glúteos, gemelos" },
-      "upper": { "label": "Cuerpo superior", "desc": "Pecho, espalda, hombros, brazos" },
-      "lower": { "label": "Cuerpo inferior", "desc": "Cuádriceps, isquiotibiales, glúteos, gemelos, lumbar" },
-      "full": { "label": "Cuerpo completo", "desc": "Una mezcla equilibrada de los principales grupos musculares" },
-      "custom": { "label": "Personalizado", "desc": "Elige tus propios músculos desde cero" }
+      "push": {
+        "label": "Empuje",
+        "desc": "Pecho, hombros, tríceps"
+      },
+      "pull": {
+        "label": "Tracción",
+        "desc": "Espalda, bíceps, antebrazos"
+      },
+      "legs": {
+        "label": "Piernas",
+        "desc": "Cuádriceps, isquiotibiales, glúteos, gemelos"
+      },
+      "upper": {
+        "label": "Cuerpo superior",
+        "desc": "Pecho, espalda, hombros, brazos"
+      },
+      "lower": {
+        "label": "Cuerpo inferior",
+        "desc": "Cuádriceps, isquiotibiales, glúteos, gemelos, lumbar"
+      },
+      "full": {
+        "label": "Cuerpo completo",
+        "desc": "Una mezcla equilibrada de los principales grupos musculares"
+      },
+      "custom": {
+        "label": "Personalizado",
+        "desc": "Elige tus propios músculos desde cero"
+      },
+      "rest": {
+        "label": "Descanso",
+        "desc": "Día de recuperación, sin entrenamiento"
+      }
     }
   },
   "profile": {

@@ -1,48 +1,48 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { Dumbbell, Clock, TrendingUp, Calendar, MoreVertical } from 'lucide-react';
+import { Dumbbell, Clock, Calendar, MoreVertical } from 'lucide-react';
 import { useRouter } from '@/lib/i18n/navigation';
 import { cn } from '@/lib/utils/cn';
 import type { WorkoutSession } from '@/types';
 import { deleteWorkoutSession } from '@/lib/actions/workouts';
 import { Toast } from '@/components/ui/toast';
 import { SplitBadge } from '@/components/workouts/split-badge';
+import { SessionDetailSheet } from '@/components/workouts/session-detail-sheet';
+import { SPLIT_TYPES, SPLIT_ICON, SPLIT_COLOR, type SplitType } from '@/lib/workouts/split-types';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 export type SessionWithSplit = WorkoutSession & {
-  workouts: { split_type: string | null } | null;
+  split_type: string | null;
+  exerciseCount: number;
 };
 
 type HistoryStats = {
   total: number;
-  totalVolumeKg: number;
-  avgDurationMin: number;
   thisWeek: number;
+  thisMonth: number;
+  totalDurationSec: number;
 };
+
+type DateFilter = 'all' | 'week' | 'month';
+type HistoryFilter = DateFilter | SplitType;
 
 type ToastState = { message: string; variant: 'success' | 'error'; id: number } | null;
 
+const DATE_FILTERS: DateFilter[] = ['all', 'week', 'month'];
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
-function computeStats(sessions: WorkoutSession[]): HistoryStats {
-  const weekStart = new Date();
-  weekStart.setHours(0, 0, 0, 0);
-  weekStart.setDate(weekStart.getDate() - weekStart.getDay());
-  const totalDurationSec = sessions.reduce((s, sess) => s + (sess.duration_sec ?? 0), 0);
-  return {
-    total: sessions.length,
-    totalVolumeKg: Math.round(sessions.reduce((s, sess) => s + (sess.total_volume_kg ?? 0), 0)),
-    avgDurationMin:
-      sessions.length > 0 ? Math.round(totalDurationSec / sessions.length / 60) : 0,
-    thisWeek: sessions.filter(s => new Date(s.started_at) >= weekStart).length,
-  };
+function formatTotalTime(totalSec: number): string {
+  const totalMin = Math.round(totalSec / 60);
+  if (totalMin < 60) return `${totalMin}m`;
+  const h = Math.floor(totalMin / 60);
+  const m = totalMin % 60;
+  return m > 0 ? `${h}h ${m}m` : `${h}h`;
 }
-
-// ── Animation ─────────────────────────────────────────────────────────────────
 
 function fadeUp(delay = 0) {
   return {
@@ -85,12 +85,45 @@ function StatChip({
   );
 }
 
+// ── Filter chip ───────────────────────────────────────────────────────────────
+
+function FilterChip({
+  active,
+  label,
+  icon: Icon,
+  color,
+  onClick,
+}: {
+  active: boolean;
+  label: string;
+  icon?: typeof Dumbbell;
+  color?: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        'flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-3.5 py-2 text-[12px] font-bold transition-colors',
+        active
+          ? 'border-transparent bg-[#aaff00] text-[#0a0a0a]'
+          : 'border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)] text-[#888888]'
+      )}
+    >
+      {Icon && <Icon size={12} color={active ? '#0a0a0a' : color} />}
+      {label}
+    </button>
+  );
+}
+
 // ── Session card ──────────────────────────────────────────────────────────────
 
 function SessionCard({
   session,
   isActive,
   isDeleting,
+  onOpenDetails,
   onToggleMenu,
   onCancel,
   onDelete,
@@ -98,15 +131,20 @@ function SessionCard({
   session: SessionWithSplit;
   isActive: boolean;
   isDeleting: boolean;
+  onOpenDetails: () => void;
   onToggleMenu: () => void;
   onCancel: () => void;
   onDelete: () => void;
 }) {
   const t = useTranslations('workouts');
+  const th = useTranslations('workouts.historyPage');
   const tc = useTranslations('common');
 
+  const isDeletedWorkout = session.workout_id == null;
   const durationMin = session.duration_sec
-    ? Math.round(session.duration_sec / 60)
+    ? session.duration_sec < 60
+      ? '<1'
+      : Math.round(session.duration_sec / 60)
     : null;
   const date = new Date(session.started_at);
   const dateStr = date.toLocaleDateString(undefined, {
@@ -121,12 +159,18 @@ function SessionCard({
 
   return (
     <div className="overflow-hidden rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] backdrop-blur-sm">
-      <div className="p-4">
+      <div onClick={onOpenDetails} className="cursor-pointer p-4">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0 flex-1">
             <p className="truncate text-[14px] font-bold text-[#f5f5f5]">{session.name}</p>
             <div className="mt-0.5 flex items-center gap-1.5">
-              <SplitBadge split={session.workouts?.split_type} />
+              {isDeletedWorkout ? (
+                <span className="rounded-full border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.04)] px-2 py-0.5 text-[10px] font-bold text-[#666666]">
+                  {th('deletedWorkout')}
+                </span>
+              ) : (
+                <SplitBadge split={session.split_type} />
+              )}
               <p className="text-[11px] text-[#555555]">
                 {dateStr} · {timeStr}
               </p>
@@ -138,7 +182,10 @@ function SessionCard({
             </div>
             <button
               type="button"
-              onClick={onToggleMenu}
+              onClick={e => {
+                e.stopPropagation();
+                onToggleMenu();
+              }}
               disabled={isDeleting}
               aria-label="More options"
               className="flex h-7 w-7 items-center justify-center rounded-lg text-[#555555] transition-colors hover:bg-[rgba(255,255,255,0.06)] hover:text-[#888888] disabled:opacity-40"
@@ -148,7 +195,7 @@ function SessionCard({
           </div>
         </div>
 
-        {(durationMin != null || (session.total_volume_kg ?? 0) > 0) && (
+        {(durationMin != null || !isDeletedWorkout) && (
           <div className="mt-3 flex items-center gap-4">
             {durationMin != null && (
               <div className="flex items-center gap-1.5">
@@ -156,11 +203,11 @@ function SessionCard({
                 <span className="text-[12px] text-[#666666]">{durationMin} min</span>
               </div>
             )}
-            {(session.total_volume_kg ?? 0) > 0 && (
+            {!isDeletedWorkout && session.exerciseCount > 0 && (
               <div className="flex items-center gap-1.5">
-                <TrendingUp size={12} color="#555555" />
+                <Dumbbell size={12} color="#555555" />
                 <span className="text-[12px] text-[#666666]">
-                  {Math.round(session.total_volume_kg!)} kg
+                  {t('plan.exercises', { count: session.exerciseCount })}
                 </span>
               </div>
             )}
@@ -211,7 +258,7 @@ function SessionCard({
   );
 }
 
-// ── Empty state ───────────────────────────────────────────────────────────────
+// ── Empty states ──────────────────────────────────────────────────────────────
 
 function EmptyHistory({ onStart }: { onStart: () => void }) {
   return (
@@ -237,39 +284,70 @@ function EmptyHistory({ onStart }: { onStart: () => void }) {
   );
 }
 
+function EmptyFilterResult({ label }: { label: string }) {
+  return (
+    <div className="flex flex-col items-center gap-2 rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-5 py-8 backdrop-blur-sm">
+      <Calendar size={22} color="#333333" />
+      <p className="text-[13px] font-semibold text-[#555555]">{label}</p>
+    </div>
+  );
+}
+
 // ── Main component ────────────────────────────────────────────────────────────
 
 export function WorkoutHistoryClient({
   sessions: initialSessions,
-  stats: initialStats,
+  stats,
+  locale,
 }: {
   sessions: SessionWithSplit[];
   stats: HistoryStats;
+  locale: string;
 }) {
   const t = useTranslations('workouts');
+  const th = useTranslations('workouts.historyPage');
+  const tt = useTranslations('workoutStart.types');
   const router = useRouter();
 
   const [localSessions, setLocalSessions] = useState(initialSessions);
-  const [stats, setStats] = useState(initialStats);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [toast, setToast] = useState<ToastState>(null);
+  const [filter, setFilter] = useState<HistoryFilter>('all');
+  const [selectedSession, setSelectedSession] = useState<SessionWithSplit | null>(null);
+
+  const { weekStart, monthStart } = useMemo(() => {
+    const now = new Date();
+    const week = new Date();
+    week.setHours(0, 0, 0, 0);
+    week.setDate(week.getDate() - week.getDay());
+    const month = new Date(now.getFullYear(), now.getMonth(), 1);
+    month.setHours(0, 0, 0, 0);
+    return { weekStart: week, monthStart: month };
+  }, []);
+
+  const filteredSessions = useMemo(() => {
+    if (filter === 'all') return localSessions;
+    if (filter === 'week') {
+      return localSessions.filter(s => new Date(s.started_at) >= weekStart);
+    }
+    if (filter === 'month') {
+      return localSessions.filter(s => new Date(s.started_at) >= monthStart);
+    }
+    return localSessions.filter(s => s.split_type === filter);
+  }, [localSessions, filter, weekStart, monthStart]);
 
   async function handleDelete(id: string) {
     setDeletingId(id);
 
     // Optimistic removal
     const prevSessions = localSessions;
-    const nextSessions = localSessions.filter(s => s.id !== id);
-    setLocalSessions(nextSessions);
-    setStats(computeStats(nextSessions));
+    setLocalSessions(localSessions.filter(s => s.id !== id));
 
     const { error } = await deleteWorkoutSession(id);
 
     if (error) {
-      // Revert
       setLocalSessions(prevSessions);
-      setStats(computeStats(prevSessions));
       setToast({ message: t('delete.error'), variant: 'error', id: Date.now() });
     } else {
       setToast({ message: t('delete.success'), variant: 'success', id: Date.now() });
@@ -281,33 +359,53 @@ export function WorkoutHistoryClient({
 
   return (
     <div className="pb-6">
-      {/* Stats */}
-      <motion.section {...fadeUp(0)} className="mb-7 px-5 pt-5">
+      {/* Overview stats */}
+      <motion.section {...fadeUp(0)} className="mb-6 px-5 pt-5">
         <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-[#3a3a3a]">
-          {t('session.historyTitle')}
+          {th('title')}
         </p>
-        <div className="grid grid-cols-3 gap-3">
-          <StatChip
-            label={t('totalSessions')}
-            value={String(stats.total)}
-            accent={stats.total > 0}
-          />
-          <StatChip label={t('thisWeek')} value={String(stats.thisWeek)} />
-          <StatChip
-            label="Avg"
-            value={stats.avgDurationMin > 0 ? `${stats.avgDurationMin}m` : '—'}
-          />
+        <div className="grid grid-cols-2 gap-3">
+          <StatChip label={th('overview.total')} value={String(stats.total)} accent={stats.total > 0} />
+          <StatChip label={th('overview.thisWeek')} value={String(stats.thisWeek)} />
+          <StatChip label={th('overview.thisMonth')} value={String(stats.thisMonth)} />
+          <StatChip label={th('overview.totalTime')} value={formatTotalTime(stats.totalDurationSec)} />
+        </div>
+      </motion.section>
+
+      {/* Filters */}
+      <motion.section {...fadeUp(0.04)} className="mb-5">
+        <div className="flex gap-2 overflow-x-auto px-5 pb-1">
+          {DATE_FILTERS.map(value => (
+            <FilterChip
+              key={value}
+              active={filter === value}
+              label={th(`filters.${value}`)}
+              onClick={() => setFilter(value)}
+            />
+          ))}
+          {SPLIT_TYPES.map(value => (
+            <FilterChip
+              key={value}
+              active={filter === value}
+              label={tt(`${value}.label` as Parameters<typeof tt>[0])}
+              icon={SPLIT_ICON[value]}
+              color={SPLIT_COLOR[value]}
+              onClick={() => setFilter(value)}
+            />
+          ))}
         </div>
       </motion.section>
 
       {/* Session list */}
-      <motion.section {...fadeUp(0.06)} className="px-5">
+      <motion.section {...fadeUp(0.08)} className="px-5">
         {localSessions.length === 0 ? (
           <EmptyHistory onStart={() => router.push('/body')} />
+        ) : filteredSessions.length === 0 ? (
+          <EmptyFilterResult label={th('noFilterResults')} />
         ) : (
           <div className="space-y-3">
             <AnimatePresence mode="popLayout">
-              {localSessions.map(session => (
+              {filteredSessions.map(session => (
                 <motion.div
                   key={session.id}
                   layout
@@ -320,6 +418,7 @@ export function WorkoutHistoryClient({
                     session={session}
                     isActive={activeId === session.id}
                     isDeleting={deletingId === session.id}
+                    onOpenDetails={() => setSelectedSession(session)}
                     onToggleMenu={() =>
                       setActiveId(prev => (prev === session.id ? null : session.id))
                     }
@@ -332,6 +431,13 @@ export function WorkoutHistoryClient({
           </div>
         )}
       </motion.section>
+
+      {/* Session details */}
+      <SessionDetailSheet
+        session={selectedSession}
+        locale={locale}
+        onClose={() => setSelectedSession(null)}
+      />
 
       {/* Toast */}
       <AnimatePresence>

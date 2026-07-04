@@ -188,6 +188,20 @@
       "noData": "Niciun antrenament recent",
       "start": "Începe antrenament"
     },
+    "todayWorkout": {
+      "title": "Antrenamentul de azi",
+      "setupCta": "Creează-ți programul",
+      "setupHint": "Planifică un program de 2 săptămâni",
+      "restDay": "Zi de repaus",
+      "noWorkout": "Niciun antrenament încă",
+      "generateCta": "Generează",
+      "completed": "Finalizat",
+      "startButton": "Începe antrenamentul",
+      "viewProgram": "Vezi programul",
+      "difficultyEasy": "Ușor",
+      "difficultyMedium": "Mediu",
+      "difficultyHard": "Dificil"
+    },
     "quickLog": {
       "title": "Înregistrare rapidă",
       "weight": "+ Greutate",
@@ -249,7 +263,21 @@
       "updateWeight": "Greutate",
       "viewProgress": "Progres",
       "startWorkout": "Antrenament",
-      "nutrition": "Nutriție"
+      "nutrition": "Nutriție",
+      "bodyHub": "Body Hub",
+      "bodyHubDesc": "Alege un mușchi și pornește",
+      "generator": "Generator",
+      "generatorDesc": "Creează un antrenament personalizat",
+      "measurements": "Măsurători",
+      "measurementsDesc": "Înregistrează-ți măsurătorile",
+      "workoutHistory": "Istoric",
+      "workoutHistoryDesc": "Revizuiește sesiunile trecute"
+    },
+    "recentWorkout": {
+      "title": "Antrenamente recente",
+      "empty": "Niciun antrenament încă",
+      "emptyHint": "Finalizează un antrenament pentru a urmări progresul tău",
+      "startCta": "Începe primul antrenament"
     },
     "calorie": {
       "title": "Calorii zilnice",
@@ -261,19 +289,6 @@
       "title": "Trend greutate",
       "noData": "Nicio dată despre greutate",
       "logFirst": "Înregistrează prima greutate pentru a vedea trendul"
-    },
-    "dailyGoals": {
-      "title": "Obiective zilnice",
-      "water": "Apă",
-      "waterTarget": "8 pahare",
-      "workout": "Antrenament",
-      "workoutTarget": "30 min",
-      "sleep": "Somn",
-      "sleepTarget": "8 ore"
-    },
-    "recentSessions": {
-      "title": "Sesiuni recente",
-      "noSessions": "Niciun antrenament recent"
     }
   },
   "weight": {
@@ -414,8 +429,6 @@
     "create": "Crează antrenament",
     "createFirst": "Crează primul tău antrenament",
     "startQuick": "Start rapid",
-    "totalSessions": "Sesiuni",
-    "thisWeek": "Săptămâna aceasta",
     "noSessions": "Nicio sesiune",
     "firstSessionHint": "Înregistrează primul antrenament pentru a urmări progresul",
     "recentSessions": "Sesiuni recente",
@@ -431,13 +444,25 @@
       "cardio": "Cardio",
       "fullBody": "Corp întreg"
     },
-    "session": {
-      "noData": "Niciun antrenament înregistrat",
-      "hint": "Începe primul antrenament pentru a vedea istoricul",
-      "historyTitle": "Istoric antrenamente",
-      "min": "min",
-      "kg": "kg",
-      "sets": "seturi"
+    "historyPage": {
+      "title": "Istoric antrenamente",
+      "overview": {
+        "total": "Antrenamente",
+        "thisWeek": "Săptămâna aceasta",
+        "thisMonth": "Luna aceasta",
+        "totalTime": "Timp de antrenament"
+      },
+      "filters": {
+        "all": "Toate",
+        "week": "Săptămâna aceasta",
+        "month": "Luna aceasta"
+      },
+      "deletedWorkout": "Antrenament șters",
+      "noFilterResults": "Niciun antrenament nu corespunde acestui filtru",
+      "details": {
+        "exercises": "Exerciții",
+        "unavailable": "Lista de exerciții nu este disponibilă pentru acest antrenament"
+      }
     },
     "muscles": {
       "chest": "Piept",
@@ -477,6 +502,20 @@
       "subtitle": "Selectează mușchii pe care vrei să îi antrenezi",
       "navLabel": "Hartă Musculară"
     },
+    "program": {
+      "navLabel": "Program",
+      "title": "Program de 2 săptămâni",
+      "subtitle": "Planifică-ți zilele de antrenament din timp",
+      "createIntro": "Alege un tip pentru fiecare zi",
+      "createCta": "Creează programul",
+      "dayLabel": "Ziua {n}",
+      "today": "Astăzi",
+      "noWorkout": "Niciun antrenament încă",
+      "generateCta": "Generează",
+      "resetCta": "Începe un program nou",
+      "createError": "Programul nu a putut fi creat. Încearcă din nou.",
+      "updateError": "Ziua nu a putut fi actualizată. Încearcă din nou."
+    },
     "delete": {
       "confirm": "Ștergi antrenamentul?",
       "success": "Antrenament șters",
@@ -499,6 +538,7 @@
       "startWorkout": "Începe antrenamentul",
       "exerciseOf": "Exercițiu {current} din {total}",
       "setOf": "Set {current} din {total}",
+      "weightLabel": "Greutate (kg)",
       "doneSet": "Gata",
       "rest": "Repaus",
       "skip": "Sari repausul",
@@ -570,20 +610,47 @@
       "glutes": "Cel mai puternic grup muscular al corpului. Susține extensia șoldului și forța totală.",
       "hamstrings": "Mușchii posteriori ai coapsei care controlează extensia șoldului și flexia genunchiului."
     },
-    "musclesSelected": "{count} selectați"
+    "musclesSelected": "{count} selectați",
+    "lastSelectedLabel": "Ultimul mușchi selectat",
+    "musclesSelectedLabel": "Mușchi selectați"
   },
   "workoutStart": {
     "title": "Tip antrenament",
     "subtitle": "Alege ce vrei să antrenezi astăzi",
     "continue": "Continuă",
     "types": {
-      "push": { "label": "Împingere", "desc": "Piept, umeri, triceps" },
-      "pull": { "label": "Tragere", "desc": "Spate, biceps, antebrațe" },
-      "legs": { "label": "Picioare", "desc": "Cvadricepși, ischiogambieri, fesieri, gambe" },
-      "upper": { "label": "Corp superior", "desc": "Piept, spate, umeri, brațe" },
-      "lower": { "label": "Corp inferior", "desc": "Cvadricepși, ischiogambieri, fesieri, gambe, lombari" },
-      "full": { "label": "Corp întreg", "desc": "Un mix echilibrat al grupelor musculare majore" },
-      "custom": { "label": "Personalizat", "desc": "Alege-ți propriii mușchi de la zero" }
+      "push": {
+        "label": "Împingere",
+        "desc": "Piept, umeri, triceps"
+      },
+      "pull": {
+        "label": "Tragere",
+        "desc": "Spate, biceps, antebrațe"
+      },
+      "legs": {
+        "label": "Picioare",
+        "desc": "Cvadricepși, ischiogambieri, fesieri, gambe"
+      },
+      "upper": {
+        "label": "Corp superior",
+        "desc": "Piept, spate, umeri, brațe"
+      },
+      "lower": {
+        "label": "Corp inferior",
+        "desc": "Cvadricepși, ischiogambieri, fesieri, gambe, lombari"
+      },
+      "full": {
+        "label": "Corp întreg",
+        "desc": "Un mix echilibrat al grupelor musculare majore"
+      },
+      "custom": {
+        "label": "Personalizat",
+        "desc": "Alege-ți propriii mușchi de la zero"
+      },
+      "rest": {
+        "label": "Repaus",
+        "desc": "Zi de recuperare, fără antrenament"
+      }
     }
   },
   "profile": {

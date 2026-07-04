@@ -4,18 +4,20 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import {
-  Zap, RotateCcw, ChevronLeft, Clock, Dumbbell,
-  Pause, Play, SkipForward, CheckCircle,
+  Zap, RotateCcw, Clock, Dumbbell, Trash2,
 } from 'lucide-react';
 import { useRouter } from '@/lib/i18n/navigation';
 import { MuscleMap, type MuscleId, type BodyView } from './muscle-map';
 import { useMuscleSelection } from './muscle-selection-context';
 import {
   getExercisesForMuscles,
+  getWorkoutPlanById,
   saveGeneratedWorkout,
+  deleteWorkout,
   type GeneratedWorkoutPlan,
   type WorkoutExercisePlan,
 } from '@/lib/actions/workouts';
+import { attachWorkoutToScheduleDay } from '@/lib/actions/schedules';
 import { cn } from '@/lib/utils/cn';
 import { Toast } from '@/components/ui/toast';
 import {
@@ -26,9 +28,7 @@ import type { SplitType } from '@/lib/workouts/split-types';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-type Phase      = 'select' | 'loading' | 'preview' | 'executing';
-type ExecMode   = 'active' | 'rest' | 'complete';
-type SaveStatus = 'idle' | 'saving' | 'error';
+type Phase      = 'select' | 'loading' | 'preview';
 type ToastState = { message: string; variant: 'success' | 'error'; id: number } | null;
 
 // ── Constants ─────────────────────────────────────────────────────────────────
@@ -44,6 +44,10 @@ const DIFFICULTY_DOT: Record<string, string> = {
   intermediate: 'bg-amber-400',
   advanced:     'bg-red-400',
 };
+
+// Floor on exercises in a preview plan — guarantees `plan.exercises` is
+// never empty when execution starts.
+const MIN_EXERCISES = 1;
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -124,10 +128,14 @@ function ExercisePlanCard({
   we,
   locale,
   muscleLabel,
+  onDelete,
+  deleteDisabled,
 }: {
   we: WorkoutExercisePlan;
   locale: string;
   muscleLabel: (id: string) => string;
+  onDelete?: () => void;
+  deleteDisabled?: boolean;
 }) {
   const name = exerciseName(we, locale);
   const setInfo = we.reps != null
@@ -156,6 +164,17 @@ function ExercisePlanCard({
       <span className="shrink-0 text-[13px] font-black tabular-nums text-[#aaff00]">
         {setInfo}
       </span>
+      {onDelete && (
+        <button
+          type="button"
+          onClick={onDelete}
+          disabled={deleteDisabled}
+          aria-label="Remove exercise"
+          className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-[#555555] transition-colors hover:bg-[rgba(255,255,255,0.06)] hover:text-red-400 disabled:pointer-events-none disabled:opacity-30"
+        >
+          <Trash2 size={14} />
+        </button>
+      )}
     </div>
   );
 }
@@ -167,11 +186,15 @@ export function GeneratorClient({
   initialMuscles,
   initialView,
   initialSplit,
+  initialScheduleDayId,
+  initialWorkoutId,
 }: {
   locale: string;
   initialMuscles?: string[];
   initialView?: BodyView;
   initialSplit?: SplitType;
+  initialScheduleDayId?: string;
+  initialWorkoutId?: string;
 }) {
   const t  = useTranslations('workouts');
   const tm = useTranslations('workouts.muscles');
@@ -186,20 +209,10 @@ export function GeneratorClient({
   const [error, setError] = useState<string | null>(null);
   const [toast, setToast] = useState<ToastState>(null);
 
-  // ── Execution state ───────────────────────────────────────────────────────
-  const [exIdx,      setExIdx]      = useState(0);
-  const [setNum,     setSetNum]     = useState(1);
-  const [mode,       setMode]       = useState<ExecMode>('active');
-  const [seconds,    setSeconds]    = useState(0);
-  const [paused,     setPaused]     = useState(false);
-  const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
-  const [saveError,  setSaveError]  = useState<string | null>(null);
-
-  // ── Timing refs — read only at save time, never drive renders ─────────────
-  const startedAtRef     = useRef<Date | null>(null);
-  const pauseStartRef    = useRef<number | null>(null);
-  const totalPausedMsRef = useRef<number>(0);
   const didAutoGenerateRef = useRef(false);
+  // Id of the most recently generated-but-not-yet-started workout row, so a
+  // regenerate can replace it instead of leaving an orphaned duplicate.
+  const savedWorkoutIdRef = useRef<string | null>(null);
 
   const { selected, toggleMuscle, clearAll } = useMuscleSelection();
 
@@ -222,6 +235,7 @@ export function GeneratorClient({
 
   // Auto-generate once when arriving from Body Hub with pre-selected muscles
   useEffect(() => {
+    if (initialWorkoutId) return;
     if (!initialMuscles?.length) return;
     if (didAutoGenerateRef.current) return;
     if (selectedList.length === 0) return;
@@ -230,133 +244,110 @@ export function GeneratorClient({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedList.length]);
 
-  // ── Effects ───────────────────────────────────────────────────────────────
-
-  // Rest countdown: one setTimeout per tick — self-cancels on every dep change
+  // Resume an already-saved workout (e.g. "Start Workout" from the Dashboard's
+  // Today's Workout card) straight into Preview — reads existing rows only,
+  // never re-runs generation.
+  const didLoadWorkoutRef = useRef(false);
   useEffect(() => {
-    if (phase !== 'executing' || mode !== 'rest' || paused || seconds <= 0) return;
-    const id = setTimeout(() => setSeconds(s => s - 1), 1000);
-    return () => clearTimeout(id);
-  }, [phase, mode, seconds, paused]);
-
-  // Auto-advance when rest countdown reaches zero
-  useEffect(() => {
-    if (phase !== 'executing' || mode !== 'rest' || seconds !== 0 || paused || !plan) return;
-    const ex = plan.exercises[exIdx];
-    if (setNum < ex.sets) {
-      setSetNum(s => s + 1);
-      setMode('active');
-    } else if (exIdx < plan.exercises.length - 1) {
-      setExIdx(i => i + 1);
-      setSetNum(1);
-      setMode('active');
-    } else {
-      setMode('complete');
-    }
-  }, [phase, mode, seconds, paused, plan, exIdx, setNum]);
-
-  // Auto-save on completion — Retry resets saveStatus to 'idle' to re-trigger
-  useEffect(() => {
-    if (phase !== 'executing' || mode !== 'complete' || saveStatus !== 'idle') return;
-    if (!plan || !startedAtRef.current) {
-      setSaveStatus('error');
-      setSaveError('No workout data');
-      return;
-    }
-
-    setSaveStatus('saving');
-    setSaveError(null);
-
-    const endedAt = new Date();
-    const durationSec = Math.max(
-      1,
-      Math.round(
-        (endedAt.getTime() - startedAtRef.current.getTime() - totalPausedMsRef.current) / 1000
-      )
-    );
-
-    saveGeneratedWorkout(plan, locale, startedAtRef.current, durationSec, initialSplit ?? null).then(({ error: err }) => {
-      if (err) {
-        setSaveStatus('error');
-        setSaveError(err);
-      } else {
-        setToast({ message: t('timer.saved'), variant: 'success', id: Date.now() });
-        router.push('/workouts/history');
+    if (!initialWorkoutId) return;
+    if (didLoadWorkoutRef.current) return;
+    didLoadWorkoutRef.current = true;
+    setPhase('loading');
+    getWorkoutPlanById(initialWorkoutId).then(({ data, error: err }) => {
+      if (err || !data) {
+        setError(err ?? t('plan.errorMsg'));
+        setPhase('select');
+        return;
       }
+      savedWorkoutIdRef.current = initialWorkoutId;
+      setPlan(data);
+      setPhase('preview');
     });
-  // plan and locale are stable during execution; t and router are stable references
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phase, mode, saveStatus]);
+  }, []);
 
   // ── Generator handlers ────────────────────────────────────────────────────
 
   async function handleGenerate() {
     setPhase('loading');
     setError(null);
-    const { data, error: err } = await getExercisesForMuscles(selectedList, goal, level);
+    const { data, error: err } = await getExercisesForMuscles(
+      selectedList,
+      goal,
+      level,
+      initialSplit ?? null
+    );
     if (err || !data) {
       setError(err ?? t('plan.errorMsg'));
       setPhase('select');
       return;
     }
+
+    // Persist immediately so it shows up in My Workouts even if never started.
+    const { data: saved, error: saveErr } = await saveGeneratedWorkout(
+      data,
+      locale,
+      initialSplit ?? null
+    );
+    if (saveErr || !saved) {
+      setError(saveErr ?? t('plan.errorMsg'));
+      setPhase('select');
+      return;
+    }
+
+    // Regenerating replaces the previous unstarted save — best-effort, doesn't
+    // block the new plan from showing if the cleanup delete happens to fail.
+    const previousWorkoutId = savedWorkoutIdRef.current;
+    if (previousWorkoutId) {
+      deleteWorkout(previousWorkoutId).catch(() => {});
+    }
+    savedWorkoutIdRef.current = saved.workoutId;
+
+    // Schedule context (generated from a Program day): link this workout back
+    // to that day so the planner reflects it, without blocking the preview.
+    if (initialScheduleDayId) {
+      const { error: attachErr } = await attachWorkoutToScheduleDay(
+        initialScheduleDayId,
+        saved.workoutId
+      );
+      if (attachErr) {
+        setToast({ message: t('program.updateError'), variant: 'error', id: Date.now() });
+      }
+    }
+
     setPlan(data);
     setPhase('preview');
   }
 
-  // ── Execution handlers ────────────────────────────────────────────────────
+  // Preview-only edit: drops one exercise from the in-memory plan and
+  // recalculates the estimated duration. Never touches exercises,
+  // workout_exercises, or the already-saved workout row — those keep
+  // reflecting what was generated, not what's previewed.
+  function handleDeleteExercise(exerciseId: string) {
+    setPlan(prev => {
+      if (!prev || prev.exercises.length <= MIN_EXERCISES) return prev;
+      const exercises = prev.exercises.filter(we => we.exercise.id !== exerciseId);
+      const estimated_duration_min = Math.max(
+        15,
+        exercises.reduce(
+          (sum, we) => sum + (we.exercise.exercise_type === 'cardio' ? 2 : 3),
+          0
+        )
+      );
+      return { ...prev, exercises, estimated_duration_min };
+    });
+  }
 
+  // Hands off to the Workout Session Engine. A workout row always exists by
+  // this point — freshly generated via handleGenerate, or resumed via the
+  // initialWorkoutId effect above — so this only needs to carry its id and
+  // the schedule/split context forward.
   function handleStartWorkout() {
-    startedAtRef.current = new Date();
-    pauseStartRef.current = null;
-    totalPausedMsRef.current = 0;
-    setExIdx(0);
-    setSetNum(1);
-    setMode('active');
-    setSeconds(0);
-    setPaused(false);
-    setSaveStatus('idle');
-    setSaveError(null);
-    setPhase('executing');
-  }
-
-  function completeSet() {
-    if (!plan) return;
-    setSeconds(plan.exercises[exIdx].rest_sec);
-    setMode('rest');
-  }
-
-  // Shared advance logic — also the pattern Sprint 10.2 Skip Exercise will use
-  function advanceNow(currentExIdx: number, currentSetNum: number) {
-    if (!plan) return;
-    const ex = plan.exercises[currentExIdx];
-    setSeconds(0);
-    if (currentSetNum < ex.sets) {
-      setSetNum(currentSetNum + 1);
-      setMode('active');
-    } else if (currentExIdx < plan.exercises.length - 1) {
-      setExIdx(currentExIdx + 1);
-      setSetNum(1);
-      setMode('active');
-    } else {
-      setMode('complete');
-    }
-  }
-
-  function skipRest() {
-    advanceNow(exIdx, setNum);
-  }
-
-  function handlePause() {
-    pauseStartRef.current = Date.now();
-    setPaused(true);
-  }
-
-  function handleResume() {
-    if (pauseStartRef.current !== null) {
-      totalPausedMsRef.current += Date.now() - pauseStartRef.current;
-      pauseStartRef.current = null;
-    }
-    setPaused(false);
+    if (!savedWorkoutIdRef.current) return;
+    const params = new URLSearchParams({ workoutId: savedWorkoutIdRef.current });
+    if (initialScheduleDayId) params.set('scheduleDay', initialScheduleDayId);
+    if (initialSplit) params.set('split', initialSplit);
+    router.push(`/workouts/session?${params.toString()}`);
   }
 
   // ── Derived values ────────────────────────────────────────────────────────
@@ -377,215 +368,6 @@ export function GeneratorClient({
     );
   }
 
-  // ── Executing phase ───────────────────────────────────────────────────────
-
-  if (phase === 'executing' && plan) {
-    const ex       = plan.exercises[exIdx];
-    const exName   = exerciseName(ex, locale);
-    const nextEx   = exIdx < plan.exercises.length - 1 ? plan.exercises[exIdx + 1] : null;
-    const nextName = nextEx ? exerciseName(nextEx, locale) : null;
-    const setInfo  = ex.reps != null
-      ? `${ex.sets} × ${ex.reps}`
-      : `${ex.sets} × ${ex.duration_sec}s`;
-
-    return (
-      <div className="flex min-h-[calc(100vh-140px)] flex-col px-5 pb-8 pt-5">
-
-        {/* ── Header ──────────────────────────────────────────────────────── */}
-        <div className="mb-6 flex items-center justify-between">
-          <button
-            type="button"
-            onClick={() => setPhase('preview')}
-            disabled={mode === 'complete'}
-            className="flex items-center gap-1 text-[#555] disabled:pointer-events-none disabled:opacity-0"
-          >
-            <ChevronLeft size={14} />
-            <span className="text-[12px] font-semibold">{t('plan.regenerate')}</span>
-          </button>
-
-          {mode !== 'complete' && (
-            paused ? (
-              <motion.button
-                type="button"
-                whileTap={{ scale: 0.95 }}
-                onClick={handleResume}
-                className="flex h-9 w-9 items-center justify-center rounded-xl border border-[rgba(170,255,0,0.3)] bg-[rgba(170,255,0,0.1)] text-[#aaff00]"
-              >
-                <Play size={15} />
-              </motion.button>
-            ) : (
-              <button
-                type="button"
-                onClick={handlePause}
-                className="flex h-9 w-9 items-center justify-center rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] text-[#555]"
-              >
-                <Pause size={15} />
-              </button>
-            )
-          )}
-        </div>
-
-        {/* ── Complete state ───────────────────────────────────────────────── */}
-        {mode === 'complete' && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="flex flex-1 flex-col items-center justify-center gap-6 text-center"
-          >
-            <div className="flex h-20 w-20 items-center justify-center rounded-full border border-[rgba(170,255,0,0.3)] bg-[rgba(170,255,0,0.08)]">
-              <CheckCircle size={38} className="text-[#aaff00]" />
-            </div>
-
-            <div>
-              <h2 className="text-[24px] font-black text-[#f5f5f5]">{t('timer.complete')}</h2>
-              <p className="mt-1.5 text-[13px] text-[#555]">{workoutName}</p>
-            </div>
-
-            {saveStatus === 'saving' && (
-              <div className="flex items-center gap-2 text-[#555]">
-                <div className="h-4 w-4 animate-spin rounded-full border-2 border-[#555] border-t-transparent" />
-                <span className="text-[13px]">{t('timer.saving')}</span>
-              </div>
-            )}
-
-            {saveStatus === 'error' && (
-              <div className="flex flex-col items-center gap-3">
-                <p className="text-[13px] text-red-400">{saveError ?? t('timer.saveError')}</p>
-                <motion.button
-                  type="button"
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => setSaveStatus('idle')}
-                  className="flex items-center gap-2 rounded-xl border border-red-500/20 bg-red-500/10 px-5 py-2.5 text-[13px] font-bold text-red-400"
-                >
-                  <RotateCcw size={13} />
-                  {t('timer.retry')}
-                </motion.button>
-              </div>
-            )}
-          </motion.div>
-        )}
-
-        {/* ── Active / Rest state ──────────────────────────────────────────── */}
-        {mode !== 'complete' && (
-          <>
-            {/* Progress label */}
-            <p className="mb-5 text-center text-[11px] font-semibold uppercase tracking-widest text-[#3a3a3a]">
-              {t('timer.exerciseOf', { current: exIdx + 1, total: plan.exercises.length })}
-            </p>
-
-            {/* Exercise card */}
-            <div className="mb-5 rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] p-4">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[rgba(255,255,255,0.04)]">
-                  {ex.exercise.difficulty ? (
-                    <span className={cn('h-2.5 w-2.5 rounded-full', DIFFICULTY_DOT[ex.exercise.difficulty])} />
-                  ) : (
-                    <Dumbbell size={14} className="text-[#444]" />
-                  )}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-[16px] font-black text-[#f5f5f5]">{exName}</p>
-                  <div className="mt-0.5 flex gap-2">
-                    {ex.exercise.muscle_groups.slice(0, 2).map(m => (
-                      <span key={m} className="text-[10px] font-semibold text-[#aaff00]/70">
-                        {muscleLabel(m)}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Active body */}
-            <AnimatePresence mode="wait">
-              {mode === 'active' && (
-                <motion.div
-                  key="active"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex flex-1 flex-col"
-                >
-                  <p className="mb-3 text-center text-[12px] font-semibold text-[#555]">
-                    {t('timer.setOf', { current: setNum, total: ex.sets })}
-                  </p>
-                  <div className="mb-6 rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] py-5 text-center">
-                    <span className="text-[32px] font-black tabular-nums text-[#aaff00]">{setInfo}</span>
-                  </div>
-
-                  <div className="mt-auto">
-                    <motion.button
-                      type="button"
-                      whileTap={{ scale: 0.97 }}
-                      onClick={completeSet}
-                      disabled={paused}
-                      className="flex w-full items-center justify-center rounded-2xl bg-[#aaff00] py-4 text-[16px] font-black text-[#0a0a0a] shadow-[0_0_20px_rgba(170,255,0,0.18)] disabled:opacity-50"
-                    >
-                      {t('timer.doneSet')}
-                    </motion.button>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Rest body */}
-              {mode === 'rest' && (
-                <motion.div
-                  key="rest"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  className="flex flex-1 flex-col items-center"
-                >
-                  <p className="mb-5 text-[12px] font-semibold uppercase tracking-widest text-[#555]">
-                    {t('timer.rest')}
-                  </p>
-                  <div className="mb-6 flex h-28 w-28 items-center justify-center rounded-full border-4 border-[rgba(170,255,0,0.2)] bg-[rgba(170,255,0,0.05)]">
-                    <span className="text-[44px] font-black tabular-nums leading-none text-[#aaff00]">
-                      {paused ? '—' : seconds}
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={skipRest}
-                    className="flex items-center gap-1.5 rounded-xl border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.02)] px-4 py-2.5 text-[12px] font-semibold text-[#555]"
-                  >
-                    <SkipForward size={12} />
-                    {t('timer.skip')}
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            {/* Up next hint */}
-            {nextName && (
-              <div className="mt-4 flex items-center gap-2 rounded-xl border border-[rgba(255,255,255,0.04)] bg-[rgba(255,255,255,0.02)] px-4 py-3">
-                <span className="shrink-0 text-[10px] font-semibold uppercase tracking-widest text-[#3a3a3a]">
-                  {t('timer.upNext')}
-                </span>
-                <span className="truncate text-[12px] font-semibold text-[#555]">{nextName}</span>
-              </div>
-            )}
-          </>
-        )}
-
-        {/* Toast */}
-        <AnimatePresence>
-          {toast && (
-            <Toast
-              key={toast.id}
-              message={toast.message}
-              variant={toast.variant}
-              onDismiss={() => setToast(null)}
-            />
-          )}
-        </AnimatePresence>
-      </div>
-    );
-  }
-
   // ── Preview phase ─────────────────────────────────────────────────────────
 
   if (phase === 'preview' && plan) {
@@ -599,14 +381,6 @@ export function GeneratorClient({
       >
         {/* Header */}
         <div className="px-5 pt-5">
-          <button
-            type="button"
-            onClick={() => { setPhase('select'); setPlan(null); }}
-            className="mb-3 flex items-center gap-1 text-[#555]"
-          >
-            <ChevronLeft size={14} />
-            <span className="text-[12px] font-semibold">{t('plan.regenerate')}</span>
-          </button>
           <p className="mb-1 text-[10px] font-semibold uppercase tracking-widest text-[#aaff00]/60">
             MundoFit
           </p>
@@ -631,6 +405,8 @@ export function GeneratorClient({
               we={we}
               locale={locale}
               muscleLabel={muscleLabel}
+              onDelete={() => handleDeleteExercise(we.exercise.id)}
+              deleteDisabled={plan.exercises.length <= MIN_EXERCISES}
             />
           ))}
         </div>
@@ -661,6 +437,18 @@ export function GeneratorClient({
             {t('plan.regenerate')}
           </button>
         </div>
+
+        {/* Toast */}
+        <AnimatePresence>
+          {toast && (
+            <Toast
+              key={toast.id}
+              message={toast.message}
+              variant={toast.variant}
+              onDismiss={() => setToast(null)}
+            />
+          )}
+        </AnimatePresence>
       </motion.div>
     );
   }

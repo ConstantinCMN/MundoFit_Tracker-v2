@@ -17,6 +17,7 @@ export type {
   WorkoutType,
   GenderTarget,
   PreferredWorkoutStyle,
+  ScheduleDayType,
 } from './database';
 
 // Convenience row types
@@ -33,6 +34,8 @@ export type Workout = Database['public']['Tables']['workouts']['Row'];
 export type WorkoutExercise = Database['public']['Tables']['workout_exercises']['Row'];
 export type WorkoutSession = Database['public']['Tables']['workout_sessions']['Row'];
 export type SessionSet = Database['public']['Tables']['session_sets']['Row'];
+export type WorkoutSchedule = Database['public']['Tables']['workout_schedules']['Row'];
+export type WorkoutScheduleDay = Database['public']['Tables']['workout_schedule_days']['Row'];
 
 // ─── Server action result type ────────────────────────────────────────────────
 

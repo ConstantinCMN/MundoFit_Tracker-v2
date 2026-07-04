@@ -44,7 +44,7 @@ type Props = {
   entryId?: string;
 };
 
-export function LogFormClient({ locale, unitSystem, initialValues, entryId }: Props) {
+export function LogFormClient({ unitSystem, initialValues, entryId }: Props) {
   const t = useTranslations('measurements');
   const router = useRouter();
   const isEdit = Boolean(entryId);

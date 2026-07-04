@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { Zap, Layers, BookOpen, ListChecks, Clock } from 'lucide-react';
+import { Zap, Layers, BookOpen, ListChecks, Clock, CalendarRange } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 import { MuscleMap, type MuscleId, type BodyView } from '@/components/workouts/muscle-map';
 import { useRouter } from '@/lib/i18n/navigation';
@@ -41,28 +41,14 @@ function ViewTab({
   );
 }
 
-const MUSCLE_LABELS: Record<MuscleId, string> = {
-  chest:      'Piept (Pectorali)',
-  shoulders:  'Umeri (Deltoizi)',
-  biceps:     'Biceps (Biceps brahial)',
-  triceps:    'Triceps (Triceps brahial)',
-  forearms:   'Antebraț (Flexori/Extensori)',
-  abs:        'Abdomen (Rectus Abdominis)',
-  quads:      'Cvadricepsi',
-  calves:     'Gambe (Gastrocnemian)',
-  traps:      'Trapez (Trapezius)',
-  lats:       'Spate (Dorsali)',
-  lower_back: 'Lombari (Erector Spinae)',
-  glutes:     'Fesieri (Gluteus Maximus)',
-  hamstrings: 'Ischiogambieri',
-};
-
 export function BodyHubClient() {
   const t  = useTranslations('workouts');
   const tb = useTranslations('body');
+  const tm = useTranslations('workouts.muscles');
   const router = useRouter();
   const searchParams = useSearchParams();
   const split = searchParams.get('split');
+  const scheduleDay = searchParams.get('scheduleDay');
   const [view, setView] = useState<BodyView>('front');
   const [selected, setSelected] = useState<Set<MuscleId>>(
     () => new Set(isSplitType(split) ? SPLIT_MUSCLE_MAP[split] : [])
@@ -84,7 +70,10 @@ export function BodyHubClient() {
 
   function handleGenerate() {
     const splitParam = isSplitType(split) ? `&split=${split}` : '';
-    router.push(`/workouts/generator?muscles=${Array.from(selected).join(',')}&view=${view}${splitParam}`);
+    const scheduleDayParam = scheduleDay ? `&scheduleDay=${encodeURIComponent(scheduleDay)}` : '';
+    router.push(
+      `/workouts/generator?muscles=${Array.from(selected).join(',')}&view=${view}${splitParam}${scheduleDayParam}`
+    );
   }
 
   const hasSelection = selected.size > 0;
@@ -183,16 +172,16 @@ export function BodyHubClient() {
             <div className="rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-4 py-3 space-y-3">
               {lastSelected && (
                 <div>
-                  <p className="text-[11px] text-[#555555]">Ultimul muschi selectat</p>
+                  <p className="text-[11px] text-[#555555]">{tb('lastSelectedLabel')}</p>
                   <p className="mt-0.5 text-[14px] font-bold text-[#f5f5f5]">
-                    {MUSCLE_LABELS[lastSelected]}
+                    {tm(lastSelected as Parameters<typeof tm>[0])}
                   </p>
                 </div>
               )}
               <div>
-                <p className="text-[11px] text-[#555555]">Muschi selectati</p>
+                <p className="text-[11px] text-[#555555]">{tb('musclesSelectedLabel')}</p>
                 <p className="mt-0.5 text-[12px] leading-relaxed text-[#888888]">
-                  {Array.from(selected).map(id => MUSCLE_LABELS[id]).join(' • ')}
+                  {Array.from(selected).map(id => tm(id as Parameters<typeof tm>[0])).join(' • ')}
                 </p>
               </div>
             </div>
@@ -239,6 +228,12 @@ export function BodyHubClient() {
             label={t('history')}
             color="#60a5fa"
             onClick={() => router.push('/workouts/history')}
+          />
+          <QuickLinkCard
+            icon={CalendarRange}
+            label={t('program.navLabel')}
+            color="#34d399"
+            onClick={() => router.push('/workouts/program')}
           />
         </div>
       </motion.div>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Anatomy Preview — MundoFit</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0a0a0a;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #f5f5f5;
+    padding: 32px 16px 48px;
+  }
+
+  h1 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #aaff00;
+    margin-bottom: 4px;
+  }
+  h2 {
+    font-size: 22px;
+    font-weight: 900;
+    color: #f5f5f5;
+    margin-bottom: 28px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 20px;
+    padding: 16px 12px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .card-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+  }
+  .card-label span {
+    display: block;
+    font-size: 12px;
+    font-weight: 800;
+    color: #f5f5f5;
+    margin-top: 2px;
+    letter-spacing: .02em;
+  }
+  .card-label .highlight-badge {
+    display: inline-block;
+    margin-top: 4px;
+    background: rgba(170,255,0,0.12);
+    border: 1px solid rgba(170,255,0,0.3);
+    color: #aaff00;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+  }
+
+  .body-wrap {
+    width: 100%;
+    height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .body-wrap svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  /* default muscle style — applied via JS */
+  .loading {
+    color: rgba(255,255,255,0.3);
+    font-size: 11px;
+    text-align: center;
+  }
+
+  .footer {
+    max-width: 1100px;
+    margin: 32px auto 0;
+    font-size: 11px;
+    color: rgba(255,255,255,0.25);
+    text-align: center;
+    line-height: 1.8;
+  }
+  .footer b { color: rgba(255,255,255,0.5); }
+  .compare-note {
+    max-width: 1100px;
+    margin: 0 auto 24px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .note-box {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 12px;
+    padding: 12px 16px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.7;
+  }
+  .note-box b { color: #aaff00; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<h1>MundoFit</h1>
+<h2>Anatomy Asset Preview</h2>
+
+<div class="compare-note">
+  <div class="note-box">
+    <b>Source: HichamELBSI/react-native-body-highlighter (MIT)</b><br>
+    Smooth bezier curves (C/Q/A commands) · 724×1448 coordinate space · decimal precision
+  </div>
+  <div class="note-box">
+    <b>vs. Previous: vulovix/body-muscles (Apache 2.0)</b><br>
+    Flat polygons (L/M/Z only) · 35×93 coordinate space · integer precision · angular/faceted
+  </div>
+</div>
+
+<div class="grid">
+  <!-- Panel 1: Front, nothing selected -->
+  <div class="card">
+    <div class="body-wrap" id="p1"><p class="loading">Loading…</p></div>
+    <div class="card-label">Front View<span>No selection</span></div>
+  </div>
+
+  <!-- Panel 2: Back, nothing selected -->
+  <div class="card">
+    <div class="body-wrap" id="p2"><p class="loading">Loading…</p></div>
+    <div class="card-label">Back View<span>No selection</span></div>
+  </div>
+
+  <!-- Panel 3: Front, Chest selected -->
+  <div class="card">
+    <div class="body-wrap" id="p3"><p class="loading">Loading…</p></div>
+    <div class="card-label">
+      Front View<span>Chest</span>
+      <span class="highlight-badge">Selected</span>
+    </div>
+  </div>
+
+  <!-- Panel 4: Front, Biceps selected -->
+  <div class="card">
+    <div class="body-wrap" id="p4"><p class="loading">Loading…</p></div>
+    <div class="card-label">
+      Front View<span>Biceps</span>
+      <span class="highlight-badge">Selected</span>
+    </div>
+  </div>
+
+  <!-- Panel 5: Back, Lats selected -->
+  <div class="card">
+    <div class="body-wrap" id="p5"><p class="loading">Loading…</p></div>
+    <div class="card-label">
+      Back View<span>Lats</span>
+      <span class="highlight-badge">Selected</span>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <b>data-muscle attribute coverage</b><br>
+  Front: chest · shoulders · biceps · forearms · abs · quads · calves<br>
+  Back: traps · shoulders · triceps · forearms · lats · lower_back · glutes · hamstrings · calves
+</div>
+
+<script>
+const SEL_FILL    = '#aaff00';
+const UNSEL_FILL  = 'rgba(255,255,255,0.11)';
+const SEL_STROKE  = 'rgba(170,255,0,0.55)';
+const UNSEL_STROKE= 'rgba(255,255,255,0.20)';
+const SEL_FILTER  = 'drop-shadow(0 0 9px rgba(170,255,0,0.7))';
+
+function applyStyles(container, selectedId) {
+  container.querySelectorAll('[data-muscle]').forEach(el => {
+    const id = el.getAttribute('data-muscle');
+    const sel = id === selectedId;
+    el.style.fill       = sel ? SEL_FILL    : UNSEL_FILL;
+    el.style.stroke     = sel ? SEL_STROKE  : UNSEL_STROKE;
+    el.style.filter     = sel ? SEL_FILTER  : 'none';
+    el.style.strokeWidth= sel ? '1'         : '0.5';
+  });
+}
+
+async function load(containerId, svgPath, selectedMuscle) {
+  const wrap = document.getElementById(containerId);
+  try {
+    const r = await fetch(svgPath);
+    if (!r.ok) throw new Error(r.status);
+    const html = await r.text();
+    wrap.innerHTML = html;
+    const svg = wrap.querySelector('svg');
+    if (svg) {
+      svg.setAttribute('width',  '100%');
+      svg.setAttribute('height', '100%');
+      svg.style.display = 'block';
+    }
+    applyStyles(wrap, selectedMuscle);
+  } catch(e) {
+    wrap.innerHTML = `<p class="loading">Error loading ${svgPath}<br>${e.message}</p>`;
+  }
+}
+
+load('p1', '/anatomy/front.svg', null);
+load('p2', '/anatomy/back.svg',  null);
+load('p3', '/anatomy/front.svg', 'chest');
+load('p4', '/anatomy/front.svg', 'biceps');
+load('p5', '/anatomy/back.svg',  'lats');
+</script>
+</body>
+</html>

@@ -296,7 +296,7 @@ export function ActiveWorkoutView() {
             className="rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-4 py-3.5"
           >
             <p className="text-[10px] font-semibold uppercase tracking-widest text-[#555555]">
-              Today's target
+              Today&apos;s target
             </p>
             <div className="mt-1 flex items-end justify-between">
               <p className="text-[18px] font-black leading-none text-[#f5f5f5]">

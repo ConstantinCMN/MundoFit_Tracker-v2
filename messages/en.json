@@ -188,6 +188,20 @@
       "noData": "No recent workouts",
       "start": "Start workout"
     },
+    "todayWorkout": {
+      "title": "Today's Workout",
+      "setupCta": "Set up your program",
+      "setupHint": "Plan a 2-week training schedule",
+      "restDay": "Rest day",
+      "noWorkout": "No workout yet",
+      "generateCta": "Generate",
+      "completed": "Completed",
+      "startButton": "Start Workout",
+      "viewProgram": "View Program",
+      "difficultyEasy": "Easy",
+      "difficultyMedium": "Medium",
+      "difficultyHard": "Hard"
+    },
     "quickLog": {
       "title": "Quick log",
       "weight": "+ Weight",
@@ -249,7 +263,21 @@
       "updateWeight": "Weight",
       "viewProgress": "Progress",
       "startWorkout": "Workout",
-      "nutrition": "Nutrition"
+      "nutrition": "Nutrition",
+      "bodyHub": "Body Hub",
+      "bodyHubDesc": "Choose a muscle group & start",
+      "generator": "Workout Generator",
+      "generatorDesc": "Build a custom workout",
+      "measurements": "Measurements",
+      "measurementsDesc": "Log your body metrics",
+      "workoutHistory": "Workout History",
+      "workoutHistoryDesc": "Review past sessions"
+    },
+    "recentWorkout": {
+      "title": "Recent Workouts",
+      "empty": "No workouts yet",
+      "emptyHint": "Complete a workout to start tracking your progress here",
+      "startCta": "Start First Workout"
     },
     "calorie": {
       "title": "Daily Calories",
@@ -261,19 +289,6 @@
       "title": "Weight Trend",
       "noData": "No weight data yet",
       "logFirst": "Log your first weight to see the trend"
-    },
-    "dailyGoals": {
-      "title": "Daily Targets",
-      "water": "Water",
-      "waterTarget": "8 glasses",
-      "workout": "Workout",
-      "workoutTarget": "30 min",
-      "sleep": "Sleep",
-      "sleepTarget": "8 hrs"
-    },
-    "recentSessions": {
-      "title": "Recent Sessions",
-      "noSessions": "No recent workouts"
     }
   },
   "weight": {
@@ -414,8 +429,6 @@
     "create": "Create workout",
     "createFirst": "Create your first workout",
     "startQuick": "Quick start",
-    "totalSessions": "Sessions",
-    "thisWeek": "This week",
     "noSessions": "No sessions yet",
     "firstSessionHint": "Log your first workout to start tracking",
     "recentSessions": "Recent sessions",
@@ -431,13 +444,25 @@
       "cardio": "Cardio",
       "fullBody": "Full Body"
     },
-    "session": {
-      "noData": "No workout history yet",
-      "hint": "Start your first workout to see your history here",
-      "historyTitle": "Workout history",
-      "min": "min",
-      "kg": "kg",
-      "sets": "sets"
+    "historyPage": {
+      "title": "Workout history",
+      "overview": {
+        "total": "Workouts",
+        "thisWeek": "This week",
+        "thisMonth": "This month",
+        "totalTime": "Training time"
+      },
+      "filters": {
+        "all": "All",
+        "week": "This Week",
+        "month": "This Month"
+      },
+      "deletedWorkout": "Deleted Workout",
+      "noFilterResults": "No workouts match this filter",
+      "details": {
+        "exercises": "Exercises",
+        "unavailable": "Exercise details aren't available for this workout"
+      }
     },
     "muscles": {
       "chest": "Chest",
@@ -477,6 +502,20 @@
       "subtitle": "Select the muscles you want to train",
       "navLabel": "Muscle Map"
     },
+    "program": {
+      "navLabel": "Program",
+      "title": "2-Week Program",
+      "subtitle": "Plan your training days ahead",
+      "createIntro": "Choose a type for each day",
+      "createCta": "Create program",
+      "dayLabel": "Day {n}",
+      "today": "Today",
+      "noWorkout": "No workout yet",
+      "generateCta": "Generate",
+      "resetCta": "Start new program",
+      "createError": "Could not create the program. Please try again.",
+      "updateError": "Could not update this day. Please try again."
+    },
     "delete": {
       "confirm": "Delete workout?",
       "success": "Workout deleted",
@@ -499,6 +538,7 @@
       "startWorkout": "Start Workout",
       "exerciseOf": "Exercise {current} of {total}",
       "setOf": "Set {current} of {total}",
+      "weightLabel": "Weight (kg)",
       "doneSet": "Done",
       "rest": "Rest",
       "skip": "Skip rest",
@@ -570,20 +610,47 @@
       "glutes": "The body's most powerful group. Drives hip extension and total power output.",
       "hamstrings": "Posterior thigh muscles controlling hip extension and knee flexion."
     },
-    "musclesSelected": "{count} selected"
+    "musclesSelected": "{count} selected",
+    "lastSelectedLabel": "Last selected muscle",
+    "musclesSelectedLabel": "Selected muscles"
   },
   "workoutStart": {
     "title": "Workout Type",
     "subtitle": "Choose what you want to train today",
     "continue": "Continue",
     "types": {
-      "push": { "label": "Push", "desc": "Chest, shoulders, triceps" },
-      "pull": { "label": "Pull", "desc": "Back, biceps, forearms" },
-      "legs": { "label": "Legs", "desc": "Quads, hamstrings, glutes, calves" },
-      "upper": { "label": "Upper Body", "desc": "Chest, back, shoulders, arms" },
-      "lower": { "label": "Lower Body", "desc": "Quads, hamstrings, glutes, calves, lower back" },
-      "full": { "label": "Full Body", "desc": "A balanced mix of major muscle groups" },
-      "custom": { "label": "Custom", "desc": "Pick your own muscles from scratch" }
+      "push": {
+        "label": "Push",
+        "desc": "Chest, shoulders, triceps"
+      },
+      "pull": {
+        "label": "Pull",
+        "desc": "Back, biceps, forearms"
+      },
+      "legs": {
+        "label": "Legs",
+        "desc": "Quads, hamstrings, glutes, calves"
+      },
+      "upper": {
+        "label": "Upper Body",
+        "desc": "Chest, back, shoulders, arms"
+      },
+      "lower": {
+        "label": "Lower Body",
+        "desc": "Quads, hamstrings, glutes, calves, lower back"
+      },
+      "full": {
+        "label": "Full Body",
+        "desc": "A balanced mix of major muscle groups"
+      },
+      "custom": {
+        "label": "Custom",
+        "desc": "Pick your own muscles from scratch"
+      },
+      "rest": {
+        "label": "Rest",
+        "desc": "Recovery day, no workout"
+      }
     }
   },
   "profile": {

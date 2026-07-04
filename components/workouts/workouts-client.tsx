@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { Dumbbell, Plus, MoreVertical } from 'lucide-react';
 import { useRouter } from '@/lib/i18n/navigation';
-import { cn } from '@/lib/utils/cn';
 import type { Workout } from '@/types';
 import { deleteWorkout } from '@/lib/actions/workouts';
 import { Toast } from '@/components/ui/toast';
@@ -239,7 +238,7 @@ export function WorkoutsClient({ workouts: initialWorkouts }: WorkoutsClientProp
                     workout={w}
                     isActive={activeId === w.id}
                     isDeleting={deletingId === w.id}
-                    onCardClick={() => router.push('/workouts/generator')}
+                    onCardClick={() => router.push(`/workouts/session?workoutId=${w.id}`)}
                     onToggleMenu={() =>
                       setActiveId(prev => (prev === w.id ? null : w.id))
                     }
