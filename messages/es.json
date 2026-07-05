@@ -477,7 +477,13 @@
       "lats": "Dorsales",
       "lower_back": "Lumbar",
       "glutes": "Glúteos",
-      "hamstrings": "Isquiotibiales"
+      "hamstrings": "Isquiotibiales",
+      "back": "Espalda",
+      "core": "Core",
+      "cardio": "Cardio",
+      "quadriceps": "Cuádriceps",
+      "adductors": "Aductores",
+      "obliques": "Oblicuos"
     },
     "muscleMap": {
       "selectMuscles": "Selecciona grupos musculares",

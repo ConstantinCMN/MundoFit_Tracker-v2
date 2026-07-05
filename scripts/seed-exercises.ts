@@ -6,18 +6,18 @@
 //   npx tsx scripts/seed-exercises.ts
 //
 // Environment variables required:
-//   SUPABASE_URL       — your Supabase project URL
-//   SUPABASE_SERVICE_KEY — service_role key (bypasses RLS, never expose publicly)
+//   NEXT_PUBLIC_SUPABASE_URL  — your Supabase project URL (matches lib/supabase/{client,server}.ts)
+//   SUPABASE_SERVICE_ROLE_KEY — service_role key (bypasses RLS, never expose publicly)
 
 import { createClient } from '@supabase/supabase-js';
 import { allExercises } from '../data/exercises/index';
 import { validateSeedBatch } from '../data/exercises/_schema';
 
-const SUPABASE_URL        = process.env.SUPABASE_URL        ?? '';
-const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY ?? '';
+const SUPABASE_URL        = process.env.NEXT_PUBLIC_SUPABASE_URL  ?? '';
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ?? '';
 
 if (!SUPABASE_URL || !SUPABASE_SERVICE_KEY) {
-  console.error('Missing SUPABASE_URL or SUPABASE_SERVICE_KEY');
+  console.error('Missing NEXT_PUBLIC_SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY');
   process.exit(1);
 }
 

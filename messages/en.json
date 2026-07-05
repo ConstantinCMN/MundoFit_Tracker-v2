@@ -477,7 +477,13 @@
       "lats": "Lats",
       "lower_back": "Lower Back",
       "glutes": "Glutes",
-      "hamstrings": "Hamstrings"
+      "hamstrings": "Hamstrings",
+      "back": "Back",
+      "core": "Core",
+      "cardio": "Cardio",
+      "quadriceps": "Quadriceps",
+      "adductors": "Adductors",
+      "obliques": "Obliques"
     },
     "muscleMap": {
       "selectMuscles": "Select muscle groups",

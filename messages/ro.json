@@ -477,7 +477,13 @@
       "lats": "Dorsali",
       "lower_back": "Lombari",
       "glutes": "Fesieri",
-      "hamstrings": "Ischiogambieri"
+      "hamstrings": "Ischiogambieri",
+      "back": "Spate",
+      "core": "Core",
+      "cardio": "Cardio",
+      "quadriceps": "Cvadricepși",
+      "adductors": "Adductori",
+      "obliques": "Oblici"
     },
     "muscleMap": {
       "selectMuscles": "Selectează grupele musculare",
