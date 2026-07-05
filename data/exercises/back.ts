@@ -1007,7 +1007,7 @@ export const backExercises: ExerciseSeedEntry[] = [
     description_en: 'A rope-cable isolation exercise pulling toward the face at eye level. Targets the rear delts and scapular retractors, correcting rounded-shoulder posture from heavy pressing.',
     description_ro: 'Un exercițiu de izolare la cablu cu coardă, tras spre față la nivelul ochilor. Vizează deltoizii posteriori și retractorii omoplaților, corectând postura umerilor rotunjiți cauzată de împinsul greu.',
     description_es: 'Un ejercicio de aislamiento con cuerda de cable, tirando hacia la cara a la altura de los ojos. Se dirige a los deltoides posteriores y los retractores escapulares, corrigiendo la postura de hombros redondeados por el press pesado.',
-    aliases:        ['cable face pull', 'rope face pull'],
+    aliases:        ['rope face pull'],
     category:       'isolation',
     muscle_groups:  ['back'],
     secondary_muscles: ['shoulders'],

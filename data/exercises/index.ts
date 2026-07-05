@@ -8,23 +8,27 @@
 
 import { chestExercises }    from './chest';
 import { backExercises }      from './back';
-// import { legsExercises }      from './legs';
-// import { shouldersExercises } from './shoulders';
-// import { armsExercises }      from './arms';
-// import { coreExercises }      from './core';
-// import { cardioExercises }    from './cardio';
+import { legsExercises }      from './legs';
+import { shouldersExercises } from './shoulders';
+import { bicepsExercises }    from './biceps';
+import { tricepsExercises }   from './triceps';
+import { forearmsExercises }  from './forearms';
+import { coreExercises }      from './core';
+import { cardioExercises }    from './cardio';
 
 import type { ExerciseSeedEntry } from './_schema';
 
 export const allExercises: ExerciseSeedEntry[] = [
   ...chestExercises,
   ...backExercises,
-  // ...legsExercises,
-  // ...shouldersExercises,
-  // ...armsExercises,
-  // ...coreExercises,
-  // ...cardioExercises,
+  ...legsExercises,
+  ...shouldersExercises,
+  ...bicepsExercises,
+  ...tricepsExercises,
+  ...forearmsExercises,
+  ...coreExercises,
+  ...cardioExercises,
 ];
 
-export { chestExercises, backExercises };
+export { chestExercises, backExercises, legsExercises, shouldersExercises, bicepsExercises, tricepsExercises, forearmsExercises, coreExercises, cardioExercises };
 export type { ExerciseSeedEntry };
