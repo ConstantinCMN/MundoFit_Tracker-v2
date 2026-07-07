@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils/cn';
+import { Card } from '@/components/ui/card';
 
 type DashboardCardProps = {
   accent?: boolean;
@@ -9,16 +10,16 @@ type DashboardCardProps = {
 
 export function DashboardCard({ accent = false, className, children }: DashboardCardProps) {
   return (
-    <div
+    <Card
       className={cn(
-        'rounded-2xl border backdrop-blur-sm',
+        'backdrop-blur-sm',
         accent
-          ? 'border-[rgba(170,255,0,0.2)] bg-[rgba(170,255,0,0.04)]'
-          : 'border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)]',
+          ? 'border-accent/20 bg-accent/5'
+          : 'border-border bg-bg-surface',
         className
       )}
     >
       {children}
-    </div>
+    </Card>
   );
 }

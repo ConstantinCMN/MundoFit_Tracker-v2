@@ -2,46 +2,237 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Design tokens ──────────────────────────────────────────────────────────── */
+/* ─── MundoFit design tokens ─────────────────────────────────────────────────── */
 :root {
-  /* Backgrounds */
+  /* Color: backgrounds */
   --bg-base: #0a0a0a;
   --bg-surface: #111111;
   --bg-elevated: #1a1a1a;
   --bg-overlay: #222222;
 
-  /* Accent */
+  /* Color: accent */
   --accent: #aaff00;
   --accent-dim: #88cc00;
   --accent-glow: rgba(170, 255, 0, 0.15);
 
-  /* Text */
+  /* Color: text */
   --text-primary: #f5f5f5;
   --text-secondary: #888888;
   --text-muted: #555555;
 
-  /* Borders */
+  /* Color: borders and overlays */
   --border: #2a2a2a;
   --border-accent: rgba(170, 255, 0, 0.4);
+  --divider: rgba(255, 255, 255, 0.06);
+  --scrim: rgba(0, 0, 0, 0.8);
+  --selection: rgba(170, 255, 0, 0.2);
 
-  /* Semantic */
+  /* Color: semantic */
   --danger: #ff4444;
   --warning: #ff9900;
-  --success: #aaff00;
+  --success: var(--accent);
   --info: #4499ff;
 
-  /* Radius */
+  /* Typography: family */
+  --font-family-sans: var(--font-inter), system-ui, sans-serif;
+
+  /* Typography: size and paired line height */
+  --font-size-xs: 11px;
+  --font-size-sm: 13px;
+  --font-size-base: 15px;
+  --font-size-lg: 17px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 32px;
+  --line-height-xs: 1.4;
+  --line-height-sm: 1.5;
+  --line-height-base: 1.6;
+  --line-height-lg: 1.5;
+  --line-height-xl: 1.4;
+  --line-height-2xl: 1.3;
+  --line-height-3xl: 1.2;
+
+  /* Typography: weight and tracking */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-widest: 0.1em;
+
+  /* Spacing: 4px grid with a 2px micro step */
+  --spacing-micro: 2px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-page: 20px;
+  --spacing-xl: 24px;
+  --spacing-section: 28px;
+
+  /* Radius: legacy scale retained to preserve current utility output */
   --radius-sm: 8px;
   --radius-md: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
   --radius-full: 9999px;
 
-  /* Shadows */
+  /* Radius: semantic component roles */
+  --radius-chip: var(--radius-sm);
+  --radius-control: var(--radius-md);
+  --radius-card: var(--radius-lg);
+  --radius-panel: var(--radius-xl);
+  --radius-pill: var(--radius-full);
+
+  /* Elevation and focus */
   --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.6), 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-modal: 0 20px 60px rgba(0, 0, 0, 0.8);
   --glow-accent: 0 0 20px rgba(170, 255, 0, 0.25), 0 0 40px rgba(170, 255, 0, 0.1);
   --glow-accent-sm: 0 0 10px rgba(170, 255, 0, 0.2);
+
+  /* Layout */
+  --layout-app-max-width: 430px;
+  --layout-header-height: 48px;
+  --layout-bottom-nav-height: 64px;
+  --layout-touch-target-min: 44px;
+  --layout-primary-action-height: 52px;
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* Stacking order */
+  --z-base: 0;
+  --z-content: 10;
+  --z-dropdown: 20;
+  --z-sticky: 30;
+  --z-navigation: 40;
+  --z-overlay: 50;
+
+  /* Motion: durations */
+  --duration-micro: 100ms;
+  --duration-fast: 150ms;
+  --duration-state: 250ms;
+  --duration-overlay: 300ms;
+  --duration-entry: 450ms;
+  --duration-maximum: 500ms;
+
+  /* Motion: timing functions */
+  --ease-standard: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-progress: ease-out;
+  --ease-linear: linear;
+
+  /* Opacity: semantic roles */
+  --opacity-hidden: 0;
+  --opacity-subtle: 0.05;
+  --opacity-soft: 0.1;
+  --opacity-disabled: 0.4;
+  --opacity-muted: 0.6;
+  --opacity-scrim: 0.8;
+  --opacity-chrome: 0.95;
+  --opacity-visible: 1;
+
+  /* Button: colors */
+  --button-primary-bg: var(--accent);
+  --button-primary-bg-hover: var(--accent-dim);
+  --button-primary-bg-active: var(--accent-dim);
+  --button-primary-fg: var(--bg-base);
+  --button-secondary-bg: transparent;
+  --button-secondary-bg-hover: var(--bg-elevated);
+  --button-secondary-bg-active: var(--bg-overlay);
+  --button-secondary-border: var(--border);
+  --button-secondary-fg: var(--text-primary);
+  --button-outline-bg: transparent;
+  --button-outline-bg-hover: rgba(170, 255, 0, 0.08);
+  --button-outline-bg-active: var(--accent-glow);
+  --button-outline-border: var(--accent);
+  --button-outline-fg: var(--accent);
+  --button-ghost-bg: transparent;
+  --button-ghost-bg-hover: var(--bg-elevated);
+  --button-ghost-bg-active: var(--bg-overlay);
+  --button-ghost-fg: var(--text-secondary);
+  --button-ghost-fg-hover: var(--text-primary);
+  --button-danger-bg: rgba(255, 68, 68, 0.1);
+  --button-danger-bg-hover: rgba(255, 68, 68, 0.18);
+  --button-danger-bg-active: rgba(255, 68, 68, 0.25);
+  --button-danger-border: rgba(255, 68, 68, 0.4);
+  --button-danger-fg: var(--danger);
+  --button-focus-ring: var(--accent);
+  --button-focus-offset: var(--bg-base);
+
+  /* Button: dimensions and motion */
+  --button-height-sm: var(--layout-touch-target-min);
+  --button-height-md: 48px;
+  --button-height-lg: var(--layout-primary-action-height);
+  --button-padding-sm: var(--spacing-lg);
+  --button-padding-md: var(--spacing-page);
+  --button-padding-lg: var(--spacing-xl);
+  --button-gap-sm: 6px;
+  --button-gap-md: var(--spacing-sm);
+  --button-gap-lg: var(--spacing-sm);
+  --button-icon-sm: 16px;
+  --button-icon-md: 18px;
+  --button-icon-lg: 20px;
+  --button-focus-ring-width: 2px;
+  --button-focus-offset-width: 2px;
+  --button-focus-shadow: 0 0 0 var(--button-focus-offset-width) var(--button-focus-offset),
+    0 0 0 calc(var(--button-focus-offset-width) + var(--button-focus-ring-width)) var(--button-focus-ring);
+  --button-pressed-scale: 0.97;
+  --button-transition-properties: color, background-color, border-color, box-shadow, opacity, transform;
+  --button-spinner-duration: 1s;
+
+  /* Input: colors */
+  --input-bg: var(--bg-elevated);
+  --input-filled-bg: var(--bg-overlay);
+  --input-outlined-bg: transparent;
+  --input-border: var(--border);
+  --input-border-hover: #3a3a3a;
+  --input-border-focus: var(--border-accent);
+  --input-border-error: var(--danger);
+  --input-border-success: var(--success);
+  --input-text: var(--text-primary);
+  --input-label: var(--text-secondary);
+  --input-placeholder: var(--text-muted);
+  --input-icon: var(--text-muted);
+  --input-icon-hover: var(--text-primary);
+  --input-focus-ring: rgba(170, 255, 0, 0.06);
+
+  /* Input: dimensions and motion */
+  --input-height: 56px;
+  --input-padding-x: var(--spacing-lg);
+  --input-label-offset: var(--spacing-xl);
+  --input-message-gap: 6px;
+  --input-action-area: 48px;
+  --input-actions-area: 88px;
+  --input-icon-size: 18px;
+  --input-focus-ring-width: 3px;
+  --input-focus-shadow: 0 0 0 var(--input-focus-ring-width) var(--input-focus-ring);
+  --input-transition-properties: color, background-color, border-color, box-shadow, opacity;
+  --input-spinner-duration: 1s;
+
+  /* Select: reuse the official form-control contract */
+  --select-bg: var(--input-bg);
+  --select-filled-bg: var(--input-filled-bg);
+  --select-outlined-bg: var(--input-outlined-bg);
+  --select-border: var(--input-border);
+  --select-border-hover: var(--input-border-hover);
+  --select-border-focus: var(--input-border-focus);
+  --select-border-error: var(--input-border-error);
+  --select-border-success: var(--input-border-success);
+  --select-text: var(--input-text);
+  --select-label: var(--input-label);
+  --select-placeholder: var(--input-placeholder);
+  --select-icon: var(--input-icon);
+  --select-focus-shadow: var(--input-focus-shadow);
+  --select-height: var(--input-height);
+  --select-padding-x: var(--input-padding-x);
+  --select-label-offset: var(--input-label-offset);
+  --select-message-gap: var(--input-message-gap);
+  --select-action-area: var(--input-action-area);
+  --select-icon-size: var(--input-icon-size);
+  --select-transition-properties: var(--input-transition-properties);
+  --select-spinner-duration: var(--input-spinner-duration);
 }
 
 /* ─── Base reset ─────────────────────────────────────────────────────────────── */
@@ -60,7 +251,7 @@
   body {
     background-color: var(--bg-base);
     color: var(--text-primary);
-    font-family: var(--font-inter), system-ui, sans-serif;
+    font-family: var(--font-family-sans);
     overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -69,7 +260,7 @@
   }
 
   ::selection {
-    background: rgba(170, 255, 0, 0.2);
+    background: var(--selection);
     color: var(--text-primary);
   }
 
@@ -103,11 +294,11 @@
 @layer utilities {
   /* Safe area helpers for iOS notch / home bar */
   .safe-area-top {
-    padding-top: env(safe-area-inset-top, 0px);
+    padding-top: var(--safe-area-top);
   }
 
   .safe-area-bottom {
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-bottom: var(--safe-area-bottom);
   }
 
   /* Accent glow on elements */
@@ -130,7 +321,7 @@
   /* App container — centers content and constrains max width on desktop */
   .app-container {
     width: 100%;
-    max-width: 430px;
+    max-width: var(--layout-app-max-width);
     margin-left: auto;
     margin-right: auto;
   }

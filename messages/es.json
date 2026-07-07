@@ -19,7 +19,10 @@
     "undo": "Deshacer",
     "deleted": "Registro eliminado",
     "saved": "Guardado correctamente",
-    "updated": "Actualizado correctamente"
+    "updated": "Actualizado correctamente",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña",
+    "clearInput": "Borrar campo"
   },
   "nav": {
     "dashboard": "Inicio",
@@ -50,6 +53,7 @@
       "firstName": "Nombre",
       "email": "Correo electrónico",
       "password": "Contraseña",
+      "passwordHint": "Mínimo 8 caracteres",
       "confirmPassword": "Confirmar contraseña",
       "submit": "Crear cuenta",
       "hasAccount": "¿Ya tienes cuenta?",

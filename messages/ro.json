@@ -19,7 +19,10 @@
     "undo": "Anulează acțiunea",
     "deleted": "Înregistrare ștearsă",
     "saved": "Salvat cu succes",
-    "updated": "Actualizat cu succes"
+    "updated": "Actualizat cu succes",
+    "showPassword": "Afișează parola",
+    "hidePassword": "Ascunde parola",
+    "clearInput": "Șterge câmpul"
   },
   "nav": {
     "dashboard": "Acasă",
@@ -50,6 +53,7 @@
       "firstName": "Prenume",
       "email": "Adresă email",
       "password": "Parolă",
+      "passwordHint": "Cel puțin 8 caractere",
       "confirmPassword": "Confirmă parola",
       "submit": "Creează cont",
       "hasAccount": "Ai deja cont?",

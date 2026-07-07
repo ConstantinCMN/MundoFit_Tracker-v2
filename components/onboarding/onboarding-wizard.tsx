@@ -641,7 +641,7 @@ export function OnboardingWizard({ locale }: { locale: string }) {
               disabled={!canProceed}
               isLoading={isSubmitting}
               size="lg"
-              className="w-full"
+              fullWidth
             >
               {step < TOTAL_STEPS - 1 ? t('continue') : t('finish')}
             </Button>

@@ -1,0 +1,331 @@
+[
+  {
+    "name": "login-after",
+    "url": "http://127.0.0.1:3100/en/login",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "documentOverflowX": false,
+    "bodyOverflowX": false,
+    "activeElement": "BODY",
+    "focusVisible": false,
+    "focusBoxShadow": null,
+    "buttons": [
+      {
+        "label": "Sign in",
+        "variant": "primary",
+        "size": "lg",
+        "width": 308,
+        "height": 52,
+        "backgroundColor": "rgb(170, 255, 0)",
+        "color": "rgb(10, 10, 10)",
+        "borderColor": "rgb(229, 231, 235)",
+        "borderRadius": "16px",
+        "fontSize": "15px",
+        "fontWeight": "900",
+        "overflowX": false,
+        "disabled": false,
+        "ariaBusy": null
+      }
+    ]
+  },
+  {
+    "name": "register-after",
+    "url": "http://127.0.0.1:3100/en/register",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "documentOverflowX": false,
+    "bodyOverflowX": false,
+    "activeElement": "BODY",
+    "focusVisible": false,
+    "focusBoxShadow": null,
+    "buttons": [
+      {
+        "label": "Create account",
+        "variant": "primary",
+        "size": "lg",
+        "width": 308,
+        "height": 52,
+        "backgroundColor": "rgb(170, 255, 0)",
+        "color": "rgb(10, 10, 10)",
+        "borderColor": "rgb(229, 231, 235)",
+        "borderRadius": "16px",
+        "fontSize": "15px",
+        "fontWeight": "900",
+        "overflowX": false,
+        "disabled": false,
+        "ariaBusy": null
+      }
+    ]
+  },
+  {
+    "name": "forgot-password-after",
+    "url": "http://127.0.0.1:3100/en/forgot-password",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "documentOverflowX": false,
+    "bodyOverflowX": false,
+    "activeElement": "BODY",
+    "focusVisible": false,
+    "focusBoxShadow": null,
+    "buttons": [
+      {
+        "label": "Send reset link",
+        "variant": "primary",
+        "size": "lg",
+        "width": 308,
+        "height": 52,
+        "backgroundColor": "rgb(170, 255, 0)",
+        "color": "rgb(10, 10, 10)",
+        "borderColor": "rgb(229, 231, 235)",
+        "borderRadius": "16px",
+        "fontSize": "15px",
+        "fontWeight": "900",
+        "overflowX": false,
+        "disabled": false,
+        "ariaBusy": null
+      }
+    ]
+  },
+  {
+    "name": "onboarding-after",
+    "url": "http://127.0.0.1:3100/en/visual-qa/button?view=onboarding",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "documentOverflowX": false,
+    "bodyOverflowX": false,
+    "activeElement": "INPUT",
+    "focusVisible": false,
+    "focusBoxShadow": null,
+    "buttons": [
+      {
+        "label": "Continue",
+        "variant": "primary",
+        "size": "lg",
+        "width": 350,
+        "height": 52,
+        "backgroundColor": "rgb(170, 255, 0)",
+        "color": "rgb(10, 10, 10)",
+        "borderColor": "rgb(229, 231, 235)",
+        "borderRadius": "16px",
+        "fontSize": "15px",
+        "fontWeight": "900",
+        "overflowX": false,
+        "disabled": true,
+        "ariaBusy": null
+      }
+    ]
+  },
+  {
+    "name": "profile-bottom-after",
+    "url": "http://127.0.0.1:3100/en/visual-qa/button?view=profile",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "documentOverflowX": false,
+    "bodyOverflowX": false,
+    "activeElement": "BODY",
+    "focusVisible": false,
+    "focusBoxShadow": null,
+    "buttons": [
+      {
+        "label": "Sign out",
+        "variant": "danger",
+        "size": "md",
+        "width": 350,
+        "height": 48,
+        "backgroundColor": "rgba(255, 68, 68, 0.1)",
+        "color": "rgb(255, 68, 68)",
+        "borderColor": "rgba(255, 68, 68, 0.4)",
+        "borderRadius": "16px",
+        "fontSize": "15px",
+        "fontWeight": "900",
+        "overflowX": false,
+        "disabled": false,
+        "ariaBusy": null
+      }
+    ]
+  },
+  {
+    "name": "profile-save-after",
+    "url": "http://127.0.0.1:3100/en/visual-qa/button?view=profile",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "documentOverflowX": false,
+    "bodyOverflowX": false,
+    "activeElement": "BODY",
+    "focusVisible": false,
+    "focusBoxShadow": null,
+    "buttons": [
+      {
+        "label": "Sign out",
+        "variant": "danger",
+        "size": "md",
+        "width": 350,
+        "height": 48,
+        "backgroundColor": "rgba(255, 68, 68, 0.1)",
+        "color": "rgb(255, 68, 68)",
+        "borderColor": "rgba(255, 68, 68, 0.4)",
+        "borderRadius": "16px",
+        "fontSize": "15px",
+        "fontWeight": "900",
+        "overflowX": false,
+        "disabled": false,
+        "ariaBusy": null
+      },
+      {
+        "label": "Save changes",
+        "variant": "primary",
+        "size": "lg",
+        "width": 350,
+        "height": 52,
+        "backgroundColor": "rgb(170, 255, 0)",
+        "color": "rgb(10, 10, 10)",
+        "borderColor": "rgb(229, 231, 235)",
+        "borderRadius": "16px",
+        "fontSize": "15px",
+        "fontWeight": "900",
+        "overflowX": false,
+        "disabled": false,
+        "ariaBusy": null
+      }
+    ]
+  },
+  {
+    "name": "button-gallery-after",
+    "url": "http://127.0.0.1:3100/en/visual-qa/button",
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "documentOverflowX": false,
+    "bodyOverflowX": false,
+    "activeElement": "BUTTON",
+    "focusVisible": true,
+    "focusBoxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(10, 10, 10, 0.894) 0px 0px 0px 1.7895px, rgba(170, 255, 0, 0.894) 0px 0px 0px 3.57901px",
+    "buttons": [
+      {
+        "label": "Primary",
+        "variant": "primary",
+        "size": "lg",
+        "width": 350,
+        "height": 52,
+        "backgroundColor": "rgb(170, 255, 0)",
+        "color": "rgb(10, 10, 10)",
+        "borderColor": "rgb(229, 231, 235)",
+        "borderRadius": "16px",
+        "fontSize": "15px",
+        "fontWeight": "900",
+        "overflowX": false,
+        "disabled": false,
+        "ariaBusy": null
+      },
+      {
+        "label": "Secondary",
+        "variant": "secondary",
+        "size": "sm",
+        "width": 350,
+        "height": 44,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(245, 245, 245)",
+        "borderColor": "rgb(42, 42, 42)",
+        "borderRadius": "16px",
+        "fontSize": "13px",
+        "fontWeight": "700",
+        "overflowX": false,
+        "disabled": false,
+        "ariaBusy": null
+      },
+      {
+        "label": "Outline",
+        "variant": "outline",
+        "size": "md",
+        "width": 350,
+        "height": 48,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(170, 255, 0)",
+        "borderColor": "rgb(170, 255, 0)",
+        "borderRadius": "16px",
+        "fontSize": "15px",
+        "fontWeight": "900",
+        "overflowX": false,
+        "disabled": false,
+        "ariaBusy": null
+      },
+      {
+        "label": "Ghost",
+        "variant": "ghost",
+        "size": "md",
+        "width": 350,
+        "height": 48,
+        "backgroundColor": "rgba(0, 0, 0, 0)",
+        "color": "rgb(136, 136, 136)",
+        "borderColor": "rgb(229, 231, 235)",
+        "borderRadius": "16px",
+        "fontSize": "15px",
+        "fontWeight": "700",
+        "overflowX": false,
+        "disabled": false,
+        "ariaBusy": null
+      },
+      {
+        "label": "Danger",
+        "variant": "danger",
+        "size": "lg",
+        "width": 350,
+        "height": 52,
+        "backgroundColor": "rgba(255, 68, 68, 0.1)",
+        "color": "rgb(255, 68, 68)",
+        "borderColor": "rgba(255, 68, 68, 0.4)",
+        "borderRadius": "16px",
+        "fontSize": "15px",
+        "fontWeight": "900",
+        "overflowX": false,
+        "disabled": false,
+        "ariaBusy": null
+      },
+      {
+        "label": "Disabled",
+        "variant": "primary",
+        "size": "lg",
+        "width": 350,
+        "height": 52,
+        "backgroundColor": "rgb(170, 255, 0)",
+        "color": "rgb(10, 10, 10)",
+        "borderColor": "rgb(229, 231, 235)",
+        "borderRadius": "16px",
+        "fontSize": "15px",
+        "fontWeight": "900",
+        "overflowX": false,
+        "disabled": true,
+        "ariaBusy": null
+      },
+      {
+        "label": "Loading",
+        "variant": "primary",
+        "size": "lg",
+        "width": 350,
+        "height": 52,
+        "backgroundColor": "rgb(170, 255, 0)",
+        "color": "rgb(10, 10, 10)",
+        "borderColor": "rgb(229, 231, 235)",
+        "borderRadius": "16px",
+        "fontSize": "15px",
+        "fontWeight": "900",
+        "overflowX": false,
+        "disabled": true,
+        "ariaBusy": "true"
+      }
+    ]
+  }
+]

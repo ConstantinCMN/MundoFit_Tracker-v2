@@ -1,8 +1,9 @@
 import { setRequestLocale } from 'next-intl/server';
+import { Card } from '@/components/ui/card';
 
 export const dynamic = 'force-dynamic';
 
-// Sprint 6 — Progress Photos
+// Sprint 6 â€” Progress Photos
 export default async function PhotosPage({
   params,
 }: {
@@ -12,9 +13,9 @@ export default async function PhotosPage({
   setRequestLocale(locale);
   return (
     <div className="p-4">
-      <div className="rounded-xl border border-[#2a2a2a] bg-[#111111] p-4">
-        <p className="text-sm text-[#888888]">Sprint 6 — Progress Photos coming soon</p>
-      </div>
+      <Card className="p-4">
+        <p className="text-sm text-text-secondary">Sprint 6 â€” Progress Photos coming soon</p>
+      </Card>
     </div>
   );
 }

@@ -505,9 +505,9 @@ export function ProfileClient({ profile: initialProfile }: { profile: Profile })
             size="md"
             onClick={handleSignOut}
             isLoading={isSigningOut}
-            className="w-full"
+            leftIcon={<LogOut />}
+            fullWidth
           >
-            <LogOut size={16} />
             {t('actions.signOut')}
           </Button>
         </Section>
@@ -553,7 +553,7 @@ export function ProfileClient({ profile: initialProfile }: { profile: Profile })
                     onClick={handleSave}
                     isLoading={isSaving}
                     size="lg"
-                    className="w-full"
+                    fullWidth
                   >
                     {t('saveChanges')}
                   </Button>

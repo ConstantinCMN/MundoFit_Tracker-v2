@@ -1,0 +1,245 @@
+{
+    "capturedAt":  "2026-07-06T19:58:06.6033818+03:00",
+    "server":  "isolated fresh Tailwind build",
+    "viewport":  {
+                     "galleryHeight":  1800,
+                     "baselineHeight":  844,
+                     "width":  390
+                 },
+    "baseline":  {
+                     "viewport":  {
+                                      "width":  390,
+                                      "height":  844
+                                  },
+                     "document":  {
+                                      "scrollWidth":  390,
+                                      "horizontalOverflow":  false
+                                  },
+                     "selects":  [
+                                     {
+                                         "height":  18,
+                                         "width":  350,
+                                         "disabled":  false
+                                     },
+                                     {
+                                         "height":  18,
+                                         "width":  350,
+                                         "disabled":  true
+                                     }
+                                 ]
+                 },
+    "gallery":  {
+                    "viewport":  {
+                                     "width":  390,
+                                     "height":  1800
+                                 },
+                    "document":  {
+                                     "scrollWidth":  390,
+                                     "scrollHeight":  1800,
+                                     "horizontalOverflow":  false
+                                 },
+                    "selects":  [
+                                    {
+                                        "label":  "Training location",
+                                        "value":  "gym",
+                                        "height":  56,
+                                        "left":  20,
+                                        "right":  370,
+                                        "overflow":  false,
+                                        "labels":  1,
+                                        "busy":  null,
+                                        "readOnly":  null,
+                                        "invalid":  null,
+                                        "describedBy":  "_R_klritpet5rlb_-message",
+                                        "disabled":  false
+                                    },
+                                    {
+                                        "label":  "Workout style",
+                                        "value":  "bands",
+                                        "height":  56,
+                                        "left":  20,
+                                        "right":  370,
+                                        "overflow":  false,
+                                        "labels":  1,
+                                        "busy":  null,
+                                        "readOnly":  null,
+                                        "invalid":  null,
+                                        "describedBy":  null,
+                                        "disabled":  false
+                                    },
+                                    {
+                                        "label":  "Exercise category",
+                                        "value":  "kettlebell",
+                                        "height":  56,
+                                        "left":  20,
+                                        "right":  370,
+                                        "overflow":  false,
+                                        "labels":  1,
+                                        "busy":  null,
+                                        "readOnly":  null,
+                                        "invalid":  null,
+                                        "describedBy":  null,
+                                        "disabled":  false
+                                    },
+                                    {
+                                        "label":  "Required goal*",
+                                        "value":  "",
+                                        "height":  56,
+                                        "left":  20,
+                                        "right":  370,
+                                        "overflow":  false,
+                                        "labels":  1,
+                                        "busy":  null,
+                                        "readOnly":  null,
+                                        "invalid":  null,
+                                        "describedBy":  null,
+                                        "disabled":  false
+                                    },
+                                    {
+                                        "label":  "Equipment",
+                                        "value":  "free-weights",
+                                        "height":  56,
+                                        "left":  20,
+                                        "right":  370,
+                                        "overflow":  false,
+                                        "labels":  1,
+                                        "busy":  null,
+                                        "readOnly":  null,
+                                        "invalid":  null,
+                                        "describedBy":  null,
+                                        "disabled":  false
+                                    },
+                                    {
+                                        "label":  "Validation error",
+                                        "value":  "",
+                                        "height":  56,
+                                        "left":  20,
+                                        "right":  370,
+                                        "overflow":  false,
+                                        "labels":  1,
+                                        "busy":  null,
+                                        "readOnly":  null,
+                                        "invalid":  "true",
+                                        "describedBy":  "_R_1slritpet5rlb_-message",
+                                        "disabled":  false
+                                    },
+                                    {
+                                        "label":  "Validated selection",
+                                        "value":  "saved",
+                                        "height":  56,
+                                        "left":  20,
+                                        "right":  370,
+                                        "overflow":  false,
+                                        "labels":  1,
+                                        "busy":  null,
+                                        "readOnly":  null,
+                                        "invalid":  null,
+                                        "describedBy":  "_R_24lritpet5rlb_-message",
+                                        "disabled":  false
+                                    },
+                                    {
+                                        "label":  "Disabled selection",
+                                        "value":  "disabled",
+                                        "height":  56,
+                                        "left":  20,
+                                        "right":  370,
+                                        "overflow":  false,
+                                        "labels":  1,
+                                        "busy":  null,
+                                        "readOnly":  null,
+                                        "invalid":  null,
+                                        "describedBy":  null,
+                                        "disabled":  true
+                                    },
+                                    {
+                                        "label":  "Read-only selection",
+                                        "value":  "trx",
+                                        "height":  56,
+                                        "left":  20,
+                                        "right":  370,
+                                        "overflow":  false,
+                                        "labels":  1,
+                                        "busy":  null,
+                                        "readOnly":  "true",
+                                        "invalid":  null,
+                                        "describedBy":  null,
+                                        "disabled":  false
+                                    },
+                                    {
+                                        "label":  "Loading selection",
+                                        "value":  "mobility",
+                                        "height":  56,
+                                        "left":  20,
+                                        "right":  370,
+                                        "overflow":  false,
+                                        "labels":  1,
+                                        "busy":  "true",
+                                        "readOnly":  "true",
+                                        "invalid":  null,
+                                        "describedBy":  null,
+                                        "disabled":  false
+                                    },
+                                    {
+                                        "label":  "Loc de antrenament",
+                                        "value":  "ambele",
+                                        "height":  56,
+                                        "left":  20,
+                                        "right":  370,
+                                        "overflow":  false,
+                                        "labels":  1,
+                                        "busy":  null,
+                                        "readOnly":  null,
+                                        "invalid":  null,
+                                        "describedBy":  null,
+                                        "disabled":  false
+                                    },
+                                    {
+                                        "label":  "CategorĂ­a de ejercicio preferida",
+                                        "value":  "peso-corporal",
+                                        "height":  56,
+                                        "left":  20,
+                                        "right":  370,
+                                        "overflow":  false,
+                                        "labels":  1,
+                                        "busy":  null,
+                                        "readOnly":  null,
+                                        "invalid":  null,
+                                        "describedBy":  null,
+                                        "disabled":  false
+                                    }
+                                ],
+                    "errorAlertCount":  1,
+                    "statusCount":  2,
+                    "localizedLabels":  [
+                                            "Loc de antrenament",
+                                            "CategorĂ­a de ejercicio preferida"
+                                        ]
+                },
+    "interactions":  {
+                         "keyboardValueBefore":  "gym",
+                         "keyboardValueAfterArrowDown":  "home",
+                         "readOnlyValueBefore":  "trx",
+                         "readOnlyValueAfterArrowDown":  "trx",
+                         "loadingValueBefore":  "mobility",
+                         "loadingValueAfterArrowDown":  "mobility",
+                         "formData":  {
+                                          "readOnlyValue":  "trx",
+                                          "loadingValue":  "mobility"
+                                      },
+                         "focus":  {
+                                       "focusedElementIsSelect":  true,
+                                       "focusVisible":  true,
+                                       "boxShadow":  "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(170, 255, 0, 0.06) 0px 0px 0px 3px",
+                                       "borderColor":  "rgba(170, 255, 0, 0.4)"
+                                   }
+                     },
+    "reducedMotion":  {
+                          "matches":  true,
+                          "transitionProperty":  "none",
+                          "transitionDuration":  "0.15s"
+                      },
+    "screenshots":  [
+                        "select-baseline-before.png",
+                        "select-gallery-after.png"
+                    ]
+}

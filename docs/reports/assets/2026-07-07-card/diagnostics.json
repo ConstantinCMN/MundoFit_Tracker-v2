@@ -1,0 +1,38 @@
+{
+    "capturedAt":  "2026-07-06T18:33:53.6424800+03:00",
+    "port":  3120,
+    "screenshots":  [
+                        {
+                            "name":  "login-after.png",
+                            "url":  "http://127.0.0.1:3120/ro/login",
+                            "file":  "C:\\Projects\\MundoFit_Tracker-v2\\docs\\reports\\assets\\2026-07-07-card\\login-after.png",
+                            "width":  390,
+                            "height":  844
+                        },
+                        {
+                            "name":  "register-after.png",
+                            "url":  "http://127.0.0.1:3120/ro/register",
+                            "file":  "C:\\Projects\\MundoFit_Tracker-v2\\docs\\reports\\assets\\2026-07-07-card\\register-after.png",
+                            "width":  390,
+                            "height":  844
+                        },
+                        {
+                            "name":  "forgot-password-after.png",
+                            "url":  "http://127.0.0.1:3120/ro/forgot-password",
+                            "file":  "C:\\Projects\\MundoFit_Tracker-v2\\docs\\reports\\assets\\2026-07-07-card\\forgot-password-after.png",
+                            "width":  390,
+                            "height":  844
+                        },
+                        {
+                            "name":  "card-gallery-after.png",
+                            "url":  "http://127.0.0.1:3120/ro/visual-qa/card",
+                            "file":  "C:\\Projects\\MundoFit_Tracker-v2\\docs\\reports\\assets\\2026-07-07-card\\card-gallery-after.png",
+                            "width":  390,
+                            "height":  2200
+                        }
+                    ],
+    "notes":  [
+                  "Captured through Chrome remote debugging to avoid the sandbox headless GPU crash.",
+                  "Temporary QA route used for Card variants and card-like wrappers."
+              ]
+}

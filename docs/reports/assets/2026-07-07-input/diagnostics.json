@@ -1,0 +1,359 @@
+{
+    "capturedAt":  "2026-07-06T19:41:56.4889419+03:00",
+    "server":  "isolated fresh Tailwind build",
+    "viewport":  {
+                     "galleryHeight":  2200,
+                     "authHeight":  844,
+                     "width":  390
+                 },
+    "screens":  [
+                    {
+                        "name":  "login-after.png",
+                        "url":  "http://127.0.0.1:3121/ro/login",
+                        "layout":  {
+                                       "viewport":  {
+                                                        "width":  390,
+                                                        "height":  844
+                                                    },
+                                       "document":  {
+                                                        "scrollWidth":  390,
+                                                        "scrollHeight":  844,
+                                                        "horizontalOverflow":  false
+                                                    },
+                                       "inputs":  [
+                                                      {
+                                                          "type":  "email",
+                                                          "height":  56,
+                                                          "left":  17,
+                                                          "right":  373,
+                                                          "overflow":  false,
+                                                          "labels":  1,
+                                                          "describedBy":  null,
+                                                          "invalid":  null
+                                                      },
+                                                      {
+                                                          "type":  "password",
+                                                          "height":  56,
+                                                          "left":  17,
+                                                          "right":  373,
+                                                          "overflow":  false,
+                                                          "labels":  1,
+                                                          "describedBy":  null,
+                                                          "invalid":  null
+                                                      }
+                                                  ]
+                                   }
+                    },
+                    {
+                        "name":  "register-after.png",
+                        "url":  "http://127.0.0.1:3121/ro/register",
+                        "layout":  {
+                                       "viewport":  {
+                                                        "width":  390,
+                                                        "height":  844
+                                                    },
+                                       "document":  {
+                                                        "scrollWidth":  390,
+                                                        "scrollHeight":  844,
+                                                        "horizontalOverflow":  false
+                                                    },
+                                       "inputs":  [
+                                                      {
+                                                          "type":  "email",
+                                                          "height":  56,
+                                                          "left":  17,
+                                                          "right":  373,
+                                                          "overflow":  false,
+                                                          "labels":  1,
+                                                          "describedBy":  null,
+                                                          "invalid":  null
+                                                      },
+                                                      {
+                                                          "type":  "password",
+                                                          "height":  56,
+                                                          "left":  17,
+                                                          "right":  373,
+                                                          "overflow":  false,
+                                                          "labels":  1,
+                                                          "describedBy":  "_R_adqinebn9et5rlb_-message",
+                                                          "invalid":  null
+                                                      },
+                                                      {
+                                                          "type":  "password",
+                                                          "height":  56,
+                                                          "left":  17,
+                                                          "right":  373,
+                                                          "overflow":  false,
+                                                          "labels":  1,
+                                                          "describedBy":  null,
+                                                          "invalid":  null
+                                                      }
+                                                  ]
+                                   }
+                    },
+                    {
+                        "name":  "forgot-password-after.png",
+                        "url":  "http://127.0.0.1:3121/ro/forgot-password",
+                        "layout":  {
+                                       "viewport":  {
+                                                        "width":  390,
+                                                        "height":  844
+                                                    },
+                                       "document":  {
+                                                        "scrollWidth":  390,
+                                                        "scrollHeight":  844,
+                                                        "horizontalOverflow":  false
+                                                    },
+                                       "inputs":  [
+                                                      {
+                                                          "type":  "email",
+                                                          "height":  56,
+                                                          "left":  17,
+                                                          "right":  373,
+                                                          "overflow":  false,
+                                                          "labels":  1,
+                                                          "describedBy":  null,
+                                                          "invalid":  null
+                                                      }
+                                                  ]
+                                   }
+                    }
+                ],
+    "gallery":  {
+                    "viewport":  {
+                                     "width":  390,
+                                     "height":  2200
+                                 },
+                    "document":  {
+                                     "scrollWidth":  390,
+                                     "scrollHeight":  2200,
+                                     "horizontalOverflow":  false
+                                 },
+                    "inputs":  [
+                                   {
+                                       "label":  "Default",
+                                       "type":  "text",
+                                       "height":  56,
+                                       "left":  20,
+                                       "right":  370,
+                                       "overflow":  false,
+                                       "labels":  1,
+                                       "busy":  null,
+                                       "invalid":  null,
+                                       "describedBy":  "_R_klritpet5rlb_-message",
+                                       "disabled":  false,
+                                       "readOnly":  false
+                                   },
+                                   {
+                                       "label":  "Filled",
+                                       "type":  "text",
+                                       "height":  56,
+                                       "left":  20,
+                                       "right":  370,
+                                       "overflow":  false,
+                                       "labels":  1,
+                                       "busy":  null,
+                                       "invalid":  null,
+                                       "describedBy":  null,
+                                       "disabled":  false,
+                                       "readOnly":  false
+                                   },
+                                   {
+                                       "label":  "Outlined",
+                                       "type":  "text",
+                                       "height":  56,
+                                       "left":  20,
+                                       "right":  370,
+                                       "overflow":  false,
+                                       "labels":  1,
+                                       "busy":  null,
+                                       "invalid":  null,
+                                       "describedBy":  null,
+                                       "disabled":  false,
+                                       "readOnly":  false
+                                   },
+                                   {
+                                       "label":  "Required*",
+                                       "type":  "text",
+                                       "height":  56,
+                                       "left":  20,
+                                       "right":  370,
+                                       "overflow":  false,
+                                       "labels":  1,
+                                       "busy":  null,
+                                       "invalid":  null,
+                                       "describedBy":  null,
+                                       "disabled":  false,
+                                       "readOnly":  false
+                                   },
+                                   {
+                                       "label":  "Email",
+                                       "type":  "email",
+                                       "height":  56,
+                                       "left":  20,
+                                       "right":  370,
+                                       "overflow":  false,
+                                       "labels":  1,
+                                       "busy":  null,
+                                       "invalid":  null,
+                                       "describedBy":  null,
+                                       "disabled":  false,
+                                       "readOnly":  false
+                                   },
+                                   {
+                                       "label":  "Search",
+                                       "type":  "text",
+                                       "height":  56,
+                                       "left":  20,
+                                       "right":  370,
+                                       "overflow":  false,
+                                       "labels":  1,
+                                       "busy":  null,
+                                       "invalid":  null,
+                                       "describedBy":  null,
+                                       "disabled":  false,
+                                       "readOnly":  false
+                                   },
+                                   {
+                                       "label":  "Password",
+                                       "type":  "password",
+                                       "height":  56,
+                                       "left":  20,
+                                       "right":  370,
+                                       "overflow":  false,
+                                       "labels":  1,
+                                       "busy":  null,
+                                       "invalid":  null,
+                                       "describedBy":  null,
+                                       "disabled":  false,
+                                       "readOnly":  false
+                                   },
+                                   {
+                                       "label":  "Clearable",
+                                       "type":  "text",
+                                       "height":  56,
+                                       "left":  20,
+                                       "right":  370,
+                                       "overflow":  false,
+                                       "labels":  1,
+                                       "busy":  null,
+                                       "invalid":  null,
+                                       "describedBy":  null,
+                                       "disabled":  false,
+                                       "readOnly":  false
+                                   },
+                                   {
+                                       "label":  "Error",
+                                       "type":  "text",
+                                       "height":  56,
+                                       "left":  20,
+                                       "right":  370,
+                                       "overflow":  false,
+                                       "labels":  1,
+                                       "busy":  null,
+                                       "invalid":  "true",
+                                       "describedBy":  "_R_2klritpet5rlb_-message",
+                                       "disabled":  false,
+                                       "readOnly":  false
+                                   },
+                                   {
+                                       "label":  "Success",
+                                       "type":  "text",
+                                       "height":  56,
+                                       "left":  20,
+                                       "right":  370,
+                                       "overflow":  false,
+                                       "labels":  1,
+                                       "busy":  null,
+                                       "invalid":  null,
+                                       "describedBy":  "_R_2slritpet5rlb_-message",
+                                       "disabled":  false,
+                                       "readOnly":  false
+                                   },
+                                   {
+                                       "label":  "Disabled",
+                                       "type":  "text",
+                                       "height":  56,
+                                       "left":  20,
+                                       "right":  370,
+                                       "overflow":  false,
+                                       "labels":  1,
+                                       "busy":  null,
+                                       "invalid":  null,
+                                       "describedBy":  null,
+                                       "disabled":  true,
+                                       "readOnly":  false
+                                   },
+                                   {
+                                       "label":  "Read only",
+                                       "type":  "text",
+                                       "height":  56,
+                                       "left":  20,
+                                       "right":  370,
+                                       "overflow":  false,
+                                       "labels":  1,
+                                       "busy":  null,
+                                       "invalid":  null,
+                                       "describedBy":  null,
+                                       "disabled":  false,
+                                       "readOnly":  true
+                                   },
+                                   {
+                                       "label":  "Loading",
+                                       "type":  "text",
+                                       "height":  56,
+                                       "left":  20,
+                                       "right":  370,
+                                       "overflow":  false,
+                                       "labels":  1,
+                                       "busy":  "true",
+                                       "invalid":  null,
+                                       "describedBy":  null,
+                                       "disabled":  false,
+                                       "readOnly":  true
+                                   }
+                               ],
+                    "errorAlertCount":  1,
+                    "statusCount":  2,
+                    "passwordToggleCount":  1,
+                    "clearButtonCount":  1,
+                    "actionButtons":  [
+                                          {
+                                              "label":  "Show password",
+                                              "width":  48,
+                                              "height":  56,
+                                              "overflow":  false
+                                          },
+                                          {
+                                              "label":  "Clear input",
+                                              "width":  48,
+                                              "height":  56,
+                                              "overflow":  false
+                                          }
+                                      ]
+                },
+    "interactions":  {
+                         "passwordTypeAfterToggle":  "text",
+                         "passwordTogglePressed":  "true",
+                         "clearableValueAfterClear":  "",
+                         "focusedElementIsInput":  true,
+                         "focusVisible":  true,
+                         "focusBoxShadow":  "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(170, 255, 0, 0.06) 0px 0px 0px 3px",
+                         "focusBorderColor":  "rgba(170, 255, 0, 0.4)"
+                     },
+    "reducedMotion":  {
+                          "matches":  true,
+                          "transitionProperty":  "none",
+                          "transitionDuration":  "0.15s"
+                      },
+    "screenshots":  [
+                        "login-before.png",
+                        "login-after.png",
+                        "register-before.png",
+                        "register-after.png",
+                        "forgot-password-before.png",
+                        "forgot-password-after.png",
+                        "input-gallery-after.png",
+                        "input-gallery-interactions.png"
+                    ]
+}

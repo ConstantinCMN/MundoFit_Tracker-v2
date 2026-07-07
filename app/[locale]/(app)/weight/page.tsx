@@ -1,8 +1,9 @@
 import { setRequestLocale } from 'next-intl/server';
+import { Card } from '@/components/ui/card';
 
 export const dynamic = 'force-dynamic';
 
-// Sprint 4 — Weight Tracking
+// Sprint 4 â€” Weight Tracking
 export default async function WeightPage({
   params,
 }: {
@@ -12,9 +13,9 @@ export default async function WeightPage({
   setRequestLocale(locale);
   return (
     <div className="p-4">
-      <div className="rounded-xl border border-[#2a2a2a] bg-[#111111] p-4">
-        <p className="text-sm text-[#888888]">Sprint 4 — Weight Tracking coming soon</p>
-      </div>
+      <Card className="p-4">
+        <p className="text-sm text-text-secondary">Sprint 4 â€” Weight Tracking coming soon</p>
+      </Card>
     </div>
   );
 }

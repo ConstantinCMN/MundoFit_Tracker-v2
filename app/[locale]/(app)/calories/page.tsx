@@ -1,8 +1,9 @@
 import { setRequestLocale } from 'next-intl/server';
+import { Card } from '@/components/ui/card';
 
 export const dynamic = 'force-dynamic';
 
-// Sprint 8 — Calories Calculator (TDEE + macro targets)
+// Sprint 8 â€” Calories Calculator (TDEE + macro targets)
 export default async function CaloriesPage({
   params,
 }: {
@@ -12,9 +13,9 @@ export default async function CaloriesPage({
   setRequestLocale(locale);
   return (
     <div className="p-4">
-      <div className="rounded-xl border border-[#2a2a2a] bg-[#111111] p-4">
-        <p className="text-sm text-[#888888]">Sprint 8 — Calories Calculator coming soon</p>
-      </div>
+      <Card className="p-4">
+        <p className="text-sm text-text-secondary">Sprint 8 â€” Calories Calculator coming soon</p>
+      </Card>
     </div>
   );
 }

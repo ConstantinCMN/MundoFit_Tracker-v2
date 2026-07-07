@@ -1,7 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
+import { Card } from '@/components/ui/card';
 
 export function QuickLinkCard({
   icon: Icon,
@@ -17,10 +17,10 @@ export function QuickLinkCard({
   badge?: string;
 }) {
   return (
-    <motion.button
-      whileTap={{ scale: 0.96 }}
+    <Card
+      variant="interactive"
       onClick={onClick}
-      className="flex items-center gap-3 rounded-2xl border border-[rgba(255,255,255,0.06)] bg-[rgba(255,255,255,0.03)] px-4 py-4 text-left backdrop-blur-sm transition-colors hover:bg-[rgba(255,255,255,0.05)]"
+      className="flex items-center gap-3 px-4 py-4 text-left backdrop-blur-sm"
     >
       <div
         className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
@@ -37,6 +37,6 @@ export function QuickLinkCard({
         </span>
       )}
       <ChevronRight size={14} color="#444444" />
-    </motion.button>
+    </Card>
   );
 }

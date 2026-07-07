@@ -19,7 +19,10 @@
     "undo": "Undo",
     "deleted": "Record deleted",
     "saved": "Saved successfully",
-    "updated": "Updated successfully"
+    "updated": "Updated successfully",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "clearInput": "Clear input"
   },
   "nav": {
     "dashboard": "Home",
@@ -50,6 +53,7 @@
       "firstName": "First name",
       "email": "Email address",
       "password": "Password",
+      "passwordHint": "Minimum 8 characters",
       "confirmPassword": "Confirm password",
       "submit": "Create account",
       "hasAccount": "Already have an account?",
