@@ -1,0 +1,279 @@
+{
+  "generatedAt": "2026-07-14T07:56:15.423Z",
+  "viewport": {
+    "width": 390,
+    "height": 844,
+    "deviceScaleFactor": 2
+  },
+  "pages": {
+    "login-after.png": {
+      "url": "http://127.0.0.1:3100/ro/login"
+    },
+    "register-after.png": {
+      "url": "http://127.0.0.1:3100/en/register"
+    },
+    "forgot-password-after.png": {
+      "url": "http://127.0.0.1:3100/es/forgot-password"
+    },
+    "input-gallery-after.png": {
+      "url": "http://127.0.0.1:3100/ro/visual-qa/input",
+      "viewport": {
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "devicePixelRatio": 2
+      },
+      "overflow": {
+        "document": 0,
+        "body": 0
+      },
+      "inputs": [
+        {
+          "qa": "variant-default",
+          "id": "_R_2klritpet5rlb_",
+          "type": "text",
+          "labelText": "Default label*",
+          "labelCount": 1,
+          "height": 56,
+          "width": 350,
+          "disabled": false,
+          "readOnly": false,
+          "required": true,
+          "ariaInvalid": null,
+          "ariaBusy": null,
+          "ariaDescribedBy": "_R_2klritpet5rlb_-message",
+          "describedTargetsExist": true,
+          "borderColor": "rgb(42, 42, 42)",
+          "boxShadow": "none",
+          "transitionProperty": "color, background-color, border-color, box-shadow, opacity"
+        },
+        {
+          "qa": "variant-filled",
+          "id": "_R_4klritpet5rlb_",
+          "type": "text",
+          "labelText": "Filled label with Romanian length: valoare pentru măsurători corporale",
+          "labelCount": 1,
+          "height": 56,
+          "width": 350,
+          "disabled": false,
+          "readOnly": false,
+          "required": false,
+          "ariaInvalid": null,
+          "ariaBusy": null,
+          "ariaDescribedBy": null,
+          "describedTargetsExist": true,
+          "borderColor": "rgba(0, 0, 0, 0)",
+          "boxShadow": "none",
+          "transitionProperty": "color, background-color, border-color, box-shadow, opacity"
+        },
+        {
+          "qa": "variant-outlined",
+          "id": "_R_6klritpet5rlb_",
+          "type": "text",
+          "labelText": "Outlined label with Spanish length: objetivo de rendimiento deportivo",
+          "labelCount": 1,
+          "height": 56,
+          "width": 350,
+          "disabled": false,
+          "readOnly": false,
+          "required": false,
+          "ariaInvalid": null,
+          "ariaBusy": null,
+          "ariaDescribedBy": null,
+          "describedTargetsExist": true,
+          "borderColor": "rgb(42, 42, 42)",
+          "boxShadow": "none",
+          "transitionProperty": "color, background-color, border-color, box-shadow, opacity"
+        },
+        {
+          "qa": "error",
+          "id": "_R_2slritpet5rlb_",
+          "type": "text",
+          "labelText": "Error state",
+          "labelCount": 1,
+          "height": 56,
+          "width": 350,
+          "disabled": false,
+          "readOnly": false,
+          "required": false,
+          "ariaInvalid": "true",
+          "ariaBusy": null,
+          "ariaDescribedBy": "_R_2slritpet5rlb_-message",
+          "describedTargetsExist": true,
+          "borderColor": "rgb(255, 68, 68)",
+          "boxShadow": "none",
+          "transitionProperty": "color, background-color, border-color, box-shadow, opacity"
+        },
+        {
+          "qa": "success",
+          "id": "_R_4slritpet5rlb_",
+          "type": "text",
+          "labelText": "Success state",
+          "labelCount": 1,
+          "height": 56,
+          "width": 350,
+          "disabled": false,
+          "readOnly": false,
+          "required": false,
+          "ariaInvalid": null,
+          "ariaBusy": null,
+          "ariaDescribedBy": "_R_4slritpet5rlb_-message",
+          "describedTargetsExist": true,
+          "borderColor": "rgb(170, 255, 0)",
+          "boxShadow": "none",
+          "transitionProperty": "color, background-color, border-color, box-shadow, opacity"
+        },
+        {
+          "qa": "disabled",
+          "id": "_R_6slritpet5rlb_",
+          "type": "text",
+          "labelText": "Disabled state",
+          "labelCount": 1,
+          "height": 56,
+          "width": 350,
+          "disabled": true,
+          "readOnly": false,
+          "required": false,
+          "ariaInvalid": null,
+          "ariaBusy": null,
+          "ariaDescribedBy": null,
+          "describedTargetsExist": true,
+          "borderColor": "rgb(42, 42, 42)",
+          "boxShadow": "none",
+          "transitionProperty": "color, background-color, border-color, box-shadow, opacity"
+        },
+        {
+          "qa": "readonly",
+          "id": "_R_8slritpet5rlb_",
+          "type": "text",
+          "labelText": "Read-only state",
+          "labelCount": 1,
+          "height": 56,
+          "width": 350,
+          "disabled": false,
+          "readOnly": true,
+          "required": false,
+          "ariaInvalid": null,
+          "ariaBusy": null,
+          "ariaDescribedBy": null,
+          "describedTargetsExist": true,
+          "borderColor": "rgb(42, 42, 42)",
+          "boxShadow": "none",
+          "transitionProperty": "color, background-color, border-color, box-shadow, opacity"
+        },
+        {
+          "qa": "loading",
+          "id": "_R_aslritpet5rlb_",
+          "type": "text",
+          "labelText": "Loading state",
+          "labelCount": 1,
+          "height": 56,
+          "width": 350,
+          "disabled": false,
+          "readOnly": true,
+          "required": false,
+          "ariaInvalid": null,
+          "ariaBusy": "true",
+          "ariaDescribedBy": null,
+          "describedTargetsExist": true,
+          "borderColor": "rgb(42, 42, 42)",
+          "boxShadow": "none",
+          "transitionProperty": "color, background-color, border-color, box-shadow, opacity"
+        },
+        {
+          "qa": "password",
+          "id": "_R_34lritpet5rlb_",
+          "type": "password",
+          "labelText": "Password",
+          "labelCount": 1,
+          "height": 56,
+          "width": 350,
+          "disabled": false,
+          "readOnly": false,
+          "required": false,
+          "ariaInvalid": null,
+          "ariaBusy": null,
+          "ariaDescribedBy": null,
+          "describedTargetsExist": true,
+          "borderColor": "rgb(42, 42, 42)",
+          "boxShadow": "none",
+          "transitionProperty": "color, background-color, border-color, box-shadow, opacity"
+        },
+        {
+          "qa": "clearable",
+          "id": "_R_54lritpet5rlb_",
+          "type": "text",
+          "labelText": "Clearable",
+          "labelCount": 1,
+          "height": 56,
+          "width": 350,
+          "disabled": false,
+          "readOnly": false,
+          "required": false,
+          "ariaInvalid": null,
+          "ariaBusy": null,
+          "ariaDescribedBy": null,
+          "describedTargetsExist": true,
+          "borderColor": "rgb(42, 42, 42)",
+          "boxShadow": "none",
+          "transitionProperty": "color, background-color, border-color, box-shadow, opacity"
+        }
+      ],
+      "buttons": [
+        {
+          "label": "Show password",
+          "ariaPressed": "false",
+          "width": 48,
+          "height": 56,
+          "type": "button"
+        },
+        {
+          "label": "Clear input",
+          "ariaPressed": null,
+          "width": 48,
+          "height": 56,
+          "type": "button"
+        }
+      ]
+    }
+  },
+  "interactions": {
+    "focusVisible": {
+      "qa": "variant-default",
+      "tagName": "INPUT",
+      "borderColor": "rgba(154, 229, 5, 0.43)",
+      "boxShadow": "rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(0, 0, 0, 0) 0px 0px 0px 0px, rgba(170, 255, 0, 0.055) 0px 0px 0px 2.84204px"
+    },
+    "passwordBefore": "password",
+    "passwordAfter": {
+      "type": "text",
+      "ariaPressed": "true",
+      "label": "Hide password"
+    },
+    "clearAfter": "",
+    "reducedMotion": "none"
+  },
+  "validation": {
+    "noGalleryHorizontalOverflow": true,
+    "allGalleryInputsHaveLabels": true,
+    "allDescribedByTargetsExist": true,
+    "galleryInputMinHeight": 56,
+    "actionTouchTargets": [
+      {
+        "label": "Show password",
+        "pass": true,
+        "width": 48,
+        "height": 56
+      },
+      {
+        "label": "Clear input",
+        "pass": true,
+        "width": 48,
+        "height": 56
+      }
+    ],
+    "passwordToggleChangedType": true,
+    "clearControlClearedValue": true,
+    "reducedMotionDisabledTransitions": true
+  },
+  "devServerOutput": "   ▲ Next.js 15.5.19\n   - Local:        http://localhost:3100\n   - Network:      http://192.168.1.36:3100\n   - Environments: .env.local\n\n ✓ Starting...\n ✓ Ready in 1994ms\n ✓ Compiled /middleware in 383ms (201 modules)\n ○ Compiling /[locale]/login ...\n ✓ Compiled /[locale]/login in 1511ms (1646 modules)\n"
+}

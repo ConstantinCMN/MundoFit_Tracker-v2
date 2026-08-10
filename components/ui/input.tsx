@@ -2,8 +2,11 @@
 
 import {
   forwardRef,
+  useCallback,
   useId,
+  useRef,
   useState,
+  type ForwardedRef,
   type InputHTMLAttributes,
   type ReactNode,
 } from 'react';
@@ -37,6 +40,20 @@ const variantStyles: Record<InputVariant, string> = {
   outlined: 'border-input-border bg-input-outlined',
 };
 
+function assignInputRef(
+  ref: ForwardedRef<HTMLInputElement>,
+  node: HTMLInputElement | null
+) {
+  if (typeof ref === 'function') {
+    ref(node);
+    return;
+  }
+
+  if (ref) {
+    ref.current = node;
+  }
+}
+
 export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   {
     id: providedId,
@@ -69,6 +86,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   },
   ref
 ) {
+  const inputRef = useRef<HTMLInputElement | null>(null);
   const generatedId = useId();
   const id = providedId ?? generatedId;
   const messageId = `${id}-message`;
@@ -78,8 +96,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
   );
   const [showPassword, setShowPassword] = useState(false);
 
+  const currentUncontrolledValue = inputRef.current?.value ?? '';
   const hasValue =
-    value !== undefined ? String(value).length > 0 : uncontrolledHasValue;
+    value !== undefined
+      ? String(value).length > 0
+      : uncontrolledHasValue || currentUncontrolledValue.length > 0;
   const isPassword = type === 'password';
   const canTogglePassword = isPassword && passwordVisibilityLabels !== undefined;
   const canClear = Boolean(onClear && clearLabel && hasValue && !disabled && !readOnly && !isLoading);
@@ -92,13 +113,20 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     .filter(Boolean)
     .join(' ') || undefined;
   const actualType = isPassword && showPassword ? 'text' : type;
+  const setInputRef = useCallback(
+    (node: HTMLInputElement | null) => {
+      inputRef.current = node;
+      assignInputRef(ref, node);
+    },
+    [ref]
+  );
 
   return (
     <div className={cn('flex w-full flex-col gap-input-message', containerClassName)}>
       <div className="relative">
         <input
           id={id}
-          ref={ref}
+          ref={setInputRef}
           type={actualType}
           value={value}
           defaultValue={defaultValue}
