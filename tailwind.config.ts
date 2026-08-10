@@ -78,6 +78,10 @@ const config: Config = {
         'select-label': 'var(--select-label)',
         'select-placeholder': 'var(--select-placeholder)',
         'select-icon': 'var(--select-icon)',
+        skeleton: 'var(--skeleton-bg)',
+        'skeleton-soft': 'var(--skeleton-bg-soft)',
+        'skeleton-border': 'var(--skeleton-border)',
+        'skeleton-highlight': 'var(--skeleton-highlight)',
       },
       fontFamily: {
         sans: ['var(--font-family-sans)'],
@@ -166,8 +170,17 @@ const config: Config = {
         'select-message-gap': 'var(--select-message-gap)',
         'select-action': 'var(--select-action-area)',
         'select-icon': 'var(--select-icon-size)',
+        'skeleton-text': 'var(--skeleton-text-height)',
+        'skeleton-text-sm': 'var(--skeleton-text-height-sm)',
+        'skeleton-avatar-sm': 'var(--skeleton-avatar-sm)',
+        'skeleton-avatar-md': 'var(--skeleton-avatar-md)',
+        'skeleton-avatar-lg': 'var(--skeleton-avatar-lg)',
+        'skeleton-button': 'var(--skeleton-button-height)',
         'safe-bottom': 'var(--safe-area-bottom)',
         'safe-top': 'var(--safe-area-top)',
+      },
+      minHeight: {
+        'skeleton-card': 'var(--skeleton-card-min-height)',
       },
       zIndex: {
         base: 'var(--z-base)',
@@ -195,6 +208,18 @@ const config: Config = {
         input: 'var(--input-transition-properties)',
         select: 'var(--select-transition-properties)',
       },
+      backgroundImage: {
+        'skeleton-shimmer-gradient': 'var(--skeleton-shimmer-gradient)',
+      },
+      backgroundSize: {
+        'skeleton-shimmer-size': 'var(--skeleton-shimmer-size)',
+      },
+      keyframes: {
+        'skeleton-shimmer': {
+          from: { backgroundPosition: 'var(--skeleton-shimmer-start)' },
+          to: { backgroundPosition: 'var(--skeleton-shimmer-end)' },
+        },
+      },
       scale: {
         'button-pressed': 'var(--button-pressed-scale)',
       },
@@ -202,6 +227,7 @@ const config: Config = {
         'button-spinner': 'spin var(--button-spinner-duration) var(--ease-linear) infinite',
         'input-spinner': 'spin var(--input-spinner-duration) var(--ease-linear) infinite',
         'select-spinner': 'spin var(--select-spinner-duration) var(--ease-linear) infinite',
+        'skeleton-shimmer': 'skeleton-shimmer var(--skeleton-shimmer-duration) var(--ease-linear) infinite',
       },
       opacity: {
         hidden: 'var(--opacity-hidden)',

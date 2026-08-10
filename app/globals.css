@@ -233,6 +233,24 @@
   --select-icon-size: var(--input-icon-size);
   --select-transition-properties: var(--input-transition-properties);
   --select-spinner-duration: var(--input-spinner-duration);
+
+  /* Skeleton: colors, dimensions, and motion */
+  --skeleton-bg: var(--bg-elevated);
+  --skeleton-bg-soft: var(--bg-surface);
+  --skeleton-border: var(--divider);
+  --skeleton-highlight: var(--bg-overlay);
+  --skeleton-text-height: var(--spacing-md);
+  --skeleton-text-height-sm: var(--spacing-sm);
+  --skeleton-avatar-sm: var(--button-height-md);
+  --skeleton-avatar-md: var(--input-height);
+  --skeleton-avatar-lg: calc(var(--input-height) + var(--spacing-lg));
+  --skeleton-card-min-height: calc(var(--button-height-md) * 2);
+  --skeleton-button-height: var(--button-height-lg);
+  --skeleton-shimmer-gradient: linear-gradient(to right, transparent, var(--skeleton-highlight), transparent);
+  --skeleton-shimmer-size: calc(100% * 2) 100%;
+  --skeleton-shimmer-start: 100% 0;
+  --skeleton-shimmer-end: -100% 0;
+  --skeleton-shimmer-duration: calc(var(--duration-maximum) * 3);
 }
 
 /* ─── Base reset ─────────────────────────────────────────────────────────────── */
